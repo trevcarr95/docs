@@ -1,0 +1,39 @@
+{
+  "name": "@meso-network/developer-docs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "pnpm dlx mintlify dev",
+    "check:spelling": "cspell .",
+    "check": "pnpm check:spelling && pnpm check:fmt && pnpm lint && pnpm check:links",
+    "check:fmt": "biome check . && prettier --check \"**/*.{md,mdx}\"",
+    "lint": "pnpm dlx eslint .",
+    "fmt": "biome format --write . && prettier --write \"**/*.{md,mdx}\"",
+    "check:links": "pnpm dlx mintlify broken-links"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@eslint/js": "^9.23.0",
+    "cspell": "^8.18.0",
+    "eslint": "^9.23.0",
+    "eslint-plugin-mdx": "^3.3.1",
+    "globals": "^16.0.0",
+    "prettier": "^2.8.8",
+    "remark-frontmatter": "^5.0.0",
+    "remark-gfm": "^4.0.1",
+    "remark-lint-emphasis-marker": "^4.0.1",
+    "remark-lint-link-title-style": "^4.0.1",
+    "remark-lint-list-item-spacing": "^5.0.1",
+    "remark-lint-maximum-heading-length": "^4.1.1",
+    "remark-lint-maximum-line-length": "^4.1.1",
+    "remark-lint-no-undefined-references": "^5.0.1",
+    "remark-lint-unordered-list-marker-style": "^4.0.1",
+    "remark-preset-lint-consistent": "6.0.1",
+    "remark-preset-lint-markdown-style-guide": "6.0.1",
+    "remark-preset-lint-recommended": "7.0.1"
+  }
+}

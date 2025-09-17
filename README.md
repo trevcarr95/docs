@@ -12,34 +12,35 @@ Click the green **Use this template** button at the top of this repo to copy the
 
 **[Follow the full quickstart guide](https://starter.mintlify.com/quickstart)**
 
+## Workflow
+
+To update/edit documentation, simply open a pull request in this repo. Once
+merged, it will be automatically deployed.
+
+See the [mintlify docs](https://mintlify.com/docs/quickstart) for available
+features.
+
 ## Development
 
-Install the [Mintlify CLI](https://www.npmjs.com/package/mint) to preview your documentation changes locally. To install, use the following command:
+### Install dependencies
 
-```
-npm i -g mint
-```
+This project uses [pnpm](https://pnpm.io/) and requires Node.js >20.
 
-Run the following command at the root of your documentation, where your `docs.json` is located:
-
-```
-mint dev
+```bash
+pnpm i
 ```
 
-View your local preview at `http://localhost:3000`.
+### Run in watch mode
 
-## Publishing changes
+```bash
+pnpm dev
+```
 
-Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the
+website.
 
-## Need help?
+### Checks and tests
 
-### Troubleshooting
+To view available tasks, run `pnpm run`.
 
-- If your dev environment isn't running: Run `mint update` to ensure you have the most recent version of the CLI.
-- If a page loads as a 404: Make sure you are running in a folder with a valid `docs.json`.
-
-### Resources
-
-- [Mintlify documentation](https://mintlify.com/docs)
-- [Mintlify community](https://mintlify.com/community)
+To run all CI checks locally, run `pnpm check`.
