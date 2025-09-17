@@ -1,209 +1,3424 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
-    "version": "1.0.0"
+    "title": "Mintlify Test",
+    "version": "0.1.0"
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
+      "description": "Production Environment",
+      "url": "https://api.moonpay.com"
     }
   ],
   "paths": {
-    "/plants": {
+    "/partner_onboarding/v1/accounts": {
+      "post": {
+        "description": "Create a new partner account with required information. Returns a link to fill in KYB information for required level and the partner account ID. The partner account ID can be used to retrieve API keys and update domains. The partner account will be in pending status until the KYB information is submitted and approved. Use MoonPay - Server-to-Server authentication with live secret API key as the Authorization header.",
+        "operationId": "PartnerOnboardingController.createPartnerAccount",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePartnerAccountInput"
+              }
+            }
+          },
+          "description": "CreatePartnerAccountInput",
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatePartnerAccountResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "description": "A descriptive error message.",
+                      "type": "string"
+                    },
+                    "type": {
+                      "description": "An error type.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "description": "A descriptive error message.",
+                      "type": "string"
+                    },
+                    "type": {
+                      "description": "An error type.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "description": "A descriptive error message.",
+                      "type": "string"
+                    },
+                    "type": {
+                      "description": "An error type.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "description": "A descriptive error message.",
+                      "type": "string"
+                    },
+                    "type": {
+                      "description": "An error type.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "summary": "Create a new partner account",
+        "tags": ["Partner account"]
+      }
+    },
+    "/partner_onboarding/v1/accounts/{accountId}": {
       "get": {
-        "description": "Returns all plants from the system that the user has access to",
+        "description": " Get partner account properties including API keys. The API keys can be used to authenticate requests to the MoonPay API.Use MoonPay - Server-to-Server authentication with live secret API key as the Authorization header.",
+        "operationId": "PartnerOnboardingController.getPartnerAccount",
         "parameters": [
           {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
+            "in": "path",
+            "name": "accountId",
+            "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "pattern": "[^\\/#\\?]+?",
+              "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Plant response",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
+                  "$ref": "#/components/schemas/AccountResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "description": "A descriptive error message.",
+                      "type": "string"
+                    },
+                    "type": {
+                      "description": "An error type.",
+                      "type": "string"
+                    }
                   }
                 }
               }
-            }
+            },
+            "description": "Unauthorized"
           },
-          "400": {
-            "description": "Unexpected error",
+          "403": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "properties": {
+                    "message": {
+                      "description": "A descriptive error message.",
+                      "type": "string"
+                    },
+                    "type": {
+                      "description": "An error type.",
+                      "type": "string"
+                    }
+                  }
                 }
               }
+            },
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "summary": "Get partner account with its API keys",
+        "tags": ["Partner account"]
+      },
+      "patch": {
+        "description": "Update the list of domains to whitelist for the partner account. Use MoonPay - Server-to-Server authentication with live secret API key as the Authorization header.",
+        "operationId": "PartnerOnboardingController.updateDomains",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "pattern": "[^\\/#\\?]+?",
+              "type": "string"
             }
           }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
+        ],
         "requestBody": {
-          "description": "Plant to add to the store",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewPlant"
+                "$ref": "#/components/schemas/UpdateWhitelistedDomainsInput"
               }
             }
           },
-          "required": true
+          "description": "UpdateWhitelistedDomainsInput",
+          "required": false
         },
         "responses": {
           "200": {
-            "description": "plant response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Plant"
+                  "$ref": "#/components/schemas/UpdateDomainsResponse"
                 }
+              }
+            },
+            "description": ""
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "description": "A descriptive error message.",
+                      "type": "string"
+                    },
+                    "type": {
+                      "description": "An error type.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Bad request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "description": "A descriptive error message.",
+                      "type": "string"
+                    },
+                    "type": {
+                      "description": "An error type.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "description": "A descriptive error message.",
+                      "type": "string"
+                    },
+                    "type": {
+                      "description": "An error type.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "description": "A descriptive error message.",
+                      "type": "string"
+                    },
+                    "type": {
+                      "description": "An error type.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "summary": "Update domains",
+        "tags": ["Partner account"]
+      }
+    },
+    "/partner_onboarding/v1/countries": {
+      "get": {
+        "description": "Get a list of countries supported by MoonPay. The list includes the country name, country code, and whether the country is supported by MoonPay. Use MoonPay - Server-to-Server authentication with live secret API key as the Authorization header.",
+        "operationId": "PartnerOnboardingController.getCountries",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CountryResponseV1"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "description": "A descriptive error message.",
+                      "type": "string"
+                    },
+                    "type": {
+                      "description": "An error type.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "description": "A descriptive error message.",
+                      "type": "string"
+                    },
+                    "type": {
+                      "description": "An error type.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "summary": "Get a list of countries",
+        "tags": ["KYB"]
+      }
+    },
+    "/partner_onboarding/v1/industries": {
+      "get": {
+        "description": "Get a list of industries supported by MoonPay. The list includes the country name, country code, and whether the country is supported by MoonPay. Use MoonPay - Server-to-Server authentication with live secret API key as the Authorization header.",
+        "operationId": "PartnerOnboardingController.getIndustries",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/IndustryResponse"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "description": "A descriptive error message.",
+                      "type": "string"
+                    },
+                    "type": {
+                      "description": "An error type.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "description": "A descriptive error message.",
+                      "type": "string"
+                    },
+                    "type": {
+                      "description": "An error type.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "summary": "Get a list of industries",
+        "tags": ["KYB"]
+      }
+    },
+    "/v1/customers/ext/{externalId}": {
+      "get": {
+        "description": "Returns very basic information about a customer based on their external customer ID. For you to be able to retrieve a customer, they must have at least one session initiated with your `API-Key`. Please note that this endpoint returns an array of objects because we cannot ensure the uniqueness of the external customer ID.",
+        "operationId": "CustomerController.getByExternalId",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalId",
+            "required": true,
+            "schema": {
+              "pattern": "[^\\/#\\?]+?",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CustomerV1Response"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "description": "A descriptive error message.",
+                      "type": "string"
+                    },
+                    "type": {
+                      "description": "An error type.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "summary": "Get customer by external ID",
+        "tags": ["Customers"]
+      }
+    },
+    "/v1/customers/{id}": {
+      "get": {
+        "description": "Returns very basic information about a customer based on their MoonPay ID. For you to be able to retrieve a customer, they must have at least one session initiated with your `Api-Key`.",
+        "operationId": "CustomerController.get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "pattern": "[^\\/#\\?]+?",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerV1Response"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "description": "A descriptive error message.",
+                      "type": "string"
+                    },
+                    "type": {
+                      "description": "An error type.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "summary": "Get customer",
+        "tags": ["Customers"]
+      }
+    },
+    "/v1/transactions": {
+      "get": {
+        "description": "Returns an array of successful Buy transactions which fulfill criteria supplied in the query parameters. Each entry in the array is a separate transaction object. Transactions will be listed from newest to oldest.",
+        "operationId": "TransactionController.find",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "customerId",
+            "required": false,
+            "schema": {
+              "description": "Unique identifier for a customer.",
+              "example": "123",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "walletAddress",
+            "required": false,
+            "schema": {
+              "description": "Wallet address.",
+              "example": "0xd75233704795206de38Cc58B77a1f660B5C60896",
+              "not": {
+                "type": "null"
+              },
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "externalCustomerId",
+            "required": false,
+            "schema": {
+              "description": "An identifier associated with a customer, provided by you. `customerId` filter takes precedence over `externalCustomerId`.",
+              "example": "123",
+              "not": {
+                "type": "null"
+              },
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "externalTransactionId",
+            "required": false,
+            "schema": {
+              "description": "An identifier associated with a transaction, provided by you.",
+              "example": "123",
+              "not": {
+                "type": "null"
+              },
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "startDate",
+            "required": false,
+            "schema": {
+              "description": "The earliest date on which transactions should have been made. Format is YYYY-MM-DD.",
+              "example": "2023-07-01",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "endDate",
+            "required": false,
+            "schema": {
+              "description": "The most recent date on which transactions should have been made. Format is YYYY-MM-DD.",
+              "example": "2023-07-31",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "description": "A positive integer representing the maximum number of transaction objects to be returned. Default is <span class=\"value\">10</span>, minimum is <span class=\"value\">1</span> and maximum is <span class=\"value\">50</span>.",
+              "example": 20,
+              "maximum": 50,
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "description": "A positive integer representing the number of transaction objects to skip before returning the list. An offset of <span class=\"value\">1</span> means the list will start with the second-newest transaction.",
+              "example": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/GetTransactionV1Response"
+                  },
+                  "type": "array"
+                }
+              },
+              "text/html; charset=utf-8": {}
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "description": "A descriptive error message.",
+                      "type": "string"
+                    },
+                    "type": {
+                      "description": "An error type.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "summary": "List Buy transactions",
+        "tags": ["Buy transactions"]
+      }
+    },
+    "/v1/virtual-accounts": {
+      "get": {
+        "operationId": "VirtualAccountController.getVirtualAccounts",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "virtualAccountId",
+            "required": false,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "walletAddress",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "externalCustomerId",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VirtualAccountResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Get virtual accounts",
+        "tags": ["Virtual Account"]
+      }
+    },
+    "/v1/virtual-accounts/onramp/{id}": {
+      "patch": {
+        "operationId": "VirtualAccountController.updateOnRampVirtualAccount",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "pattern": "[^\\/#\\?]+?",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOnRampVirtualAccountBody"
               }
             }
           },
-          "400": {
-            "description": "unexpected error",
+          "description": "UpdateOnRampVirtualAccountBody",
+          "required": false
+        },
+        "responses": {
+          "200": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/VirtualAccountResponse"
                 }
               }
-            }
+            },
+            "description": ""
           }
-        }
+        },
+        "summary": "Update on ramp virtual account",
+        "tags": ["Virtual Account"]
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
+    "/v1/virtual-accounts/transactions/offramp": {
+      "get": {
+        "operationId": "VirtualAccountController.getOffRampTransactions",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
+            "in": "query",
+            "name": "virtualAccountId",
+            "required": false,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "externalCustomerId",
+            "required": false,
+            "schema": {
+              "maxLength": 255,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "exclusiveMinimum": 0,
+              "minLength": 1,
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OffRampVirtualAccountTransactionsResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Get off ramp transactions",
+        "tags": ["Virtual Account"]
+      }
+    },
+    "/v1/virtual-accounts/transactions/onramp": {
+      "get": {
+        "operationId": "VirtualAccountController.getOnRampTransactions",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "virtualAccountId",
+            "required": false,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "externalCustomerId",
+            "required": false,
+            "schema": {
+              "maxLength": 255,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "required": true,
+            "schema": {
+              "exclusiveMinimum": 0,
+              "minLength": 1,
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OnRampVirtualAccountTransactionsResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "Get on ramp transactions",
+        "tags": ["Virtual Account"]
+      }
+    },
+    "/v3/sell_transactions": {
+      "get": {
+        "description": "Returns an array of successful Sell transactions which fulfill criteria supplied in the query parameters. Each entry in the array is a separate transaction object. Transactions will be listed from newest to oldest.",
+        "operationId": "SellTransactionController.find",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "customerId",
+            "required": false,
+            "schema": {
+              "description": "Unique identifier for a customer.",
+              "example": "123",
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "walletAddress",
+            "required": false,
+            "schema": {
+              "description": "Wallet address.",
+              "example": "0xd75233704795206de38Cc58B77a1f660B5C60896",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "externalCustomerId",
+            "required": false,
+            "schema": {
+              "description": "An identifier associated with a customer, provided by you. `customerId` filter takes precedence over `externalCustomerId`.",
+              "example": "123",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "externalTransactionId",
+            "required": false,
+            "schema": {
+              "description": "An identifier associated with a transaction, provided by you.",
+              "example": "123",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "startDate",
+            "required": false,
+            "schema": {
+              "description": "The earliest date on which transactions should have been made. Format is YYYY-MM-DD.",
+              "example": "2023-07-01",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "endDate",
+            "required": false,
+            "schema": {
+              "description": "The most recent date on which transactions should have been made. Format is YYYY-MM-DD.",
+              "example": "2023-07-31",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "description": "A positive integer representing the maximum number of transaction objects to be returned. Default is <span class=\"value\">10</span>, minimum is <span class=\"value\">1</span> and maximum is <span class=\"value\">50</span>.",
+              "example": 20,
+              "maximum": 50,
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "description": "A positive integer representing the number of transaction objects to skip before returning the list. An offset of <span class=\"value\">1</span> means the list will start with the second-newest transaction.",
+              "example": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SellTransactionResponseV3"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "description": "A descriptive error message.",
+                      "type": "string"
+                    },
+                    "type": {
+                      "description": "An error type.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "summary": "List Sell transactions",
+        "tags": ["Sell transactions"]
+      }
+    },
+    "/v3/sell_transactions/ext/{externalId}": {
+      "delete": {
+        "description": "Cancels a sell transaction based on their external transaction ID. This endpoint will return HTTP status <span class=\"value\">204 No Content</span> if the sell transaction was successfully canceled. If sell transaction could not be canceled (e.g. because it has already been completed) it will return HTTP status <span class=\"value\">409 Conflict</span>.",
+        "operationId": "SellTransactionController.cancelByExternalId",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "externalId",
+            "required": true,
+            "schema": {
+              "pattern": "[^\\/#\\?]+?",
+              "type": "string"
             }
           }
         ],
         "responses": {
           "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/EmptyResponse"
                 }
               }
-            }
-          }
-        }
-      }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
-      "post": {
-        "description": "Information about a new plant added to the store",
-        "requestBody": {
-          "description": "Plant added to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "description": "A descriptive error message.",
+                      "type": "string"
+                    },
+                    "type": {
+                      "description": "An error type.",
+                      "type": "string"
+                    }
+                  }
+                }
               }
-            }
+            },
+            "description": "Unauthorized"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "description": "A descriptive error message.",
+                      "type": "string"
+                    },
+                    "type": {
+                      "description": "An error type.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Conflict"
           }
         },
-        "responses": {
-          "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
+        "security": [
+          {
+            "apiKey": []
           }
-        }
+        ],
+        "summary": "Cancel Sell transaction by external ID",
+        "tags": ["Sell transactions"]
+      }
+    },
+    "/v3/sell_transactions/{id}": {
+      "delete": {
+        "description": "Cancels a sell transaction. This endpoint will return HTTP status <span class=\"value\">204 No Content</span> if the sell transaction was successfully canceled. If sell transaction could not be canceled (e.g. because it has already been completed) it will return HTTP status <span class=\"value\">409 Conflict</span>.",
+        "operationId": "SellTransactionController.cancel",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "pattern": "[^\\/#\\?]+?",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyResponse"
+                }
+              }
+            },
+            "description": ""
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "description": "A descriptive error message.",
+                      "type": "string"
+                    },
+                    "type": {
+                      "description": "An error type.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "message": {
+                      "description": "A descriptive error message.",
+                      "type": "string"
+                    },
+                    "type": {
+                      "description": "An error type.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "Conflict"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "summary": "Cancel Sell transaction",
+        "tags": ["Sell transactions"]
       }
     }
   },
   "components": {
     "schemas": {
-      "Plant": {
-        "required": ["name"],
-        "type": "object",
+      "AccountResponse": {
         "properties": {
+          "apiKeys": {
+            "description": "Array of API keys",
+            "items": {
+              "$ref": "#/components/schemas/ApiKey"
+            },
+            "type": "array"
+          },
+          "moderationComment": {
+            "description": "This field provides feedback on what additional information is required for approval in cases where the rejection type is `RETRY`. It remains undefined for final rejections (`FINAL`) and for applications that have been approved.",
+            "type": "string"
+          },
+          "rejectionType": {
+            "description": "Specifies the nature of the rejection. A `FINAL` type means the partner application will not proceed with onboarding. `RETRY` indicates further information is required for reconsideration. This field is undefined for approved applications.",
+            "type": "string"
+          },
+          "reviewStatus": {
+            "description": "Indicates the current status of the review process.",
+            "enum": ["pending", "on hold", "approved", "rejected"],
+            "type": "string"
+          }
+        },
+        "required": ["apiKeys"],
+        "type": "object"
+      },
+      "ApiKey": {
+        "properties": {
+          "apiKey": {
+            "description": "The API key",
+            "type": "string"
+          },
+          "liveMode": {
+            "description": "True if live mode",
+            "type": "boolean"
+          },
+          "type": {
+            "enum": ["publishable", "secret", "webhook", "public"],
+            "type": "string"
+          }
+        },
+        "required": ["apiKey", "type", "liveMode"],
+        "type": "object"
+      },
+      "Array": {
+        "type": "array"
+      },
+      "BankDepositInformationResponse": {
+        "properties": {
+          "accountAddress": {
+            "type": "string"
+          },
+          "accountName": {
+            "type": "string"
+          },
+          "accountNumber": {
+            "type": "string"
+          },
+          "actualBankAccountId": {
+            "type": "string"
+          },
+          "actualBankName": {
+            "type": "string"
+          },
+          "bankAddress": {
+            "type": "string"
+          },
+          "bankName": {
+            "type": "string"
+          },
+          "bic": {
+            "type": "string"
+          },
+          "iban": {
+            "type": "string"
+          },
+          "sortCode": {
+            "type": "string"
+          }
+        },
+        "required": ["accountAddress", "accountName"],
+        "type": "object"
+      },
+      "CountryResponseV1": {
+        "properties": {
+          "countryCode": {
+            "description": "The country ISO 3166-1 alpha-3 code.",
+            "not": {
+              "type": "null"
+            },
+            "type": "string"
+          },
+          "countryName": {
+            "description": "Name of the country",
+            "not": {
+              "type": "null"
+            },
+            "type": "string"
+          },
+          "isSupported": {
+            "description": "Whether the country is supported by MoonPay",
+            "not": {
+              "type": "null"
+            },
+            "type": "boolean"
+          }
+        },
+        "required": ["countryName", "countryCode", "isSupported"],
+        "type": "object"
+      },
+      "CreatePartnerAccountInput": {
+        "properties": {
+          "accountHolderEmail": {
+            "description": "The email of the partner account holder.",
+            "example": "johndoe@gmail.com",
+            "format": "email",
+            "not": {
+              "type": "null"
+            },
+            "type": "string"
+          },
+          "accountHolderFirstName": {
+            "description": "The first name of the partner account holder.",
+            "example": "John",
+            "not": {
+              "type": "null"
+            },
+            "type": "string"
+          },
+          "accountHolderLastName": {
+            "description": "The last name of the partner account holder.",
+            "example": "Doe",
+            "not": {
+              "type": "null"
+            },
+            "type": "string"
+          },
+          "accountName": {
+            "description": "The name of the partner account.",
+            "example": "My account",
+            "not": {
+              "type": "null"
+            },
+            "type": "string"
+          },
+          "businessDescription": {
+            "description": "The business description. Minimum length 200 characters.",
+            "example": "We are a technology company. We provide services to customers all over the world. We have a team of 50 employees and have been in business for 5 years. We have a turnover of $1 million per year. We are looking to expand our business and are looking for a partner to help us grow.",
+            "minLength": 200,
+            "not": {
+              "type": "null"
+            },
+            "type": "string"
+          },
+          "businessUrl": {
+            "description": "The business URL.",
+            "example": "https://www.example.com",
+            "format": "url",
+            "not": {
+              "type": "null"
+            },
+            "type": "string"
+          },
+          "country": {
+            "description": "ISO 3166-1 alpha-3 code of the country where the business entity is registered",
+            "example": "USA",
+            "not": {
+              "type": "null"
+            },
+            "type": "string"
+          },
+          "domains": {
+            "$ref": "#/components/schemas/Array",
+            "description": "The domain list to whitelist. Has to be an array of valid URLs.",
+            "example": [
+              "https://example.com",
+              "chrome-extension://extension-id"
+            ],
+            "items": {},
+            "type": "array"
+          },
+          "industry": {
+            "description": "The industry of the company. Selected from a list of supported industries which can be obtained from the GET /v1/industries.",
+            "example": "Technology",
+            "not": {
+              "type": "null"
+            },
+            "type": "string"
+          },
+          "isLegalEntity": {
+            "description": "Whether the partner account is a legal entity.",
+            "example": true,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "accountName",
+          "country",
+          "industry",
+          "accountHolderFirstName",
+          "accountHolderLastName",
+          "accountHolderEmail",
+          "businessDescription",
+          "businessUrl"
+        ],
+        "type": "object"
+      },
+      "CreatePartnerAccountResponse": {
+        "properties": {
+          "accountId": {
+            "description": "The partner account ID that can be used to retrieve API keys and update domains",
+            "type": "string"
+          },
+          "kybLink": {
+            "description": "Link to fill in KYB information for required level",
+            "type": "string"
+          }
+        },
+        "required": ["kybLink", "accountId"],
+        "type": "object"
+      },
+      "CryptoCurrencyMetadata": {
+        "properties": {
+          "chainId": {
+            "type": "string"
+          },
+          "coinType": {
+            "type": "string"
+          },
+          "contractAddress": {
+            "type": "string"
+          },
+          "networkCode": {
+            "enum": [
+              "akash",
+              "algorand",
+              "aptos",
+              "arbitrum",
+              "avalanche_c_chain",
+              "base",
+              "berachain",
+              "binance",
+              "binance_smart_chain",
+              "bitcoin",
+              "bitcoin_cash",
+              "bitcoin_testnet",
+              "bnb_chain",
+              "cardano",
+              "celo",
+              "celestia",
+              "core",
+              "cosmos",
+              "chiliz",
+              "cronos",
+              "dash",
+              "deversifi",
+              "digibyte",
+              "dogecoin",
+              "dydx",
+              "elrond",
+              "eosio",
+              "ethereum",
+              "ethereum_classic",
+              "fantom",
+              "filecoin",
+              "flow",
+              "flow_evm",
+              "gala",
+              "goerli",
+              "hedera",
+              "hive",
+              "icp",
+              "immutable",
+              "injective",
+              "iota",
+              "kava",
+              "klaytn",
+              "kovan",
+              "lbry",
+              "linea",
+              "lisk",
+              "litecoin",
+              "loopring",
+              "mantle",
+              "mina",
+              "mobilecoin",
+              "multiversx",
+              "mumbai",
+              "nano",
+              "near",
+              "nem",
+              "neo",
+              "nimiq",
+              "noble",
+              "oasis",
+              "okc",
+              "ontology",
+              "optimism",
+              "osmosis",
+              "palm",
+              "polkadot",
+              "polygon",
+              "qtum",
+              "ravencoin",
+              "rinkeby",
+              "ripple",
+              "ronin",
+              "sei",
+              "sepolia",
+              "simple_ledger_protocol",
+              "solana",
+              "sonic",
+              "sorare",
+              "starknet",
+              "stacks",
+              "stellar",
+              "sui",
+              "rune",
+              "terra",
+              "tezos",
+              "theta",
+              "tomochain",
+              "ton",
+              "tron",
+              "unichain",
+              "vechain",
+              "venom",
+              "waves",
+              "wax",
+              "worldchain",
+              "xrpl",
+              "zcash",
+              "zilliqa",
+              "zksync"
+            ],
+            "type": "string"
+          }
+        },
+        "required": ["networkCode"],
+        "type": "object"
+      },
+      "CustomerV1Response": {
+        "properties": {
+          "createdAt": {
+            "type": "string"
+          },
+          "defaultCurrencyCode": {
+            "type": "string"
+          },
+          "defaultCurrencyId": {
+            "type": "string"
+          },
+          "externalCustomerId": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "identityCheckLevel": {
+            "type": "number"
+          },
+          "identityCheckStatus": {
+            "type": "string"
+          },
+          "liveMode": {
+            "type": "boolean"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "liveMode",
+          "defaultCurrencyId",
+          "defaultCurrencyCode",
+          "externalCustomerId",
+          "identityCheckStatus",
+          "identityCheckLevel"
+        ],
+        "type": "object"
+      },
+      "EmptyResponse": {
+        "additionalProperties": false,
+        "properties": {},
+        "type": "object"
+      },
+      "FiatCurrencyResponse": {
+        "properties": {
+          "accountBuyMinAmount": {
+            "type": "number"
+          },
+          "code": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "decimals": {
+            "type": "number"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "isSellSupported": {
+            "type": "boolean"
+          },
+          "isUtxoCompatible": {
+            "type": "boolean"
+          },
+          "maxAmount": {
+            "type": "number"
+          },
+          "maxBuyAmount": {
+            "type": "number"
+          },
+          "minAmount": {
+            "type": "number"
+          },
+          "minBuyAmount": {
+            "type": "number"
+          },
           "name": {
-            "description": "The name of the plant",
             "type": "string"
           },
-          "tag": {
-            "description": "Tag to specify the type",
+          "precision": {
+            "type": "number"
+          },
+          "type": {
+            "type": "string"
+          },
+          "updatedAt": {
             "type": "string"
           }
-        }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "type",
+          "name",
+          "code",
+          "precision",
+          "isSellSupported",
+          "isUtxoCompatible"
+        ],
+        "type": "object"
       },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": ["id"],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
-      },
-      "Error": {
-        "required": ["error", "message"],
-        "type": "object",
+      "FiatCurrencyV1Response": {
         "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
+          "accountBuyMinAmount": {
+            "type": "number"
           },
-          "message": {
+          "code": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "decimals": {
+            "type": "number"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "isSellSupported": {
+            "type": "boolean"
+          },
+          "isUtxoCompatible": {
+            "type": "boolean"
+          },
+          "maxAmount": {
+            "type": "number"
+          },
+          "maxBuyAmount": {
+            "type": "number"
+          },
+          "minAmount": {
+            "type": "number"
+          },
+          "minBuyAmount": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "precision": {
+            "type": "number"
+          },
+          "type": {
+            "type": "string"
+          },
+          "updatedAt": {
             "type": "string"
           }
-        }
+        },
+        "required": [
+          "isUtxoCompatible",
+          "id",
+          "createdAt",
+          "updatedAt",
+          "type",
+          "name",
+          "code",
+          "precision",
+          "isSellSupported"
+        ],
+        "type": "object"
+      },
+      "GetTransactionV1Response": {
+        "properties": {
+          "areFeesIncluded": {
+            "not": {
+              "type": "null"
+            },
+            "type": "boolean"
+          },
+          "bankAccountId": {
+            "type": "string"
+          },
+          "bankDepositInformation": {
+            "$ref": "#/components/schemas/BankDepositInformationResponse"
+          },
+          "bankTransferReference": {
+            "type": "string"
+          },
+          "baseCurrency": {
+            "$ref": "#/components/schemas/FiatCurrencyV1Response"
+          },
+          "baseCurrencyAmount": {
+            "not": {
+              "type": "null"
+            },
+            "type": "number"
+          },
+          "baseCurrencyId": {
+            "not": {
+              "type": "null"
+            },
+            "type": "string"
+          },
+          "cardId": {
+            "type": "string"
+          },
+          "cardPaymentType": {
+            "enum": ["debit", "credit", "unknown"],
+            "type": "string"
+          },
+          "cardType": {
+            "enum": ["apple_pay", "google_pay", "samsung_pay", "card"],
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "cryptoTransactionId": {
+            "type": "string"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/V3CurrencyResponse"
+          },
+          "currencyId": {
+            "not": {
+              "type": "null"
+            },
+            "type": "string"
+          },
+          "customerId": {
+            "not": {
+              "type": "null"
+            },
+            "type": "string"
+          },
+          "detailedStatus": {
+            "type": "string"
+          },
+          "eurRate": {
+            "not": {
+              "type": "null"
+            },
+            "type": "number"
+          },
+          "externalCustomerId": {
+            "type": "string"
+          },
+          "externalTransactionId": {
+            "type": "string"
+          },
+          "extraFeeAmount": {
+            "not": {
+              "type": "null"
+            },
+            "type": "number"
+          },
+          "extraFeeAmountDiscount": {
+            "type": "number"
+          },
+          "failureReason": {
+            "enum": [
+              "Bank transfer timeout",
+              "Bank payout bounced back",
+              "Bank payout failed",
+              "Bank payout initialization failed",
+              "Card payout failed",
+              "Blocked customer",
+              "Freeze transaction",
+              "Cancelled",
+              "Cancelled and refunded",
+              "Cancelled by customer",
+              "Card code verification timeout",
+              "Card not supported",
+              "Daily purchase limit exceeded",
+              "Transaction declined",
+              "Deposit timeout",
+              "Deposit failed",
+              "Failed testnet withdrawal",
+              "Forced",
+              "Rejection is final for user identity check",
+              "Identity check timeout",
+              "Internal error",
+              "Instant ACH failure",
+              "Open banking timeout",
+              "Revolut authorization timeout",
+              "Revolut payment cancelled",
+              "Revolut payment failed",
+              "Revolut payment declined",
+              "Other",
+              "Payment authentication declined",
+              "Payment authentication error",
+              "Payment authorization declined",
+              "Payment authorization error",
+              "Payment returned",
+              "Payout authorization failed",
+              "Payout failed",
+              "Refund",
+              "Deposit out of bounds (amount too low to refund)",
+              "Refund deposit out of bounds",
+              "Requote timeout",
+              "3D Secure timeout",
+              "Ticket payment timeout",
+              "Ticket payment failure",
+              "Verification timeout",
+              "Nft transaction error",
+              "Failed to sweep deposit wallet",
+              "Payment initialization failed",
+              "Balance ledger top up failed",
+              "Balance ledger withdraw failed",
+              "Transaction terminated",
+              "Exchange order failed",
+              "Travel rule failure",
+              "Invalid quote",
+              "OnHold",
+              "Delegate hash not found",
+              "Bad wallet address",
+              "Failed to get quote from DeFi provider",
+              "Interac payment request error",
+              "Interac risk management rejection",
+              "Interac fraud detection",
+              "Interac personal information mismatch",
+              "Interac transaction timeout",
+              "Interac duplicate reference number",
+              "Interac amount mismatch",
+              "Interac unsupported language",
+              "Interac non-auto deposit bank failure"
+            ],
+            "type": "string"
+          },
+          "feeAmount": {
+            "not": {
+              "type": "null"
+            },
+            "type": "number"
+          },
+          "feeAmountDiscount": {
+            "type": "number"
+          },
+          "flow": {
+            "enum": [
+              "floating",
+              "principal",
+              "balance_ledger_top_up",
+              "nft",
+              "moonpay_balance_deposit",
+              "recurring"
+            ],
+            "type": "string"
+          },
+          "gbpRate": {
+            "not": {
+              "type": "null"
+            },
+            "type": "number"
+          },
+          "id": {
+            "type": "string"
+          },
+          "isFromQuote": {
+            "not": {
+              "type": "null"
+            }
+          },
+          "isQuoteExpired": {
+            "type": "boolean"
+          },
+          "networkFeeAmount": {
+            "not": {
+              "type": "null"
+            },
+            "type": "number"
+          },
+          "nftTransaction": {
+            "$ref": "#/components/schemas/NftTransactionV1Response"
+          },
+          "paymentMethod": {
+            "enum": [
+              "ach_bank_transfer",
+              "credit_debit_card",
+              "gbp_bank_transfer",
+              "gbp_open_banking_payment",
+              "low_cost_ach",
+              "mobile_wallet",
+              "apple_pay",
+              "google_pay",
+              "sepa_bank_transfer",
+              "sepa_open_banking_payment",
+              "pix_instant_payment",
+              "paypal",
+              "venmo",
+              "revolut_pay",
+              "fiat_balance",
+              "moonpay_balance",
+              "yellow_card_bank_transfer",
+              "interac",
+              "mooncard"
+            ],
+            "type": "string"
+          },
+          "pendingActionStatus": {
+            "type": "string"
+          },
+          "quoteCurrencyAmount": {
+            "type": "number"
+          },
+          "redirectUrl": {
+            "type": "string"
+          },
+          "returnUrl": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "completed",
+              "failed",
+              "pending",
+              "waitingPayment",
+              "waitingAuthorization"
+            ],
+            "not": {
+              "type": "null"
+            },
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "usdRate": {
+            "not": {
+              "type": "null"
+            },
+            "type": "number"
+          },
+          "walletAddress": {
+            "not": {
+              "type": "null"
+            },
+            "type": "string"
+          },
+          "walletAddressTag": {
+            "type": "string"
+          },
+          "widgetRedirectUrl": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "baseCurrencyAmount",
+          "feeAmount",
+          "extraFeeAmount",
+          "networkFeeAmount",
+          "areFeesIncluded",
+          "isFromQuote",
+          "status",
+          "walletAddress",
+          "baseCurrencyId",
+          "currencyId",
+          "customerId",
+          "eurRate",
+          "usdRate",
+          "gbpRate"
+        ],
+        "type": "object"
+      },
+      "IndustryResponse": {
+        "properties": {
+          "industryName": {
+            "description": "Name of the industry",
+            "not": {
+              "type": "null"
+            },
+            "type": "string"
+          },
+          "isSupported": {
+            "description": "Whether the industry is supported by MoonPay",
+            "not": {
+              "type": "null"
+            },
+            "type": "boolean"
+          }
+        },
+        "required": ["industryName", "isSupported"],
+        "type": "object"
+      },
+      "IntegratedSellDepositInfoResponse": {
+        "properties": {
+          "depositId": {
+            "type": "string"
+          },
+          "depositInitiatedAt": {
+            "type": "string"
+          }
+        },
+        "required": ["depositInitiatedAt", "depositId"],
+        "type": "object"
+      },
+      "NftTransactionV1Response": {
+        "properties": {
+          "balanceLedgerOperationSetId": {
+            "type": "string"
+          },
+          "buybackCompletedAt": {
+            "type": "string"
+          },
+          "buybackExchangeOrderId": {
+            "type": "string"
+          },
+          "buybackRequestSentAt": {
+            "type": "string"
+          },
+          "buyerCustomerId": {
+            "type": "string"
+          },
+          "buyerCustomerWalletId": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "deliveryRequestSentAt": {
+            "type": "string"
+          },
+          "deliveryStage": {
+            "enum": [
+              "fromPartnerToMoonpay",
+              "inMoonpayWallet",
+              "fromMoonpayToBuyer",
+              "receivedByBuyer"
+            ],
+            "type": "string"
+          },
+          "deliveryStatus": {
+            "enum": [
+              "completed",
+              "failed",
+              "pending",
+              "manual_review",
+              "not_started",
+              "timeout",
+              "starting",
+              "stuck"
+            ],
+            "type": "string"
+          },
+          "externalTransactionId": {
+            "type": "string"
+          },
+          "failedTransactionHashes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "failureDetails": {
+            "type": "string"
+          },
+          "failureReason": {
+            "enum": [
+              "DeliveryIssue",
+              "PartnerDeliveryIssue",
+              "InjectionOrderRejected",
+              "NftNotAvailable",
+              "DeliveryTimeout",
+              "DeliveryFailed",
+              "DeliveryFromMoonPayFailed",
+              "ManualReviewRejected",
+              "NftLimitsExceeded"
+            ],
+            "type": "string"
+          },
+          "flow": {
+            "enum": ["Direct", "Injection", "Lite", "Commerce"],
+            "type": "string"
+          },
+          "fromMoonPayToBuyerRetriesCount": {
+            "type": "number"
+          },
+          "gasPrice": {},
+          "gasUsed": {},
+          "id": {
+            "type": "string"
+          },
+          "intermediaryBlockchainTransactions": {
+            "items": {},
+            "type": "array"
+          },
+          "isSendingProcessInProgress": {
+            "type": "boolean"
+          },
+          "listingId": {
+            "type": "string"
+          },
+          "liteTransactionHashes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "manualReviewResolvedAt": {
+            "type": "string"
+          },
+          "markedForManualReviewAt": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "string"
+          },
+          "moonpayWalletAddress": {
+            "type": "string"
+          },
+          "multiTokenIds": {
+            "items": {},
+            "type": "array"
+          },
+          "networkCode": {
+            "type": "string"
+          },
+          "networkFeeSpent": {},
+          "nftId": {
+            "type": "string"
+          },
+          "primarySellerWalletAddress": {
+            "type": "string"
+          },
+          "receivedByBuyerAt": {
+            "type": "string"
+          },
+          "receivedByMoonpayAt": {
+            "type": "string"
+          },
+          "sellType": {
+            "enum": ["Primary", "Secondary"],
+            "type": "string"
+          },
+          "sellbackRequestSentAt": {
+            "type": "string"
+          },
+          "sellerCustomerId": {
+            "type": "string"
+          },
+          "sellerCustomerWalletId": {
+            "type": "string"
+          },
+          "sellerSettlementCompletedAt": {
+            "type": "string"
+          },
+          "sellerSettlementExchangeOrderId": {
+            "type": "string"
+          },
+          "sellerSettlementRequestSentAt": {
+            "type": "string"
+          },
+          "sentFromMoonpayToBuyerAt": {
+            "type": "string"
+          },
+          "subFlow": {
+            "enum": [
+              "OpenSeaDirect",
+              "OpenSeaInjection",
+              "OpenSeaDirectAtomic",
+              "OpenSeaSolanaDirect",
+              "OpenSeaSeaDropInjection",
+              "OpenSeaSeaDropV2Injection",
+              "OpenSeaSeaDropV2Direct",
+              "NiftysInjection",
+              "ImxPrimaryLite",
+              "ImxSecondaryInjection",
+              "EnsInjection",
+              "MagicEdenDirectAtomic",
+              "PartnerDrivenDirect",
+              "ReservoirDirect"
+            ],
+            "type": "string"
+          },
+          "tokenCount": {
+            "type": "number"
+          },
+          "transactionHash": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "wasFlashbotsUsed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "flow",
+          "nftId",
+          "buyerCustomerId",
+          "sellType",
+          "tokenCount"
+        ],
+        "type": "object"
+      },
+      "OffRampVirtualAccountTransactionsResponse": {
+        "properties": {
+          "nextCursor": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "transactions": {
+            "$ref": "#/components/schemas/PublicOffRampVirtualAccountTransaction",
+            "items": {},
+            "type": "array"
+          }
+        },
+        "required": ["transactions"],
+        "type": "object"
+      },
+      "OnRampVirtualAccountTransactionsResponse": {
+        "properties": {
+          "nextCursor": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "transactions": {
+            "$ref": "#/components/schemas/PublicOnRampVirtualAccountTransaction",
+            "items": {},
+            "type": "array"
+          }
+        },
+        "required": ["transactions"],
+        "type": "object"
+      },
+      "PublicBankDepositInformation": {
+        "properties": {
+          "accountAddress": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "accountName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "accountNumber": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "bankAddress": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "bankName": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "bic": {
+            "maxLength": 11,
+            "minLength": 0,
+            "type": "string"
+          },
+          "iban": {
+            "maxLength": 34,
+            "minLength": 0,
+            "type": "string"
+          },
+          "routingNumber": {},
+          "sortCode": {}
+        },
+        "required": ["accountAddress", "accountName"],
+        "type": "object"
+      },
+      "PublicCryptoAmount": {
+        "properties": {
+          "amount": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/PublicCryptoCurrency",
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": ["currency", "amount"],
+        "type": "object"
+      },
+      "PublicCryptoCurrency": {
+        "properties": {
+          "network": {
+            "$ref": "#/components/schemas/PublicCryptoCurrencyNetwork"
+          },
+          "notAllowedCountries": {
+            "items": {},
+            "type": "array"
+          },
+          "notAllowedUSStates": {
+            "items": {},
+            "type": "array"
+          }
+        },
+        "required": ["notAllowedUSStates", "notAllowedCountries", "network"],
+        "type": "object"
+      },
+      "PublicCryptoCurrencyNetwork": {
+        "properties": {
+          "code": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string"
+          },
+          "icon": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string"
+          }
+        },
+        "required": ["code", "name", "icon"],
+        "type": "object"
+      },
+      "PublicFiatAmount": {
+        "properties": {
+          "amount": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/PublicFiatCurrency",
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": ["currency", "amount"],
+        "type": "object"
+      },
+      "PublicFiatCurrency": {
+        "properties": {
+          "code": {
+            "minLength": 3,
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string"
+          },
+          "type": {
+            "maxLength": 10,
+            "minLength": 0,
+            "type": "string"
+          }
+        },
+        "required": ["code", "name", "type"],
+        "type": "object"
+      },
+      "PublicOffRampFeeWithSettlement": {
+        "properties": {
+          "amount": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/PublicCryptoCurrency",
+            "minLength": 1,
+            "type": "string"
+          },
+          "settlement": {
+            "enum": ["deductedImmediately", "settledLater"],
+            "type": "string"
+          }
+        },
+        "required": ["settlement", "amount", "currency"],
+        "type": "object"
+      },
+      "PublicOffRampTransactionFeeBreakdown": {
+        "properties": {
+          "deductedFee": {
+            "$ref": "#/components/schemas/PublicCryptoAmount"
+          },
+          "networkFees": {
+            "items": {
+              "$ref": "#/components/schemas/PublicOffRampTransactionNetworkFee"
+            },
+            "type": "array"
+          },
+          "partnerFees": {
+            "items": {
+              "$ref": "#/components/schemas/PublicOffRampFeeWithSettlement"
+            },
+            "type": "array"
+          }
+        },
+        "required": ["networkFees", "partnerFees"],
+        "type": "object"
+      },
+      "PublicOffRampTransactionNetworkFee": {
+        "properties": {
+          "amount": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/PublicCryptoCurrency",
+            "minLength": 1,
+            "type": "string"
+          },
+          "settlement": {
+            "enum": ["deductedImmediately", "settledLater"],
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "SepaIn",
+              "SepaOut",
+              "EthereumGas",
+              "SolanaTransactionFee",
+              "RailFee",
+              "AchIn",
+              "AchOut",
+              "WireIn",
+              "WireOut",
+              "SwiftIn",
+              "SwiftOut",
+              "FpsIn",
+              "FpsOut",
+              "ChapsIn",
+              "ChapsOut"
+            ],
+            "type": "string"
+          }
+        },
+        "required": ["type", "amount", "currency", "settlement"],
+        "type": "object"
+      },
+      "PublicOffRampVirtualAccountTransaction": {
+        "properties": {
+          "createdAt": {
+            "pattern": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d.\\d+Z?",
+            "type": "string"
+          },
+          "destination": {
+            "$ref": "#/components/schemas/PublicBankDepositInformation"
+          },
+          "destinationAmount": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "destinationCurrency": {
+            "$ref": "#/components/schemas/PublicFiatCurrency"
+          },
+          "feeBreakdown": {
+            "$ref": "#/components/schemas/PublicOffRampTransactionFeeBreakdown"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "source": {
+            "$ref": "#/components/schemas/PublicVirtualAccountCryptoWallet"
+          },
+          "sourceAmount": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "sourceCurrency": {
+            "$ref": "#/components/schemas/PublicCryptoCurrency"
+          },
+          "status": {
+            "enum": ["Pending", "Completed", "Failed"],
+            "type": "string"
+          }
+        },
+        "required": [
+          "sourceCurrency",
+          "destinationCurrency",
+          "source",
+          "destination",
+          "feeBreakdown",
+          "id",
+          "status",
+          "sourceAmount",
+          "destinationAmount",
+          "createdAt"
+        ],
+        "type": "object"
+      },
+      "PublicOnRampFeeWithSettlement": {
+        "properties": {
+          "amount": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/PublicFiatCurrency",
+            "minLength": 1,
+            "type": "string"
+          },
+          "settlement": {
+            "enum": ["deductedImmediately", "settledLater"],
+            "type": "string"
+          }
+        },
+        "required": ["settlement", "amount", "currency"],
+        "type": "object"
+      },
+      "PublicOnRampTransactionFeeBreakdown": {
+        "properties": {
+          "deductedFee": {
+            "$ref": "#/components/schemas/PublicFiatAmount"
+          },
+          "networkFees": {
+            "items": {
+              "$ref": "#/components/schemas/PublicOnRampTransactionNetworkFee"
+            },
+            "type": "array"
+          },
+          "partnerFees": {
+            "items": {
+              "$ref": "#/components/schemas/PublicOnRampFeeWithSettlement"
+            },
+            "type": "array"
+          }
+        },
+        "required": ["networkFees", "partnerFees"],
+        "type": "object"
+      },
+      "PublicOnRampTransactionNetworkFee": {
+        "properties": {
+          "amount": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/PublicFiatCurrency",
+            "minLength": 1,
+            "type": "string"
+          },
+          "settlement": {
+            "enum": ["deductedImmediately", "settledLater"],
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "SepaIn",
+              "SepaOut",
+              "EthereumGas",
+              "SolanaTransactionFee",
+              "RailFee",
+              "AchIn",
+              "AchOut",
+              "WireIn",
+              "WireOut",
+              "SwiftIn",
+              "SwiftOut",
+              "FpsIn",
+              "FpsOut",
+              "ChapsIn",
+              "ChapsOut"
+            ],
+            "type": "string"
+          }
+        },
+        "required": ["type", "amount", "currency", "settlement"],
+        "type": "object"
+      },
+      "PublicOnRampVirtualAccountTransaction": {
+        "properties": {
+          "createdAt": {
+            "pattern": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d.\\d+Z?",
+            "type": "string"
+          },
+          "destination": {
+            "$ref": "#/components/schemas/PublicVirtualAccountCryptoWallet"
+          },
+          "destinationAmount": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "destinationCurrency": {
+            "$ref": "#/components/schemas/PublicCryptoCurrency"
+          },
+          "feeBreakdown": {
+            "$ref": "#/components/schemas/PublicOnRampTransactionFeeBreakdown"
+          },
+          "id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "payoutCryptoTransaction": {
+            "$ref": "#/components/schemas/PublicPayoutCryptoTransaction"
+          },
+          "source": {
+            "$ref": "#/components/schemas/PublicBankDepositInformation"
+          },
+          "sourceAmount": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "sourceCurrency": {
+            "$ref": "#/components/schemas/PublicFiatCurrency"
+          },
+          "status": {
+            "enum": ["Pending", "Completed", "Failed"],
+            "type": "string"
+          }
+        },
+        "required": [
+          "sourceCurrency",
+          "destinationCurrency",
+          "source",
+          "destination",
+          "feeBreakdown",
+          "id",
+          "status",
+          "sourceAmount",
+          "destinationAmount",
+          "createdAt"
+        ],
+        "type": "object"
+      },
+      "PublicPayoutCryptoTransaction": {
+        "properties": {
+          "transactionHash": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          }
+        },
+        "required": ["transactionHash"],
+        "type": "object"
+      },
+      "PublicVirtualAccountCryptoWallet": {
+        "properties": {
+          "network": {
+            "$ref": "#/components/schemas/PublicVirtualAccountWalletNetwork"
+          },
+          "wallet": {
+            "$ref": "#/components/schemas/PublicVirtualAccountCryptoWalletDetails"
+          }
+        },
+        "required": ["wallet"],
+        "type": "object"
+      },
+      "PublicVirtualAccountCryptoWalletDetails": {
+        "properties": {
+          "walletAddress": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "walletAddressTag": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          }
+        },
+        "required": ["walletAddress"],
+        "type": "object"
+      },
+      "PublicVirtualAccountWalletNetwork": {
+        "properties": {
+          "code": {
+            "enum": [
+              "akash",
+              "algorand",
+              "aptos",
+              "arbitrum",
+              "avalanche_c_chain",
+              "base",
+              "berachain",
+              "binance",
+              "binance_smart_chain",
+              "bitcoin",
+              "bitcoin_cash",
+              "bitcoin_testnet",
+              "bnb_chain",
+              "cardano",
+              "celo",
+              "celestia",
+              "core",
+              "cosmos",
+              "chiliz",
+              "cronos",
+              "dash",
+              "deversifi",
+              "digibyte",
+              "dogecoin",
+              "dydx",
+              "elrond",
+              "eosio",
+              "ethereum",
+              "ethereum_classic",
+              "fantom",
+              "filecoin",
+              "flow",
+              "flow_evm",
+              "gala",
+              "goerli",
+              "hedera",
+              "hive",
+              "icp",
+              "immutable",
+              "injective",
+              "iota",
+              "kava",
+              "klaytn",
+              "kovan",
+              "lbry",
+              "linea",
+              "lisk",
+              "litecoin",
+              "loopring",
+              "mantle",
+              "mina",
+              "mobilecoin",
+              "multiversx",
+              "mumbai",
+              "nano",
+              "near",
+              "nem",
+              "neo",
+              "nimiq",
+              "noble",
+              "oasis",
+              "okc",
+              "ontology",
+              "optimism",
+              "osmosis",
+              "palm",
+              "polkadot",
+              "polygon",
+              "qtum",
+              "ravencoin",
+              "rinkeby",
+              "ripple",
+              "ronin",
+              "sei",
+              "sepolia",
+              "simple_ledger_protocol",
+              "solana",
+              "sonic",
+              "sorare",
+              "starknet",
+              "stacks",
+              "stellar",
+              "sui",
+              "rune",
+              "terra",
+              "tezos",
+              "theta",
+              "tomochain",
+              "ton",
+              "tron",
+              "unichain",
+              "vechain",
+              "venom",
+              "waves",
+              "wax",
+              "worldchain",
+              "xrpl",
+              "zcash",
+              "zilliqa",
+              "zksync"
+            ],
+            "type": "string"
+          },
+          "icon": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          }
+        },
+        "required": [],
+        "type": "object"
+      },
+      "SellTransactionResponseV3": {
+        "properties": {
+          "accountId": {
+            "type": "string"
+          },
+          "bankAccountId": {
+            "type": "string"
+          },
+          "baseCurrency": {
+            "$ref": "#/components/schemas/V3CurrencyResponse"
+          },
+          "baseCurrencyAmount": {
+            "type": "number"
+          },
+          "baseCurrencyId": {
+            "type": "string"
+          },
+          "blockedById": {
+            "type": "string"
+          },
+          "cancelledById": {
+            "type": "string"
+          },
+          "cardId": {
+            "type": "string"
+          },
+          "confirmations": {
+            "type": "integer"
+          },
+          "country": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "createdById": {
+            "type": "string"
+          },
+          "customerId": {
+            "type": "string"
+          },
+          "depositHash": {
+            "type": "string"
+          },
+          "depositMatchedManuallyById": {
+            "type": "string"
+          },
+          "eurRate": {
+            "type": "number"
+          },
+          "externalCustomerId": {
+            "type": "string"
+          },
+          "externalTransactionId": {
+            "type": "string"
+          },
+          "extraFeeAmount": {
+            "type": "number"
+          },
+          "failureReason": {
+            "enum": [
+              "Bank transfer timeout",
+              "Bank payout bounced back",
+              "Bank payout failed",
+              "Bank payout initialization failed",
+              "Card payout failed",
+              "Blocked customer",
+              "Freeze transaction",
+              "Cancelled",
+              "Cancelled and refunded",
+              "Cancelled by customer",
+              "Card code verification timeout",
+              "Card not supported",
+              "Daily purchase limit exceeded",
+              "Transaction declined",
+              "Deposit timeout",
+              "Deposit failed",
+              "Failed testnet withdrawal",
+              "Forced",
+              "Rejection is final for user identity check",
+              "Identity check timeout",
+              "Internal error",
+              "Instant ACH failure",
+              "Open banking timeout",
+              "Revolut authorization timeout",
+              "Revolut payment cancelled",
+              "Revolut payment failed",
+              "Revolut payment declined",
+              "Other",
+              "Payment authentication declined",
+              "Payment authentication error",
+              "Payment authorization declined",
+              "Payment authorization error",
+              "Payment returned",
+              "Payout authorization failed",
+              "Payout failed",
+              "Refund",
+              "Deposit out of bounds (amount too low to refund)",
+              "Refund deposit out of bounds",
+              "Requote timeout",
+              "3D Secure timeout",
+              "Ticket payment timeout",
+              "Ticket payment failure",
+              "Verification timeout",
+              "Nft transaction error",
+              "Failed to sweep deposit wallet",
+              "Payment initialization failed",
+              "Balance ledger top up failed",
+              "Balance ledger withdraw failed",
+              "Transaction terminated",
+              "Exchange order failed",
+              "Travel rule failure",
+              "Invalid quote",
+              "OnHold",
+              "Delegate hash not found",
+              "Bad wallet address",
+              "Failed to get quote from DeFi provider",
+              "Interac payment request error",
+              "Interac risk management rejection",
+              "Interac fraud detection",
+              "Interac personal information mismatch",
+              "Interac transaction timeout",
+              "Interac duplicate reference number",
+              "Interac amount mismatch",
+              "Interac unsupported language",
+              "Interac non-auto deposit bank failure"
+            ],
+            "type": "string"
+          },
+          "feeAmount": {
+            "type": "number"
+          },
+          "flow": {
+            "enum": ["floating", "principal", "balance_ledger_withdraw"],
+            "type": "string"
+          },
+          "gbpRate": {
+            "type": "number"
+          },
+          "id": {
+            "type": "string"
+          },
+          "integratedSellDepositInfo": {
+            "$ref": "#/components/schemas/IntegratedSellDepositInfoResponse"
+          },
+          "payoutMethod": {
+            "enum": [
+              "ach_bank_transfer",
+              "credit_debit_card",
+              "gbp_bank_transfer",
+              "gbp_open_banking_payment",
+              "low_cost_ach",
+              "mobile_wallet",
+              "apple_pay",
+              "google_pay",
+              "sepa_bank_transfer",
+              "sepa_open_banking_payment",
+              "pix_instant_payment",
+              "paypal",
+              "venmo",
+              "revolut_pay",
+              "fiat_balance",
+              "moonpay_balance",
+              "yellow_card_bank_transfer",
+              "interac",
+              "mooncard"
+            ],
+            "type": "string"
+          },
+          "quoteCurrency": {
+            "$ref": "#/components/schemas/FiatCurrencyResponse"
+          },
+          "quoteCurrencyAmount": {
+            "type": "number"
+          },
+          "quoteCurrencyId": {
+            "type": "string"
+          },
+          "quoteExpiredEmailSentAt": {
+            "type": "string"
+          },
+          "quoteExpiresAt": {
+            "type": "string"
+          },
+          "refundApprovalStatus": {
+            "enum": ["approved", "pending", "blocked"],
+            "type": "string"
+          },
+          "refundHash": {
+            "type": "string"
+          },
+          "refundWalletAddress": {
+            "type": "string"
+          },
+          "refundWalletAddressRequestedAt": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "completed",
+              "failed",
+              "pending",
+              "waitingForDeposit",
+              "frozen"
+            ],
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "usdRate": {
+            "type": "number"
+          },
+          "widgetRedirectUrl": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "baseCurrencyAmount",
+          "feeAmount",
+          "extraFeeAmount",
+          "quoteCurrencyAmount",
+          "status",
+          "accountId",
+          "customerId",
+          "quoteCurrencyId",
+          "baseCurrencyId",
+          "eurRate",
+          "usdRate",
+          "gbpRate",
+          "bankAccountId",
+          "refundWalletAddress",
+          "depositHash",
+          "payoutMethod",
+          "baseCurrency",
+          "quoteCurrency"
+        ],
+        "type": "object"
+      },
+      "UpdateDomainsResponse": {
+        "properties": {
+          "success": {
+            "description": "Indicates if the operation was successful",
+            "example": true,
+            "not": {
+              "type": "null"
+            },
+            "type": "boolean"
+          }
+        },
+        "required": ["success"],
+        "type": "object"
+      },
+      "UpdateOnRampVirtualAccountBody": {
+        "properties": {
+          "destination": {
+            "$ref": "#/components/schemas/VirtualAccountCryptoWalletBody"
+          },
+          "destinationCurrencyCode": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string"
+          }
+        },
+        "required": [],
+        "type": "object"
+      },
+      "UpdateWhitelistedDomainsInput": {
+        "properties": {
+          "domains": {
+            "$ref": "#/components/schemas/Array",
+            "description": "The domain list to whitelist. Has to be an array of valid URLs.",
+            "example": [
+              "https://example.com",
+              "chrome-extension://extension-id"
+            ],
+            "items": {},
+            "minItems": 1,
+            "not": {
+              "type": "null"
+            },
+            "type": "array"
+          }
+        },
+        "required": ["domains"],
+        "type": "object"
+      },
+      "V3CurrencyResponse": {
+        "properties": {
+          "addressRegex": {
+            "type": "string"
+          },
+          "addressTagRegex": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "decimals": {
+            "type": "number"
+          },
+          "icon": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "isBaseAsset": {
+            "type": "boolean"
+          },
+          "isSellSupported": {
+            "type": "boolean"
+          },
+          "isStableCoin": {
+            "type": "boolean"
+          },
+          "isSupportedInUS": {
+            "type": "boolean"
+          },
+          "isSuspended": {
+            "type": "boolean"
+          },
+          "isSwapBaseSupported": {
+            "type": "boolean"
+          },
+          "isSwapQuoteSupported": {
+            "type": "boolean"
+          },
+          "isUtxoCompatible": {
+            "type": "boolean"
+          },
+          "maxAmount": {
+            "type": "number"
+          },
+          "maxBuyAmount": {
+            "type": "number"
+          },
+          "maxSellAmount": {
+            "type": "number"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/CryptoCurrencyMetadata"
+          },
+          "minAmount": {
+            "type": "number"
+          },
+          "minBuyAmount": {
+            "type": "number"
+          },
+          "minSellAmount": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "notAllowedCountries": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "notAllowedUSStates": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "precision": {
+            "type": "number"
+          },
+          "supportsAddressTag": {
+            "type": "boolean"
+          },
+          "supportsLiveMode": {
+            "type": "boolean"
+          },
+          "supportsTestMode": {
+            "type": "boolean"
+          },
+          "testnetAddressRegex": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "type",
+          "name",
+          "code",
+          "precision",
+          "icon",
+          "isSellSupported",
+          "isUtxoCompatible"
+        ],
+        "type": "object"
+      },
+      "VirtualAccountCryptoWalletBody": {
+        "properties": {
+          "networkCode": {
+            "enum": [
+              "akash",
+              "algorand",
+              "aptos",
+              "arbitrum",
+              "avalanche_c_chain",
+              "base",
+              "berachain",
+              "binance",
+              "binance_smart_chain",
+              "bitcoin",
+              "bitcoin_cash",
+              "bitcoin_testnet",
+              "bnb_chain",
+              "cardano",
+              "celo",
+              "celestia",
+              "core",
+              "cosmos",
+              "chiliz",
+              "cronos",
+              "dash",
+              "deversifi",
+              "digibyte",
+              "dogecoin",
+              "dydx",
+              "elrond",
+              "eosio",
+              "ethereum",
+              "ethereum_classic",
+              "fantom",
+              "filecoin",
+              "flow",
+              "flow_evm",
+              "gala",
+              "goerli",
+              "hedera",
+              "hive",
+              "icp",
+              "immutable",
+              "injective",
+              "iota",
+              "kava",
+              "klaytn",
+              "kovan",
+              "lbry",
+              "linea",
+              "lisk",
+              "litecoin",
+              "loopring",
+              "mantle",
+              "mina",
+              "mobilecoin",
+              "multiversx",
+              "mumbai",
+              "nano",
+              "near",
+              "nem",
+              "neo",
+              "nimiq",
+              "noble",
+              "oasis",
+              "okc",
+              "ontology",
+              "optimism",
+              "osmosis",
+              "palm",
+              "polkadot",
+              "polygon",
+              "qtum",
+              "ravencoin",
+              "rinkeby",
+              "ripple",
+              "ronin",
+              "sei",
+              "sepolia",
+              "simple_ledger_protocol",
+              "solana",
+              "sonic",
+              "sorare",
+              "starknet",
+              "stacks",
+              "stellar",
+              "sui",
+              "rune",
+              "terra",
+              "tezos",
+              "theta",
+              "tomochain",
+              "ton",
+              "tron",
+              "unichain",
+              "vechain",
+              "venom",
+              "waves",
+              "wax",
+              "worldchain",
+              "xrpl",
+              "zcash",
+              "zilliqa",
+              "zksync"
+            ],
+            "type": "string"
+          },
+          "walletAddress": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string"
+          }
+        },
+        "required": ["walletAddress", "networkCode"],
+        "type": "object"
+      },
+      "VirtualAccountResponse": {
+        "properties": {
+          "createdAt": {
+            "pattern": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d.\\d+Z?",
+            "type": "string"
+          },
+          "customerId": {
+            "type": "string"
+          },
+          "destination": {
+            "type": "object"
+          },
+          "destinationCurrency": {
+            "type": "object"
+          },
+          "destinations": {
+            "items": {},
+            "type": "array"
+          },
+          "externalCustomerId": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "organizationId": {
+            "type": "string"
+          },
+          "source": {},
+          "sourceCurrency": {
+            "type": "object"
+          },
+          "sources": {
+            "items": {},
+            "type": "array"
+          },
+          "updatedAt": {
+            "pattern": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d.\\d+Z?",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "destination",
+          "sourceCurrency",
+          "destinationCurrency",
+          "customerId",
+          "organizationId",
+          "createdAt",
+          "updatedAt"
+        ],
+        "type": "object"
       }
     },
     "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
+      "apiKey": {
+        "in": "header",
+        "name": "Authorization",
+        "type": "apiKey"
       }
     }
   }

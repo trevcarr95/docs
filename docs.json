@@ -48,12 +48,62 @@
             "pages": ["api-reference/introduction"]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Server to Server API",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              {
+                "group": "Buy Transactions",
+                "pages": [
+                  "api-reference/endpoints/server-to-server-api/buy-transactions/get"
+                ]
+              },
+              {
+                "group": "Customers",
+                "pages": [
+                  "api-reference/endpoints/server-to-server-api/customers/get-by-id",
+                  "api-reference/endpoints/server-to-server-api/customers/get-by-external-id"
+                ]
+              },
+              {
+                "group": "Sell Transactions",
+                "pages": [
+                  "api-reference/endpoints/server-to-server-api/sell-transactions/get",
+                  "api-reference/endpoints/server-to-server-api/sell-transactions/delete-by-id",
+                  "api-reference/endpoints/server-to-server-api/sell-transactions/delete-by-external-id"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Partner API",
+            "pages": [
+              {
+                "group": "Partner Account",
+                "pages": [
+                  "api-reference/endpoints/partner-api/partner-account/get",
+                  "api-reference/endpoints/partner-api/partner-account/create"
+                ]
+              },
+              {
+                "group": "KYB",
+                "pages": [
+                  "api-reference/endpoints/partner-api/kyb/get-countries",
+                  "api-reference/endpoints/partner-api/kyb/get-industries"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Virtual Accounts",
+            "pages": [
+              {
+                "group": "Virtual Account",
+                "pages": [
+                  "api-reference/endpoints/virtual-accounts/virtual-account/get",
+                  "api-reference/endpoints/virtual-accounts/virtual-account/get-off-ramp-transactions",
+                  "api-reference/endpoints/virtual-accounts/virtual-account/update",
+                  "api-reference/endpoints/virtual-accounts/virtual-account/get-on-ramp-transactions"
+                ]
+              }
             ]
           }
         ]
