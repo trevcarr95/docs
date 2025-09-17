@@ -1,0 +1,55 @@
+---
+title: "Overview"
+description: "Our simple URL based Integration"
+---
+
+[Suggest Edits](/edit/off-ramp-how-to-integrate-using-simple-url)
+
+You can use the below pre-written code to quickly get started on adding a '**Sell Crypto**' button that opens the MoonPay widget in a new browser tab.
+
+**Sandbox**: [https://sell-sandbox.moonpay.com/?apiKey=pk_test_123](https://sell-sandbox.moonpay.com/?apiKey=pk_test_123)
+
+**Production**: [https://sell.moonpay.com/?apiKey=pk_live_INSERT_API_KEY](https://sell.moonpay.com/?apiKey=pk_live_INSERT_API_KEY)
+
+<CodeGroup>
+  ```html On-ramp.html
+  <!--Opens the MoonPay widget in a new browser tab-->
+  <body>
+      <div class="container">
+          <button onclick="window.open('https://sell-sandbox.moonpay.com/?apiKey=pk_test_123', '_blank')">Sell with MoonPay</button>
+      </div>
+  </body>
+  ```
+
+```css On-ramp.css
+.container {
+  background-color: #392a54;
+  padding: 20px;
+  text-align: center;
+}
+
+button {
+  background-color: #7d00fe;
+  border: none;
+  color: white;
+  padding: 15px 50px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  background-image: url("https://images.crunchbase.com/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/jglje7ar0xc6j5lvai6t");
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: contain;
+}
+```
+
+</CodeGroup>
+
+### Here's an example. Give it a try!
+
+Off-Ramp with MoonPay
+
+---
+
+- [Table of Contents](#)
+- - [Here's an example. Give it a try!](#heres-an-example-give-it-a-try)

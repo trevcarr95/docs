@@ -1,0 +1,40 @@
+---
+title: "Request signing"
+description: "✍️ Protecting your sensitive data"
+---
+
+### Checking a Webhook Signature
+
+MoonPay signs the webhook events and requests we send to your endpoints. We do so by including a signature in each event’s `Moonpay-Signature-V2` header. This allows you to validate that the events and requests were sent by MoonPay, not by a third party.
+
+Before you can verify `Moonpay-Signature-V2` signatures for webhook events, you need to retrieve your webhook API key from the [Developers page](https://dashboard.moonpay.com/developers/) on the MoonPay dashboard.
+
+The `Moonpay-Signature-V2` header contains a timestamp and one signature. The timestamp is prefixed by t=, and the signature is prefixed by s=.
+
+<CodeGroup>
+  ```shell Header Moonpay-Signature-V2:
+  t=1492774577,s=5257a869e7ecebeda32affa62cdca3fa51cad7e77a0e56ff536d0ce8e108d8bd
+  ```
+</CodeGroup>
+
+MoonPay generates signatures using a hash-based message authentication code ([HMAC](https://en.wikipedia.org/wiki/HMAC)) with [SHA-256](https://en.wikipedia.org/wiki/SHA-2).
+
+#### Step 1
+
+Split the header, using the , character as the separator, to get a list of elements. Then split each element, using the = character as the separator, to get a prefix and value pair.
+
+The value for the prefix `t` corresponds to the timestamp, and `s` corresponds to the signature.
+
+#### Step 2
+
+You achieve this by concatenating:
+
+- The timestamp (as a string)
+- The character . and
+- For a `POST` request, the actual JSON payload (i.e., the request's body). For a `GET` request, the search string (e.g., ?externalCustomerId=adbb317d-cde9-4ebb-93a3-1b271812de06).
+
+#### Step 3
+
+Compute a HMAC with the SHA-256 hash function. Use your account's webhook API key as the key, and use the `signed_payload` string as the message in both cases.
+
+Compare the signature in the header to the expected signature.

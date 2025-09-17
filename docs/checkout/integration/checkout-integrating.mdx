@@ -1,0 +1,62 @@
+---
+title: "Integration"
+description: "Suggest Edits"
+---
+
+# Introduction
+
+This guide will help you get started with MoonPay NFT Widget. With just a few lines of code, you can allow your users to purchase NFTs.
+
+## Step 1: Initialize the widget
+
+Try out the widget in test mode using the following URL: [https://buy-sandbox.moonpay.com/nft?apiKey=pk_test_KJUrRjPuvAkVBasIgyMH9Yfe2FfVWw\&contractAddress=0xMoonPayShowcase\&tokenId=1](https://buy-sandbox.moonpay.com/nft?apiKey=pk_test_KJUrRjPuvAkVBasIgyMH9Yfe2FfVWw&contractAddress=0xMoonPayShowcase&tokenId=1)
+
+### Choose your method of integration
+
+- **Recommended.** Use our web SDK to customize and display the widget. This provides an enhanced customer experience that can be closely integrated with your website for a seamless user journey. [Learn more about our SDK.](/docs/ramps-sdk-install)
+
+You can show the widget in several ways:
+
+- **On desktop:** Using a modal, iframe, new window, or new tab.
+- **On mobile:** Using [SFSafariViewController](https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller) on iOS and [Chrome Custom Tabs](https://developer.chrome.com/docs/android/custom-tabs/integration-guide/) on Android.
+
+If you're embedding the widget in an iframe, you must provide a comma-separated list of domains containing the widget. You can add this list on the [Settings page](https://dashboard.moonpay.com/settings) of your MoonPay dashboard under Domain(s) of your app or website. The widget will not work on any other domain.
+
+The URL for the widget must be [signed](/docs/ramps-sdk-install-web#signing) for the widget to work.
+
+## Step 2: Customize the widget
+
+You are required to pass several arguments as `params` argument to our SDK to initialize the widget. You may pass several parameters to customize the widget further:
+
+| Parameter             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| apiKey                | Your publishable API key. This is used to assign customers and transactions to your MoonPay account.                                                                                                                                                                                                                                                                                                                                                                                       |
+| contractAddress       | NFT contract address for the NFT the customer wants to buy.                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| tokenId               | The token ID of the NFT the customer wants to buy.                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| signature             | The signature of the widget URL. [Learn more about signing URLS](/docs/ramps-sdk-url-signing).                                                                                                                                                                                                                                                                                                                                                                                             |
+| listingId             | The listing ID of the NFT the customer wants to buy.                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| externalTransactionId | An identifier associated with the transaction that is provided by you.                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| baseCurrencyCode      | The fiat currency used by the customer for purchasing the NFT.                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| redirectURL           | An optional URL. You can pass a URL in this parameter and the MoonPay widget will link to it on the transaction tracker page.                                                                                                                                                                                                                                                                                                                                                              |
+| walletAddress         | Your customer's NFT wallet address to which the NFT will be delivered. Passing this parameter will pre-fill the wallet address in the form, streamlining your customer's journey.                                                                                                                                                                                                                                                                                                          |
+| quantity              | The quantity of NFTs the customer wants to buy. This parameter refers to multiples of the same NFT. If you pass quantity, you must also return the correct available quantity in your /asset_info response.                                                                                                                                                                                                                                                                                |
+| dynamicAssetInfo      | If you pass dynamicAssetInfo=true and walletAddress, the wallet address will be included in the request MoonPay makes to your /asset_info endpoint. This will also be used in gas price estimation step. So if your smart contract has an allowlist of any kind please be sure to use this query param. If you pass dynamicAssetInfo=true but no walletAddress, the widget will prompt the user to enter a wallet address at the beginning of the widget journey. Values are: true, false. |
+| metadata              | The 'metadata' query parameter is a JSON-encoded object that can hold any type of data. Although MoonPay does not directly utilize this data, it forwards it to the `/asset_info` endpoint in the query string. This allows for flexible data transmission without any specific usage constraints within the MoonPay system.                                                                                                                                                               |
+
+## Step 3: Sign the URL server-side
+
+The use of the signature parameter is mandatory in production. Please note that all query parameter values need to be URL-encoded to generate a valid signature.
+
+You can generate a signature of the URL server-side and append it to the URL. If the signature is provided (you might wish not to include it in the sandbox), we'll check the validity of the query string to make sure it has not been altered. You can use our [NFT tools](https://dashboard.moonpay.com/developers/#nft_tools) to check what signature we expect.
+
+Learn more about signing URLs when using our [Web SDK](/docs/ramps-sdk-install-web#signing) and [browser integration.](/docs/ramps-sdk-install)
+
+---
+
+- [Table of Contents](#)
+
+- - [Introduction](#introduction)
+
+    - [Step 1: Initialize the widget](#step-1-initialize-the-widget)
+    - [Step 2: Customize the widget](#step-2-customize-the-widget)
+    - [Step 3: Sign the URL server-side](#step-3-sign-the-url-server-side)

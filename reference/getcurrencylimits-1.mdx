@@ -1,0 +1,8 @@
+---
+title: "Get Crypto Currency limits"
+description: "get https://api.moonpay.com/v3/currencies/{currencyCode}/limits"
+---
+
+Returns an object containing minimum and maximum buy amounts including or excluding fees for base and quote currencies.
+
+It takes into account the payment method if it's provided, **otherwise it defaults to the payment method with the lowest fees.**

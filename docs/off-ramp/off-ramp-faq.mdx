@@ -1,0 +1,194 @@
+---
+title: "FAQ"
+description: "Suggest Edits"
+---
+
+# Off-Ramp integration
+
+## How do I change my API Keys?
+
+Go to the [Developers > API Keys](https://dashboard.moonpay.com/developers/) page of your MoonPay dashboard and hit the roll button next to the API key you wish to replace. You will be given the option to immediately delete the old key or a 12hour rollover before the old API keys expire.
+
+## Iframe shows an error instead of the widget
+
+If you see a CSP error that says `sell.moonpay.com refused to connect`, you’ll need to allowlist your production domain(s). We require this when you embed the MoonPay widget in an iframe or use the overlay, drawer, or embedded options to prevent unauthorized third-parties from embedding the MoonPay widget.
+
+To resolve the issue, add your production domain(s) to the [Settings page](https://dashboard.moonpaycloud.com/settings/) of your MoonPay dashboard.
+
+![](/images/docs/1100fc5-2b2ebcb-image.png)
+
+## Region-based widget error
+
+If you see a widget error that geo-blocks certain users, confirm that these users are in a region supported by MoonPay. [Non-supported countries for off-ramp](https://support.moonpay.com/hc/en-gb/articles/360013742837-Which-cryptocurrencies-can-I-sell-)
+
+## Sandbox supported currencies
+
+Our sandbox environment supports a limited selection of testnet currencies; we recommend testing primarily with Ethereum on Sepolia or the Bitcoin testnet.
+
+## Multiple accounts in production
+
+In our production environment, we only allow one account per user. Creating multiple accounts in production may cause your account to be flagged or blocked.
+
+## Test credit cards and KYC info in production
+
+Only genuine card and KYC information may be used in our production environment. Do **not** use test credit card or test KYC information in production, as this will result in your account being blocked.
+
+## How many block confirmations does MoonPay require before processing/confirming receipt of my crypto? (Off-Ramp)
+
+| code          | confirmationsRequired |
+| ------------- | --------------------- |
+| avax_cchain   | 2                     |
+| axs           | 12                    |
+| bch           | 1                     |
+| bnb_bsc       | 14                    |
+| btc           | 1                     |
+| busd_bsc      | 15                    |
+| eth           | 12                    |
+| eth_arbitrum  | 5                     |
+| eth_immutable | 1                     |
+| eth_polygon   | 12                    |
+| ltc           | 6                     |
+| sol           | 1                     |
+| trx           | 12                    |
+| usdc          | 11                    |
+| usdc_polygon  | 12                    |
+| usdt          | 12                    |
+| usdt_trx      | 12                    |
+| xlm           | 1                     |
+
+# Using platforms like Flutter
+
+MoonPay does not offer an SDK for Flutter. You'll have to manually embed our widget in a WebView. Consider the following tips:
+
+- You can create your own HTML that uses our [Web SDK](/docs/on-ramp-web-sdk) to embed our Widget. This will allow you to receive our Widget's events, if you wish. You'll then need to send them out to your Flutter app layer.
+- If you're experiencing camera issues in Flutter's WebView, consider using the Flutter plugin compatible with our Web SDK, available at [https://pub.dev/packages/flutter_inappwebview](https://pub.dev/packages/flutter_inappwebview).
+- You can find further guidance on configuring Flutter camera permissions and other related documentation at [https://inappwebview.dev/docs/5.x.x/web-rtc/](https://inappwebview.dev/docs/5.x.x/web-rtc/).
+- Custom Origin via `baseUrl` Property: For specific requirements, you can set a custom origin using the `baseUrl` property. This serves as the base URL for any relative paths in the HTML and sets the document’s origin. Example:
+  <CodeGroup>
+    ```dart dart InAppWebView( initialData: InAppWebViewInitialData( data:
+    htmlContent, baseUrl: Uri.parse("https://your.custom.origin") ), // ...
+    other configurations ... ) ```
+  </CodeGroup>
+  This custom origin approach can be advantageous for scenarios involving scripts
+  that validate the document’s origin or for CORS policies. We recommend using `https://app_name`,
+  `capacitor://` or equivalent as your custom origin for the `baseUrl` property.
+  From here, add the domain to your allowlist in the settings page of your [MoonPay
+  dashboard](https://dashboard.moonpay.com/settings/).
+
+---
+
+# App requirements for KYC
+
+<Warning />
+
+These requirements make sure that customers can complete each KYC step, including uploading documents and doing a selfie check. Failing to follow these steps will cause new customers to drop off, as they won't be able to finish KYC or make a purchase.
+
+## General app requirements for all implementations
+
+All partner apps should ensure the following:
+
+- [ ] `Feature-Policy` header for your webpage / frame or any other container has no restrictions for initializing camera like value `camera 'none'`.
+- [ ] `Permissions-Policy` header doesn't restrict access to a camera and microphone (for some cases) and if allow is set check for `"camera; microphone"` values.
+- [ ] When using [iOS WKWebview](https://developer.apple.com/documentation/webkit/wkwebviewconfiguration/1614793-allowsinlinemediaplayback) you may need to set `allowsInlineMediaPlayback` to `true` in the `WKWebViewConfiguration` used in your app. This adjustment ensures that media content, like a camera feed, can be displayed properly within the web view, rather than forcing full-screen playback.
+- [ ] Your website is being run on a secure `https` connection.
+
+## WebView requirements
+
+Partner apps that use `WebView` should ensure the following:
+
+- [ ] The web view is able to access device local storage and initialize camera (for older iOS versions, the camera can be accessed only from Safari browser or WebView with `SFSafariViewController`)
+- [ ] HTML5 video playback is allowed (`<video>` tags are being used to send instructions): if video-instructions are not played, try using `WebChromeClient` to enable video playback
+- [ ] Autoplay in fullscreen mode is disabled and `allowsInlineMediaPlayback` is set as `true` for WebView
+- [ ] The selector file is implemented on your side (required for KYC document uploads)
+
+## Iframe requirements
+
+Partner apps that use `iframe` should ensure the following:
+
+- [ ] Parent page header has no restrictions for initializing the camera, e.g. `camera=()`
+
+  - [ ] Parent page can alternatively include `camera=*` in the Permissions-Policy header
+
+- [ ] The iframe allow property has `allow="accelerometer; autoplay; camera; encrypted-media; gyroscope; payment"`
+
+---
+
+# Payments
+
+## Supported Off-Ramp cryptocurrencies by region
+
+List of all MoonPay supported assets for [SELL/Off-Ramp](https://support.moonpay.com/customers/docs/moonpays-supported-currencies#selling-crypto).
+
+## Which fiat currencies can users off-ramp with?
+
+We enable payouts in the following fiat currencies:
+
+- USD (United States Dollar)
+- GBP (British Pound Sterling)
+- EUR (Euro)
+
+## How do you handle chargebacks?
+
+At MoonPay, we treat chargebacks seriously and have processes in place to prevent and handle chargebacks. For more information reach out to your MoonPay account representative.
+
+## When are funds refunded to the refund wallet address vs. being returned to the sender’s address?
+
+If MoonPay receives the user’s cryptocurrency and the deposit is valid (correct amount, token, and network), but the sell transaction later fails due to an on MoonPay's side, the funds will be returned to the `refundWalletAddress` passed in the widget, as long as it’s safe to do so.
+
+However, if the deposit is invalid due to user error such as wrong token, network, or amount, or if the user cancels the transaction before the deposit is confirmed, the funds will automatically be returned to the sender’s address.
+
+## How do I get paid?
+
+Details can be found on our MoonPay documentation [here](https://support.moonpay.com/hc/en-gb/articles/4406209996049-How-do-affiliate-payouts-work-).
+
+## What are my sell limits?
+
+Sell limits will vary by region, currency and level of Know Your Customer KYC documents provided. Additional details can be found on our customer support page [here](https://support.moonpay.com/hc/en-gb/sections/360002592157-Verifications-Limits-).
+
+## What cryptocurrencies does MoonPay support?
+
+There are more limitations for US users than non-US users. A complete list can be found [here](https://support.moonpay.com/hc/en-gb/articles/360009280177-Which-cryptocurrencies-do-you-support-).
+
+## I'm having trouble adding my credit/debit card to my account?
+
+Double check you are not in our sandbox environment. Genuine cards should never be added to sandbox accounts. You can find test cards [here](/docs/credit-cards-testing).
+
+Has your card already been added to another account? There is a limit of one card per account. Either use the other account or try using another card.
+
+## Any recommended best practices for the Off-Ramp integration?
+
+Yes, you can find our recommended best practices documented [here](/docs/widget-integration).
+
+---
+
+- [Table of Contents](#)
+
+- - [Off-Ramp integration](#off-ramp-integration)
+
+    - [How do I change my API Keys?](#how-do-i-change-my-api-keys)
+    - [Iframe shows an error instead of the widget](#iframe-shows-an-error-instead-of-the-widget)
+    - [Region-based widget error](#region-based-widget-error)
+    - [Sandbox supported currencies](#sandbox-supported-currencies)
+    - [Multiple accounts in production](#multiple-accounts-in-production)
+    - [Test credit cards and KYC info in production](#test-credit-cards-and-kyc-info-in-production)
+    - [How many block confirmations does MoonPay require before processing/confirming receipt of my crypto? (Off-Ramp)](#how-many-block-confirmations-does-moonpay-require-before-processingconfirming-receipt-of-my-crypto-off-ramp)
+
+  - [Using platforms like Flutter](#using-platforms-like-flutter)
+
+  - [App requirements for KYC](#app-requirements-for-kyc)
+
+    - [General app requirements for all implementations](#general-app-requirements-for-all-implementations)
+    - [WebView requirements](#webview-requirements)
+    - [Iframe requirements](#iframe-requirements)
+
+  - [Payments](#payments)
+
+    - [Supported Off-Ramp cryptocurrencies by region](#supported-off-ramp-cryptocurrencies-by-region)
+    - [Which fiat currencies can users off-ramp with?](#which-fiat-currencies-can-users-off-ramp-with)
+    - [How do you handle chargebacks?](#how-do-you-handle-chargebacks)
+    - [When are funds refunded to the refund wallet address vs. being returned to the sender’s address?](#when-are-funds-refunded-to-the-refund-wallet-address-vs-being-returned-to-the-senders-address)
+    - [How do I get paid?](#how-do-i-get-paid)
+    - [What are my sell limits?](#what-are-my-sell-limits)
+    - [What cryptocurrencies does MoonPay support?](#what-cryptocurrencies-does-moonpay-support)
+    - [I'm having trouble adding my credit/debit card to my account?](#im-having-trouble-adding-my-creditdebit-card-to-my-account)
+    - [Any recommended best practices for the Off-Ramp integration?](#any-recommended-best-practices-for-the-off-ramp-integration)

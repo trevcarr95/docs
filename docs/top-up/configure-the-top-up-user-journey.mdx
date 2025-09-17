@@ -1,0 +1,69 @@
+---
+title: "Configure the Top-up user journey"
+description: "Query parameters used to customize the user journey"
+---
+
+[Suggest Edits](/edit/configure-the-top-up-user-journey)
+
+### TopUp Query Parameters
+
+> **Note:** The parameters below represent the primary TopUp-specific properties. This is not the complete list of available properties. Additional parameters are available through the OnRamp widget and can be found in the [MoonPay SDK Buy Parameters documentation](/docs/ramps-sdk-buy-params).
+
+| Parameter                 | Description                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apiKey` required         | Your publishable API key. This is used to assign customers and transactions to your MoonPay account.                                                                                                                                                                                                                                                                                                                                                  |
+| `enabledMethods`          | Array of top-up methods you want to enable. By default, we'll expose all of the supported methods. Available methods: - `dex` - wallet-to-wallet transfer - `coinbase` - direct crypto transfer from Coinbase - `moonpay-balance` - transfer to your wallet from MoonPay Balance - `fiat` - fiat-to-crypto transfer using our MoonPay on-ramp experience - `onramper` - Onramper fiat-to-crypto experience supporting additional fiat payment methods |
+| `cryptoAmount`            | The amount of the cryptocurrency to transfer. This sets the default amount shown in the widget UI when it loads.                                                                                                                                                                                                                                                                                                                                      |
+| `fromDefaultCurrencyCode` | The default currency code to use for the topup. This specifies the cryptocurrency the user will be sending from. Should match a valid currency code from your supported currencies.                                                                                                                                                                                                                                                                   |
+| `fromChainName`           | The chain name of the token the customer is sending. Specifies the blockchain network for the source token (e.g., `ethereum`, `polygon`).                                                                                                                                                                                                                                                                                                             |
+| `toChainName`             | The chain name of the token the customer is receiving. Specifies the blockchain network for the destination token (e.g., `ethereum`, `arbitrum`).                                                                                                                                                                                                                                                                                                     |
+
+### Common OnRamp Query Parameters
+
+The TopUp widget supports all the common parameters from the standard OnRamp widget. For a full list of these parameters, please refer to the [MoonPay SDK Buy Parameters](/docs/ramps-sdk-buy-params).
+
+For appearance customization options, see [Customize the widget's appearance](/docs/on-ramp-personalize-appearance).
+
+For security best practices, including URL signing, see [Enhance security using signed URLs](/docs/on-ramp-enhance-security-using-signed-urls).
+
+### Example Configuration
+
+<CodeGroup>
+  ```typescript typescript
+  // TopUp widget configuration
+  const topUpConfig = {
+    // Required parameters
+    apiKey: 'pk_test_123',
+
+    // TopUp-specific parameters
+    enabledMethods: ['dex', 'coinbase', 'moonpay-balance', 'fiat', 'onramper'],
+    cryptoAmount: 0.05,
+    fromDefaultCurrencyCode: 'eth',
+    fromChainName: 'ethereum',
+    toChainName: 'solana',
+
+    // Common OnRamp parameters (from Buy Parameters)
+    walletAddress: '0x1234567890123456789012345678901234567890',
+    defaultCurrencyCode: 'sol',
+    baseCurrencyAmount: '100',
+    baseCurrencyCode: 'usd',
+    theme: 'light', // or 'dark'
+    // ... other props in https://dev.moonpay.com/docs/ramps-sdk-buy-params
+
+};
+
+```
+</CodeGroup>
+
+***
+
+What’s Next
+
+* [Advantages of our products](/docs/advantages-of-our-products)
+
+* [Table of Contents](#)
+
+* * [TopUp Query Parameters](#topup-query-parameters)
+* [Common OnRamp Query Parameters](#common-onramp-query-parameters)
+* [Example Configuration](#example-configuration)
+```

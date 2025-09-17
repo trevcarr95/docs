@@ -1,0 +1,161 @@
+---
+title: "SDK Event Properties"
+description: "Properties for widget SDK events"
+---
+
+[Suggest Edits](/edit/on-ramp-sdk-events-properties)
+
+# Ramps events documentation
+
+## Interfaces
+
+- [RampsChildToParentInterface](/docs/on-ramp-sdk-events-details#interface-rampschildtoparentinterface)
+
+## Type Aliases
+
+### CryptoCurrency
+
+Ƭ **CryptoCurrency**: `Object`
+
+Represents a Crypto currency such as ETH
+
+#### Type declaration
+
+| Name              | Type               | Description                                                  |
+| ----------------- | ------------------ | ------------------------------------------------------------ |
+| `chainId`         | `string` \| `null` | The chain's Chain ID                                         |
+| `code`            | `string`           | The code of the currency such as "eth"                       |
+| `coinType`        | `string` \| `null` | The coin type as defined in SLIP-0044                        |
+| `contractAddress` | `string` \| `null` | The address location of the token contract on the blockchain |
+| `id`              | `string`           | The identifier of the crypto currency                        |
+| `name`            | `string`           | The human readable name of the currency such as "Ethereum"   |
+| `networkCode`     | `string` \| `null` | The currency's network such as "bitcoin" or "ethereum"       |
+
+---
+
+### FiatCurrency
+
+Ƭ **FiatCurrency**: `Object`
+
+Represents a Fiat currency such as USD
+
+#### Type declaration
+
+| Name   | Type     | Description                                                 |
+| ------ | -------- | ----------------------------------------------------------- |
+| `code` | `string` | The code of the currency such as "usd"                      |
+| `id`   | `string` | The identifier of the fiat currency                         |
+| `name` | `string` | The human readable name of the currency such as "US Dollar" |
+
+---
+
+### OnAuthTokenProps
+
+Ƭ **OnAuthTokenProps**: `Object` This event is only fired for those integrating with our Swaps (SDK+API) product.
+
+#### Type declaration
+
+| Name        | Type     | Description                                                                    |
+| ----------- | -------- | ------------------------------------------------------------------------------ |
+| `csrfToken` | `string` | The customer's CSRF token. Only provided to authorized integrations.           |
+| `token`     | `string` | The customer's authentication token. Only provided to authorized integrations. |
+
+---
+
+### OnInitiateDepositProps
+
+Ƭ **OnInitiateDepositProps**: `Object`
+
+#### Type declaration
+
+| Name                                       | Type                                                                   | Description                                                                 |
+| ------------------------------------------ | ---------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `cryptoCurrency`                           | [`CryptoCurrency`](/docs/on-ramp-sdk-events-properties#cryptocurrency) | The crypto currency that is being off-ramped                                |
+| `cryptoCurrencyAmount`                     | `string`                                                               | Crypto amount in its base unit (0.123 ETH === "0.123")                      |
+| `cryptoCurrencyAmountSmallestDenomination` | `string`                                                               | Crypto amount in its smallest unit (1 ETH === 1x10^18)                      |
+| `depositWalletAddress`                     | `string`                                                               | The wallet address where the crypto amount needs to be deposited            |
+| `fiatCurrency`                             | [`FiatCurrency`](/docs/on-ramp-sdk-events-properties#fiatcurrency)     | The fiat currency that the customer will receive                            |
+| `fiatCurrencyAmount`                       | `string` \| `null`                                                     | Fiat amount in its base unit ($1.23 === "1.23"). Only set for fixed quotes. |
+| `transactionId`                            | `string`                                                               | The identifier of the transaction                                           |
+
+---
+
+### OnInitiateDepositReplyProps
+
+Ƭ **OnInitiateDepositReplyProps**: `Object`
+
+#### Type declaration
+
+| Name        | Type     | Description                                                                                    |
+| ----------- | -------- | ---------------------------------------------------------------------------------------------- |
+| `depositId` | `string` | The partner's identifier for a successful deposit. Can be any string, eg the transaction hash. |
+
+---
+
+### OnLoginProps
+
+Ƭ **OnLoginProps**: `Object`
+
+#### Type declaration
+
+| Name        | Type      | Description                                                                                 |
+| ----------- | --------- | ------------------------------------------------------------------------------------------- |
+| `isRefresh` | `boolean` | If true, the customer didn't actually log in but rather their authentication was refreshed. |
+
+---
+
+### OnTransactionCreatedProps
+
+Ƭ **OnTransactionCompletedProps**: `Object`
+
+#### Type declaration
+
+| Name                 | Type                                                                                                                                                                 | Description                           |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `baseCurrency`       | [`FiatCurrency`](/docs/on-ramp-sdk-events-properties#fiatcurrency)                                                                                                   | The base (fiat) currency              |
+| `baseCurrencyAmount` | `number`                                                                                                                                                             | The spent fiat amount                 |
+| `id`                 | `string`                                                                                                                                                             | The identifier of the transaction     |
+| `status`             | [`TransactionStatus`](/docs/on-ramp-sdk-events-properties#transactionstatus) \| [`SellTransactionStatus`](/docs/on-ramp-sdk-events-properties#selltransactionstatus) | The current status of the transaction |
+
+### OnTransactionCompletedProps
+
+Ƭ **OnTransactionCompletedProps**: `Object`
+
+#### Type declaration
+
+| Name                  | Type                                                                         | Description                                                         |
+| --------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| `areFeesIncluded`     | `boolean`                                                                    | Whether the base currency amount includes fees                      |
+| `baseCurrency`        | [`FiatCurrency`](/docs/on-ramp-sdk-events-properties#fiatcurrency)           | The base (fiat) currency                                            |
+| `baseCurrencyAmount`  | `number`                                                                     | The spent fiat amount                                               |
+| `createdAt`           | `string`                                                                     | When the transaction was created                                    |
+| `extraFeeAmount`      | `number`                                                                     | The partner's fee amount, in the fiat currency                      |
+| `feeAmount`           | `number`                                                                     | The MoonPay fee amount, in the fiat currency                        |
+| `id`                  | `string`                                                                     | The identifier of the transaction                                   |
+| `networkFeeAmount`    | `number`                                                                     | The network fees incurred in this transaction, in the fiat currency |
+| `quoteCurrency`       | [`CryptoCurrency`](/docs/on-ramp-sdk-events-properties#cryptocurrency)       | The quote (crypto) currency                                         |
+| `quoteCurrencyAmount` | `number`                                                                     | The expected or received quote amount                               |
+| `status`              | [`TransactionStatus`](/docs/on-ramp-sdk-events-properties#transactionstatus) | The current status of the transaction                               |
+| `walletAddress`       | `string`                                                                     | The customer's destination wallet address                           |
+| `walletAddressTag`    | `string` \| `null`                                                           | The customer's destination wallet address tag                       |
+
+---
+
+### TransactionStatus
+
+Ƭ **TransactionStatus**: `"completed"` | `"failed"` | `"pending"` | `"waitingAuthorization"` | `"waitingPayment"`
+
+---
+
+### SellTransactionStatus
+
+Ƭ **SellTransactionStatus**: `"completed"` | `"failed"` | `"pending"` | `"waitingForDeposit"`
+
+---
+
+- [Table of Contents](#)
+
+- - [Ramps events documentation](#ramps-events-documentation)
+
+    - [Interfaces](#interfaces)
+    - [Type Aliases](#type-aliases)

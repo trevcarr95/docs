@@ -1,0 +1,133 @@
+---
+title: "Overview"
+description: "Suggest Edits"
+---
+
+## Does NFT Checkout enable the purchase of multiple NFTs within a single transaction?
+
+We support multi-quantity out the box today by passing us the quantity parameter in the widget.
+
+We do not currently support multiple NFTs (i.e. multiple different 721s).
+
+## If trying to mint three tiers of ERC721s, each with distinct pricing, is there a method to prevent NFT Lite from returning unified prices in response calls, especially in relation to the three different pricing tiers?
+
+Multiple methods are available to achieve this. One can adjust the data passed to the widget URL based on the contract address or token ID. If those options aren't sufficient, a metadata object (a JSON-encoded object) can be passed in the URL parameters. Additionally, if differentiation based on the buyer's wallet address is desired, the dynamicAssetInfo=true parameter can be passed, allowing us to send the wallet address with each request.
+
+## Is it possible to mint multiple ERC721 tokens of the same tier and price simultaneously, like minting three $300 NFTs from tier 2?
+
+Yes, it's possible. Within the widget, it will appear as NFT xyz x \[number of times]. Each NFT's price remains consistent. When minting multiple tokens, the token ID provided to the widget should begin with an underscore, like `_0`. When MoonPay requests the transaction status, we expect to receive an array of 'real' token IDs, as detailed in the tokenId response parameter [here](/reference/get_transaction-status).
+
+## Does the Commerce Flow support Dynamic Pricing?
+
+Not yet, but we are working on this.
+
+## Is NFT Checkout available in New York?
+
+Not all versions of our Product can be enabled for New York users, please speak to your account manager for more details on this. By default P2P and NFT Commerce flows DO support New York and Lite does not.
+
+## If a transactions fails, does the end-user still pay?
+
+They do not. MoonPay only charges end-users when the NFT is in the wallet! If transactions fail on chain, MoonPay will also pay the gas on behalf of the end-user.
+
+## Does the end-user pay for gas fees?
+
+Yes, MoonPay passes gas fees for transactions on Ethereum onto the end-user. These are transparently communicated to the end-user. For other chains, MoonPay pays the gas on behalf of the end-user.
+
+## Did you protect me from Chargebacks?
+
+Yes! You'll never receive a question, bill or email about chargebacks, we'll handle all of this.
+
+## Are there any transaction limits on NFT Checkout?
+
+Yes. NFT Checkout only supports transaction sizes of between $3 and $15,000. If your NFTs are priced above or below these limits, we'll show users an error message in our iFrame.
+
+## I don't have a smart contract, how do I create one?
+
+You're not the first person to ask this question! In fact, we were getting asked this so frequently we decided to build Hypermint, the worlds leading smart contract creation infrastructure you can find out [more here](https://hypermint.com/) or you can fill out [this form here](https://www.moonpay.com/contact-sales).
+
+## How much does enabling NFT Checkout cost me?
+
+Nothing! Our business model is to charge the end-users (i.e. the buyers) a simple and transparent transactional fee.
+
+## Where can I test the product?
+
+Good question! You can test the product [yourself here](https://buy-sandbox.moonpay.com/nft?apiKey=pk_test_Rwsy21JU9hZ7TlsskOhFujrPLGnjPBr&contr%5B%E2%80%A6%5DA%2251c03f21-b0a5-4e4b-835c-a48a4a5d89b4%22%7D&quantity=2) and get test card details [here](https://docs.moonpay.com/moonpay/implementation-guide/on-ramp/sandbox-testing/test-credit-cards).
+
+## I'm an agency, can I enable NFT Checkout on behalf of my clients?
+
+Yes! Depending on the use case you should be able to do this! However please [reach out to us here](https://www.moonpay.com/contact-sales) so we can discuss your use case in more detail. Please note, NFT Checkout cannot currently be embedded into our payment products (i.e. a B2B2B2C use case).
+
+## Does NFT Checkout Supports Primary Sales & Drops?
+
+Yes. Please review our [Commerce Flow here](/docs/commerce-flow) and our [Lite Flow here](/docs/nft-lite) to better understand which product meets your use case.
+
+## Does NFT Checkout Support NFT Launchpads?
+
+Yes. Please fill out [this form here](https://www.moonpay.com/contact-sales) so that our team can understand your requirements.
+
+## Does NFT Checkout Support NFT Marketplaces?
+
+Yes. Please fill out [this form here](https://www.moonpay.com/contact-sales) so that our team can understand your requirements.
+
+## What other information do you require users provide within NFT Checkout?
+
+MoonPay takes a risk based approach to customers and transactions, meaning we'll require more information in some instances than others.
+
+For example, depending on geography, transaction size and a number of other factors we may ask for SSN, Phone Number or utilise anti-fraud measures such as micro-auth.
+
+## Does MoonPay KYC users?
+
+Yes, MoonPay is required to KYC users in order to offer its services internationally. We do however take a risk based approach, requesting less information for less risky transactions and more information for higher risk transactions.
+
+All users are required to submit first name, surname and date of birth and some may be asked for a Selfie and to upload ID documentation.
+
+## What payment methods does NFT Checkout Support?
+
+We currently support Debit Card, Credit Card, American Express and UK Open Banking.
+
+## How do I get paid?
+
+If you're utilising our [Commerce Flow (here)](/docs/commerce-flow) we'll settle with you instantly in cryptocurrency via your smart contract.
+
+If you're utilising our [Lite Flow (here)](/docs/nft-lite) we'll settle with you on T+4 in USDC. Please speak to your account manager about setting up these payments!
+
+## What is the key difference between the Commerce and Lite Flows?
+
+In our Lite flow, you're responsible for delivering the NFT and then informing MoonPay so we can charge the card.
+
+In our Commerce Flow, we're responsible for calling the smart contract and delivering the NFT. Please note, there are some prerequisites to using Commerce which can be found [here](https://docs.moonpay.com/moonpay/implementation-guide/nft-checkout/primary-sales/commerce-flow).
+
+## When submitting the USDC currency code as `priceCurrencyCode` to the `asset_info` endpoint, does it matter which network is selected when submitting that information?
+
+As long as the network your contract is deployed on is EVM-compliant, then no, it does not matter.
+
+If the network is **not** EVM, then you will have to insert the corresponding `priceCurrencyCode`.
+
+For example, if the NFT is priced in USDC (Solana) it can only be delivered on Solana (or other SVM) chain.
+
+---
+
+- [Table of Contents](#)
+
+- - [Does NFT Checkout enable the purchase of multiple NFTs within a single transaction?](#does-nft-checkout-enable-the-purchase-of-multiple-nfts-within-a-single-transaction)
+  - [If trying to mint three tiers of ERC721s, each with distinct pricing, is there a method to prevent NFT Lite from returning unified prices in response calls, especially in relation to the three different pricing tiers?](#if-trying-to-mint-three-tiers-of-erc721s-each-with-distinct-pricing-is-there-a-method-to-prevent-nft-lite-from-returning-unified-prices-in-response-calls-especially-in-relation-to-the-three-different-pricing-tiers)
+  - [Is it possible to mint multiple ERC721 tokens of the same tier and price simultaneously, like minting three $300 NFTs from tier 2?](#is-it-possible-to-mint-multiple-erc721-tokens-of-the-same-tier-and-price-simultaneously-like-minting-three-300-nfts-from-tier-2)
+  - [Does the Commerce Flow support Dynamic Pricing?](#does-the-commerce-flow-support-dynamic-pricing)
+  - [Is NFT Checkout available in New York?](#is-nft-checkout-available-in-new-york)
+  - [If a transactions fails, does the end-user still pay?](#if-a-transactions-fails-does-the-end-user-still-pay)
+  - [Does the end-user pay for gas fees?](#does-the-end-user-pay-for-gas-fees)
+  - [Did you protect me from Chargebacks?](#did-you-protect-me-from-chargebacks)
+  - [Are there any transaction limits on NFT Checkout?](#are-there-any-transaction-limits-on-nft-checkout)
+  - [I don't have a smart contract, how do I create one?](#i-dont-have-a-smart-contract-how-do-i-create-one)
+  - [How much does enabling NFT Checkout cost me?](#how-much-does-enabling-nft-checkout-cost-me)
+  - [Where can I test the product?](#where-can-i-test-the-product)
+  - [I'm an agency, can I enable NFT Checkout on behalf of my clients?](#im-an-agency-can-i-enable-nft-checkout-on-behalf-of-my-clients)
+  - [Does NFT Checkout Supports Primary Sales & Drops?](#does-nft-checkout-supports-primary-sales--drops)
+  - [Does NFT Checkout Support NFT Launchpads?](#does-nft-checkout-support-nft-launchpads)
+  - [Does NFT Checkout Support NFT Marketplaces?](#does-nft-checkout-support-nft-marketplaces)
+  - [What other information do you require users provide within NFT Checkout?](#what-other-information-do-you-require-users-provide-within-nft-checkout)
+  - [Does MoonPay KYC users?](#does-moonpay-kyc-users)
+  - [What payment methods does NFT Checkout Support?](#what-payment-methods-does-nft-checkout-support)
+  - [How do I get paid?](#how-do-i-get-paid)
+  - [What is the key difference between the Commerce and Lite Flows?](#what-is-the-key-difference-between-the-commerce-and-lite-flows)
+  - [When submitting the USDC currency code as `priceCurrencyCode` to the `asset_info` endpoint, does it matter which network is selected when submitting that information?](#when-submitting-the-usdc-currency-code-as-pricecurrencycode-to-the-asset_info-endpoint-does-it-matter-which-network-is-selected-when-submitting-that-information)

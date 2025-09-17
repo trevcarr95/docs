@@ -1,0 +1,34 @@
+---
+title: "Architecture"
+description: "Suggest Edits"
+---
+
+The MoonPay On-Ramp is a standalone widget product with an optional API and webhooks for an enhanced user experience. We provide web and mobile SDKs to render the widget in your app and a backend Node SDK for performing server-side functions.
+
+# Components for on-ramp integrations
+
+| Component                                          | Features                                                                                                                                                                                                                    |
+| -------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [URL integration](/v1.0/docs/on-ramp-overview)     | An alternative to using our SDKs Generate MoonPay widget links to show the widget in an iframe or mobile webview                                                                                                            |
+| [Web SDKs](/docs/on-ramp-web-sdk)                  | [Parameters](/docs/on-ramp-configure-user-journey-params) to pre-fill cryptocurrency, amount, user email, etc. Includes [communication layer](/docs/on-ramp-sdk-events-details) between partner apps and the MoonPay widget |
+| [Mobile SDKs](/docs/on-ramp-react-native-sdk)      | React Native SDK                                                                                                                                                                                                            |
+| [Node SDK](/docs/on-ramp-node-sdk)                 | Perform server-side functions, like [URL signing](/docs/on-ramp-enhance-security-using-signed-urls)                                                                                                                         |
+| [MoonPay API](/reference)                          | Get minimum / maximum purchase amounts Get buy quote Show transaction history                                                                                                                                               |
+| [Webhooks](/reference/reference-webhooks-overview) | Get transaction updates                                                                                                                                                                                                     |
+
+# High-level diagram
+
+This diagram shows a basic crypto purchase flow and the components required for implementation. We recommend using our API and webhooks to provide helpful context in your app, including minimum / maximum purchase amounts, quotes, and transaction history.
+
+![](/images/docs/99ba4a8-On-ramp_architecture.png)
+
+---
+
+What’s Next
+
+- [Quickstart](/docs/on-ramp-quickstart)
+
+- [Table of Contents](#)
+
+- - [Components for on-ramp integrations](#components-for-on-ramp-integrations)
+  - [High-level diagram](#high-level-diagram)

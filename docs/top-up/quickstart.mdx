@@ -1,0 +1,275 @@
+---
+title: "Quickstart"
+description: "Suggest Edits"
+---
+
+## Overview
+
+In this Quickstart, you will embed our Top-up component to your website with your selected top-up methods.
+
+## What you will accomplish
+
+In this tutorial, you will:
+
+- Configure Top-up component in your local environment
+
+  - Create a new folder for code
+  - Initialize the component in a file using HTML and JavaScript
+  - Edit the required parameters
+  - Display the fully functional widget locally in your browser
+
+---
+
+## Prerequisites
+
+Before beginning, you will need:
+
+- **A MoonPay account**: If you do not have one, set one up on [this page](https://dashboard.moonpay.com/).
+- **An IDE (coding software):** Some popular ones are [Visual Studio Code](https://code.visualstudio.com/) and [IntelliJ WebStorm](https://www.jetbrains.com/webstorm/). We will be using Visual Studio Code in this tutorial.
+- **A web browser:** Any web browser will work. We will be using Google Chrome in this tutorial.
+
+---
+
+## Implementation
+
+### Step 1: Set up a file for your integration
+
+In your IDE, create a new file for you Top-up code. You can call it top-up.html.
+
+### Step 2: Retrieve API keys from the MoonPay Dashboard
+
+- Navigate to your [MoonPay Dashboard](https://dashboard.moonpay.com/) and log in.
+
+- Once logged in, navigate to the Developers tab on the sidebar → API Keys.
+
+  - Here, you will be able to copy your API keys. In this tutorial, we will be using the publishable test key.
+  - ![](/images/docs/779c4fd3dd9f92976648b8bddaef737ca5fb4787a1ba937da46eafe4b4f23957-image.png)
+
+### Step 3: Insert HTML and code into top-up.html
+
+- The code below will embed Top-up component directly as an iframe into your HTML by way of `<script>` tags.
+
+<CodeGroup>
+  ```html html
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>MoonPay Integration</title>
+
+      <!-- Adds the MoonPay SDK as a script to your HTML file -->
+      <script
+        defer
+        src="<https://static.moonpay.com/web-sdk/v1/moonpay-web-sdk.min.js>"
+      ></script>
+
+      <!-- Initialize the MoonPay SDK immediately upon page load -->
+      <script>
+        const config = {
+          apiKey: 'pk_test_123',
+          walletAddress: '0xee78Fa1df550A70B0BF3360FCE4c566f890c4DBD',
+          currencyCode: 'usdc_sol',
+          enabledMethods: [
+            'dex',
+            'coinbase',
+            'moonpay-balance',
+            'fiat',
+            'onramper',
+          ],
+          cryptoAmount: 1,
+          fromDefaultCurrencyCode: 'eth',
+          defaultCurrencyCode: 'sol',
+          fromChainName: 'ethereum',
+          toChainName: 'solana',
+          baseCurrencyAmount: '100',
+          baseCurrencyCode: 'usd',
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+          const moonpaySdk = window.MoonPayWebSdk.init({
+            flow: 'partnerTopup',
+            environment: 'sandbox',
+            variant: 'overlay',
+            params: config,
+          });
+
+          // Open widget
+          moonpaySdk.show();
+        });
+      </script>
+    </head>
+    <body>
+      <div class="container"></div>
+    </body>
+
+  </html>
+  ```
+</CodeGroup>
+
+- This script will detect when the HTML page loads and immediately run the JavaScript within the `<script>` tags when the load has finished. Remember to replace `pk_test_123` with your publishable API key from **Step 1**.
+- You can customize functionality (currencies, amounts, etc.) by adding and removing parameters in the JavaScript.
+  - For all available parameters, see the [TopUp parameters documentation](/docs/configure-the-top-up-user-journey) and [common Buy parameters](/docs/ramps-sdk-buy-params).
+
+### Step 4: Sign your URL
+
+MoonPay is highly committed to security. For this reason, whenever sensitive information such as emails or wallet addresses are transmitted to the widget, you are required to use the `signature` parameter, otherwise, the MoonPay widget **will not load**. This measure makes it more difficult for unauthorized third parties to misuse the the widget's pre-fill feature.
+
+A signed URL helps limit access from unauthorized third parties by providing limited permissions and time to make a request. Passing the `signature` parameter is mandatory if you're using the `walletAddress` or `walletAddresses` parameter and it must be appended at the end of the URL. If your widget URL contains sensitive information, we strongly recommend using the `signature` parameter.
+
+You can generate a `signature` of the URL server-side and append it to the end of the URL. If the `signature` is provided, we'll check the validity of the query string to make sure it has not been altered. If the signature is invalid for any reason the MoonPay widget will fail to load.
+
+# How to sign URLs
+
+Follow these steps for signing URLs:
+
+1. Send your widget URL to your backend server.
+2. Generate the signature using the secret key found in your [MoonPay dashboard](https://dashboard.moonpay.com/developers/).
+
+- Use your own code to generate signatures and sign URLs
+- Alternatively, use [our Node SDK](/docs/on-ramp-node-sdk) to generate signatures, sign URLs, and validate signatures.
+
+3. Return either the signature or entire signed URL.
+
+- **If using a SDK**, return the signature and use `updateSignature`. Do not encode the signature, as the SDK handles this.
+- **If using a URL-based integration**, return the entire signed URL. Ensure that the value of `signature` and other parameters are URL-encoded.
+
+4. Show the widget using the SDK or URL.
+
+<Info>
+  **Integrations using an SDK**: Return the signature by itself and use `updateSignature`
+
+**Integrations using URLs**: Return the entire signed URL
+
+</Info>
+
+# How to generate signatures
+
+1. Create an HMAC (Hash-Based Message Authentication Code) using the SHA-256 hash function.
+   1. Use your secret API key as the key and the original URL's query string as the message.
+2. For URL-based integrations, make sure all query parameter values are URL-encoded before creating the signature.
+
+<Info />
+
+# Code examples
+
+## Integrations using an SDK
+
+Integrations using a web or mobile SDK should calculate the signature, then return the signature by itself, not URL-encoded.
+
+More details about signing with each SDK:
+
+| Web SDKs                                                                                 | Mobile SDK                                                    |
+| ---------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| [Web SDK](/docs/on-ramp-web-sdk#signing)[React SDK](/docs/on-ramp-react-sdk#url-signing) | [React Native SDK](/docs/on-ramp-react-native-sdk#initialize) |
+
+<CodeGroup>
+  ```javascript Generate signature (SDK)
+  import crypto from 'crypto';
+
+const secretKey = 'sk_test_key'; // Use your secret key
+
+const generateSignature = (url) => {
+const signature = crypto
+.createHmac('sha256', secretKey)
+.update(new URL(url).search) // Use the query string part of the URL
+.digest('base64'); // Convert the result to a base64 string
+
+    console.log(signature) // Print the signature
+    return signature // Return the signature
+
+};
+
+````
+
+```php Generate signature with PHP (SDK)
+<?php
+$host = 'https://buy-sandbox.moonpay.com';  // Base URL
+$query = '?apiKey=pk_test_key&currencyCode=eth&walletAddress=0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae';  // Query parameters
+
+$secretKey = 'sk_test_key';  // Your secret key
+
+// Create the HMAC SHA-256 hash and encode it in base64
+$signature = base64_encode(hash_hmac('sha256', $query, $secretKey, true));
+
+echo $signature;  // Print the signature
+?>
+````
+
+</CodeGroup>
+
+## Integrations using URLs
+
+Integrations generating widget URLs should calculate the signature, URL-encode the signature, then return the whole signed URL.
+
+<CodeGroup>
+  ```javascript Generate signature (URL)
+  import crypto from 'crypto';
+
+const originalUrl = 'https://buy-sandbox.moonpay.com?apiKey=pk_test_key&currencyCode=eth&walletAddress=0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae';
+
+const signature = crypto
+.createHmac('sha256', 'sk_test_key') // Use your secret key
+.update(new URL(originalUrl).search) // Use the query string part of the URL
+.digest('base64'); // Convert the result to a base64 string
+
+const urlWithSignature = `${originalUrl}&signature=${encodeURIComponent(signature)}`; // Add the signature to the URL
+
+console.log(urlWithSignature); // Print the signed URL
+
+````
+
+```php Generate signature with PHP (URL)
+<?php
+$host = 'https://buy-sandbox.moonpay.com';  // Base URL
+$query = '?apiKey=pk_test_key&currencyCode=eth&walletAddress=0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae';  // Query parameters
+
+$secretKey = 'sk_test_key';  // Your secret key
+
+// Create the HMAC SHA-256 hash and encode it in base64
+$signature = base64_encode(hash_hmac('sha256', $query, $secretKey, true));
+
+// URL encode the signature
+$encodedSignature = urlencode($signature);
+
+// Combine the base URL, query parameters, and the signature
+$signedUrl = $host . $query . "&signature=" . $encodedSignature;
+
+echo $signedUrl;  // Print the signed URL
+?>
+````
+
+</CodeGroup>
+
+<Warning>
+  The API gateway of some cloud providers change your parameter's order,
+  resulting in a failed signature validation.
+</Warning>
+
+### Step 5: Do a test transaction
+
+- The first step of processing a test transaction using the MoonPay Top-up is to make sure that you are using sandbox API key. This will make sure you will be doing a test transaction.
+- Next, select your desired top-up method and follow the steps.
+- Next, go and grab the **Test Credit Card** from this page of our documentation.
+
+---
+
+What’s Next
+
+- [Configure the Top-up user journey](/docs/configure-the-top-up-user-journey)
+
+- [Table of Contents](#)
+
+- - - [Overview](#overview)
+    - [What you will accomplish](#what-you-will-accomplish)
+    - [Prerequisites](#prerequisites)
+    - [Implementation](#implementation)
+
+  - [How to sign URLs](#how-to-sign-urls)
+
+  - [How to generate signatures](#how-to-generate-signatures)
+
+  - [Code examples](#code-examples)
+
+    - [Integrations using an SDK](#integrations-using-an-sdk)
+    - [Integrations using URLs](#integrations-using-urls)

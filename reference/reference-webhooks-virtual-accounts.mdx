@@ -1,0 +1,61 @@
+---
+title: "Virtual Accounts"
+---
+
+## Events
+
+### 1. `virtual_account_status_updated`
+
+Triggered when the status of a virtual account changes.
+
+**Payload Example**
+
+<CodeGroup>
+  ```json json
+  {
+    "virtualAccountId": "9bc86a06-8300-41c8-8cef-d2eaa852164f",
+    "externalCustomerId": "external_customer_id_123",
+    "status": "completed",
+    "timestamp": 1678901234567
+  }
+  ```
+</CodeGroup>
+
+**Payload Schema**
+
+| Field                | Type    | Description                                                              |
+| -------------------- | ------- | ------------------------------------------------------------------------ |
+| `virtualAccountId`   | string  | Unique identifier (uuid) of the virtual account                          |
+| `externalCustomerId` | string  | External identifier of the customer                                      |
+| `status`             | string  | Current status of the virtual account (`pending`, `completed`, `failed`) |
+| `timestamp`          | integer | Unix timestamp (milliseconds) when the event was triggered               |
+
+---
+
+### 2. `virtual_account_transaction_status_updated`
+
+Triggered when the status of a transaction within a virtual account changes.
+
+**Payload Example**
+
+<CodeGroup>
+  ```json json
+  {
+    "virtualAccountId": "9bc86a06-8300-41c8-8cef-d2eaa852164f",
+    "externalCustomerId": "external_customer_id_123",
+    "transactionId": "7a2cbc6f-ddef-4071-9628-a6559cb4ad89",
+    "status": "Completed",
+    "timestamp": 1678901234567
+  }
+  ```
+</CodeGroup>
+
+**Payload Schema**
+
+| Field                | Type    | Description                                                          |
+| -------------------- | ------- | -------------------------------------------------------------------- |
+| `virtualAccountId`   | string  | Unique identifier (uuid) of the virtual account                      |
+| `externalCustomerId` | string  | External identifier provided for the customer                        |
+| `transactionId`      | string  | Unique identifier (uuid) of the transaction                          |
+| `status`             | string  | Current status of the transaction (`Pending`, `Completed`, `Failed`) |
+| `timestamp`          | integer | Unix timestamp (milliseconds) when the event was triggered           |

@@ -1,0 +1,46 @@
+---
+title: "Proxy smart contracts"
+description: "Suggest Edits"
+---
+
+MoonPay utilizes proxy smart contract to conduct some of the on-chain NFT transactions. Please refer to documentation for your integration type to understand if this will be used in your integration.
+
+# Our Proxy Smart contract deployments
+
+| Network                | Address                                      |
+| ---------------------- | -------------------------------------------- |
+| Ethereum               | `0xEF0B56692F78A44CF4034b07F80204757c31Bcc9` |
+| Polygon                | `0xEF0B56692F78A44CF4034b07F80204757c31Bcc9` |
+| BNB Chain              | `0xEF0B56692F78A44CF4034b07F80204757c31Bcc9` |
+| Arbitrum               | `0xEF0B56692F78A44CF4034b07F80204757c31Bcc9` |
+| Optimism               | `0xEF0B56692F78A44CF4034b07F80204757c31Bcc9` |
+| Avalanche C-Chain      | `0xEF0B56692F78A44CF4034b07F80204757c31Bcc9` |
+| Sepolia                | `0xEF0B56692F78A44CF4034b07F80204757c31Bcc9` |
+| Mumbai                 | `0xd58906a6552eb2770903012e5a3667eab86aff7`  |
+| BNB Chain Testnet      | `0x25a6763edBC43a1eB98607d4A412e5057ac70CF9` |
+| Arbitrum Sepolia       | `0x01F092Df7c271850BcBC2e03316DEe02d7a8dfb1` |
+| Optimism Goerli        | `0x3c489c13d3df437c96b9b05720508aabd966b0a`  |
+| Avalanche C-Chain Fuii | `0x25a6763edbc43aleb98607d4a412e5057ac70cf9` |
+| Base                   | `0xEF0B56692F78A44CF4034b07F80204757c31Bcc9` |
+| Base Sepolia           | `0xEF0B56692F78A44CF4034b07F80204757c31Bcc9` |
+
+<Info>
+  All smart contracts that we are using have been verified on Tenderly explorer
+  (eg. ethereum:
+  [https://dashboard.tenderly.co/contract/mainnet/0xef0b56692f78a44cf4034b07f80204757c31bcc9](https://dashboard.tenderly.co/contract/mainnet/0xef0b56692f78a44cf4034b07f80204757c31bcc9))
+</Info>
+
+## Your NFT Smart Contract requirements
+
+We require each NFT smart contract to follow those requirements in order to properly work with our proxy SC
+
+- Your smart contract has to follow either of the specifications:
+
+  - ERC-721/ERC-721a (or compatible) as described in [EIP-721](https://eips.ethereum.org/EIPS/eip-721), specifically it has to call onERC721Received on msg.sender.
+  - ERC-1155 (or compatible) as described in [EIP-1155](https://eips.ethereum.org/EIPS/eip-1155#erc-1155-token-receiver), specifically it has to call either onERC1155Received or onERC1155BatchReceived on msg.sender.
+
+---
+
+- [Table of Contents](#)
+- - [Our Proxy Smart contract deployments](#our-proxy-smart-contract-deployments)
+    - [Your NFT Smart Contract requirements](#your-nft-smart-contract-requirements)

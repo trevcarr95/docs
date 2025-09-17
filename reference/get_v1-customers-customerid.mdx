@@ -1,0 +1,37 @@
+---
+title: "Get Customer Limits"
+description: "get https://api.moonpay.com/v1/customers/{customerId}"
+---
+
+Returns basic limits information about a customer based on their MoonPay ID. For you to be able to retrieve a customer, they must have at least one session initiated with your `Api-Key`.
+
+<CodeGroup>
+  ```json Customer Limits Example - Completed
+  {
+      "id": "66eed1c8-e12e-4d77-85f6-008b7b3eeeab",
+      "createdAt": "2022-04-16T18:18:51.865Z",
+      "updatedAt": "2024-10-23T13:23:53.811Z",
+      "liveMode": true,
+      "defaultCurrencyId": "edd81f1f-f735-4692-b410-6def107f17d2",
+      "defaultCurrencyCode": "usd",
+      "externalCustomerId": null,
+      "identityCheckStatus": "completed",
+      "identityCheckLevel": 3
+  }
+  ```
+
+```json Customer Limites Example - Rejected
+{
+  "id": "aef66ar8-ca52-42ec-87eb-164aa5f47aa3",
+  "createdAt": "2023-04-08T07:24:04.309Z",
+  "updatedAt": "2024-10-15T21:22:27.219Z",
+  "liveMode": true,
+  "defaultCurrencyId": "edd81f1f-f735-4692-b410-6def107f17d2",
+  "defaultCurrencyCode": "usd",
+  "externalCustomerId": "1744a674-17f6-4090-95f4-e1c012d367p0",
+  "identityCheckStatus": "rejected",
+  "identityCheckLevel": 2
+}
+```
+
+</CodeGroup>

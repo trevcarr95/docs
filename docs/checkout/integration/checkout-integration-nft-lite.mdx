@@ -1,0 +1,103 @@
+---
+title: "NFT Lite"
+description: "Suggest Edits"
+---
+
+# In order to integrate the Lite Flow
+
+You must have the ability to deliver an NFT purchased by a customer on chain. _MoonPay's Lite Flow_ is an optional layer that sits on top of your architecture, enabling customers to pay with fiat payment methods, while having no impact on your existing crypto-native user base.
+
+The checkout experience is served through the MoonPay widget, which can be embedded in an iframe in your application. Delivery and data are handled by the partner endpoints, which are documented in this guide.
+
+## High-level flow
+
+In order to integrate the Lite Flow, you must have the ability to deliver an NFT purchased by a customer through MoonPay on chain. The Lite Flow integration operates in the following manner:
+
+- A customer buying an NFT completes the checkout process in MoonPay's widget.
+- MoonPay notifies you of payment completion by calling a standardized endpoint implemented by you.
+- You transfer the NFT to the designated wallet address supplied by MoonPay, which corresponds to the buyer's address.
+- MoonPay facilitates automated settlement.
+
+## Details about NFT Lite
+
+### Supported networks
+
+The Lite Flow supports wide variety of networks. This is because the NFT delivery is handled by you, on the instruction of MoonPay. The NFT you are delivering has to be priced in one of our supported crypto currencies ([full list here](https://support.moonpay.com/hc/en-gb/articles/360009280177-Which-cryptocurrencies-do-you-support-)).
+
+<Info>
+  The cryptocurrency the NFT is priced in must share the same wallet address standard as the network where the NFT will be delivered.
+
+e.g.
+
+- If the NFT is priced in USDC (Ethereum), the NFT can be delivered on any chain with EVM wallet address standard
+- If the NFT is priced in USDC (Solana) it can only be delivered on Solana (or other SVM) chain
+  </Info>
+
+### Supported settlement currencies
+
+MoonPay currently supports settlement in USDC (ERC-20). Settlement is only relevant for customers integrating the Lite Flow. This is settled with you on T+7 basis.
+
+### Fiat currencies
+
+MoonPay supports over 30 fiat currencies. We convert the NFT currency to the local currency of the customer if required during the purchase process.
+
+### Affiliate fees
+
+As standard, you can charge affiliate fees on all transactions which are shown as a separate line item for every purchase. These are settled monthly.
+
+### Payment Methods
+
+Out of the box, we support credit and debit cards.
+
+## How to integrate NFT Lite
+
+### Step 1: Check that your price currency is supported
+
+When you sell NFTs through MoonPay, you declare a price in a given cryptocurrency. All cryptocurrencies supported in the standard MoonPay Checkout are also supported in the Lite NFT Checkout.
+
+Price currencies are cryptocurrencies which are used to price the NFTs you would like to sell. If you sell or trade NFTs for a specific cryptocurrency, check that it is supported and enabled in your [Account Settings](https://dashboard.moonpay.com/settings). If you don't have a specific price currency and sell NFTs for a fiat currency such as USD, default to the USDC currency. The price currency is configured in the partner endpoints, explained in the next section of this guide.
+
+### Step 2: Set up 3 partner endpoints
+
+NFT Lite requires you to set up three standardized endpoints on your server which power the widget and the checkout process.
+
+1. Get NFT information. This allows MoonPay to fetch basic information from your server about the NFT a customer is going to buy.
+2. Send an NFT to the buyer. This allows MoonPay to instruct you to send an NFT purchased by a customer to their wallet. The transaction monitoring is handled by MoonPay using information provided by the transaction status endpoint. **Note:** The time to initiate NFT delivery after being requested on your deliver endpoint is 5 seconds. After this, the transaction will abort.
+3. Get the transaction status. This allows MoonPay to fetch the NFT delivery status from your server and is polled after MoonPay sends the delivery instruction. This enables MoonPay to show delivery updates in the widget, send notification emails to the customer and place the final charge on the customer's card upon delivery completion.
+
+These endpoints are documented in the [partner endpoints reference](/reference/get_asset-info-contractaddress-tokenid).
+
+<Info>
+  When making requests to your partner endpoints, MoonPay will send your query parameters in alphabetical order.
+
+Be aware that we occasionally add new query parameters to the requests we make to your endpoints, and that certain cloud providers and their API gateway may change the order of our parameters resulting in a failed signature validation. When implementing these endpoints you should account for these query parameters, as using a pre-defined set of query parameters may result in signature validation issues.
+
+</Info>
+
+<Info>
+  When sending the initial delivery instruction, MoonPay places a
+  pre-authorization on the customer's card guaranteeing payment. In the case
+  that the delivery of an NFT fails for any reason, MoonPay voids the initial
+  pre-authorization placed on the customer's card. This happens after a 10-hour
+  timeout period during which MoonPay will continue to attempt to resolve the
+  delivery status with your server. Once an NFT delivery is resolved as
+  successful, MoonPay places a final charge on the customer's card.
+</Info>
+
+### Step 3: Integrate the widget
+
+You're now ready for the final step of the integration: the widget. This piece enables buyers to place orders for an NFT. [Learn more about integrating the widget](/docs/integrating-the-widget).
+
+### Step 4: Switch to production mode
+
+Once your integration is complete, please contact your account manager to enable your production API keys. Learn more about enabling your production build using our [SDK](/docs/ramps-sdk-install) and [browser integration](https://moonpay.gitbook.io/moonpay/implementation-guide/nft-checkout/primary-sales/integrating-the-widget/browser-integration/ramps-sdk-install-web).
+
+---
+
+- [Table of Contents](#)
+
+- - [In order to integrate the Lite Flow](#in-order-to-integrate-the-lite-flow)
+
+    - [High-level flow](#high-level-flow)
+    - [Details about NFT Lite](#details-about-nft-lite)
+    - [How to integrate NFT Lite](#how-to-integrate-nft-lite)

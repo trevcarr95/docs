@@ -1,0 +1,281 @@
+---
+title: "React SDK"
+description: "🖥️ Installation guide for our Web SDK in React"
+---
+
+[Suggest Edits](/edit/off-ramp-react-sdk)
+
+<Info />
+
+### Install
+
+To integrate MoonPay in your React app, you can use MoonPay's `moonpay-react` package.
+
+<CodeGroup>```shell Install npm install @moonpay/moonpay-react ```</CodeGroup>
+
+Once you've installed this, you're ready to set up your project to integrate the MoonPay widget.
+
+### Add the provider
+
+The first thing to do is add the MoonPay provider to the root of your React application. This will provide context throughout your app to allow you to use the MoonPay widget components.
+
+<CodeGroup>
+  ```jsx Provider
+  import { MoonPayProvider } from '@moonpay/moonpay-react';
+  // ... other imports
+
+export default function App() {
+return (
+<MoonPayProvider 
+        apiKey="pk_test_123" 
+        debug
+      >
+<Home />
+</MoonPayProvider>
+)
+}
+
+````
+</CodeGroup>
+
+The provider abstracts the complexity of loading the SDK into your app.
+
+Now, use your desired component, passing variant and any parameters related to [Buy](/docs/ramps-sdk-buy-params), [Sell](/docs/ramps-sdk-sell-params), [NFT](/docs/integrating-the-widget), or [Swap](/docs/ramps-sdk-swap-params) as props.
+
+The environment is set based on which API key you use. Use the following keys:
+
+* Sandbox environment: `pk_test...`
+* Production environment: `pk_live...`
+
+<CodeGroup>
+```typescript Buy
+import { MoonPayBuyWidget } from '@moonpay/moonpay-react';
+
+export default function Home() {
+  return (
+    {/* ... other components */}
+    <MoonPayBuyWidget
+      variant="overlay"
+      baseCurrencyCode="usd"
+      baseCurrencyAmount="100"
+      defaultCurrencyCode="eth"
+      onLogin={async () => console.log("Customer logged in!")}
+      visible
+    />
+    {/* ... other components */}
+  )
+}
+````
+
+```typescript Sell
+import { MoonPaySellWidget } from '@moonpay/moonpay-react';
+
+export default function Home() {
+  return (
+    {/* ... other components */}
+    <MoonPaySellWidget
+      variant="overlay"
+      baseCurrencyCode="eth"
+      baseCurrencyAmount="0.045"
+      visible
+    />
+    {/* ... other components */}
+  )
+}
+```
+
+```typescript Swap
+import { MoonPaySwapWidget } from '@moonpay/moonpay-react';
+
+export default function Home() {
+  return (
+    {/* ... other components */}
+    <MoonPaySwapWidget variant="overlay" visible />
+    {/* ... other components */}
+  )
+}
+```
+
+```typescript Swaps Customer Setup
+import { MoonPaySwapsCustomerSetupWidget } from '@moonpay/moonpay-react';
+
+export default function Home() {
+  return (
+    {/* ... other components */}
+    <MoonPaySwapsCustomerSetupWidget
+      variant="overlay"
+      amount="300"
+      amountCurrencyCode="usd"
+      onAuthToken={async ({ token }) => {
+        // Once the customer has logged in in the widget, we share their
+        // swaps-scoped authentication token with your app so you can
+        // perform swaps requests on behalf of the customer.
+        // The token needs to be passed as an Authorization header in the format
+        // "Authorization: Bearer {token}".
+        console.log("onAuthToken received with token:", token);
+      }}
+      onSwapsCustomerSetupComplete={async () => {
+        // When this is received, you can close the widget and resume the
+        // the swap flow in your UI.
+        console.log("onSwapsCustomerSetupComplete received");
+      }}
+      visible
+    />
+    {/* ... other components */}
+  )
+}
+```
+
+```typescript NFT Checkout
+import { MoonPayNftCheckoutWidget } from '@moonpay/moonpay-react';
+
+export default function Home() {
+  return (
+    {/* ... other components */}
+    <MoonPayNftCheckoutWidget
+      variant="overlay"
+      contractAddress="0xMoonPayShowcase"
+      tokenId="1"
+      visible
+    />
+    {/* ... other components */}
+  )
+}
+```
+
+</CodeGroup>
+
+#### For Next.js
+
+For Next.js, it's recommended to dynamically import the MoonPay components as shown below. This ensures efficient loading of the components and prevents server-side rendering (SSR). Otherwise you will see an error message: `ReferenceError: window is not defined`
+
+<CodeGroup>
+  ```typescript typescript
+  // import { MoonPayBuyWidget } from '@moonpay/moonpay-react';
+
+import dynamic from 'next/dynamic';
+
+const MoonPayProvider = dynamic(
+() => import('@moonpay/moonpay-react').then((mod) => mod.MoonPayProvider),
+{ ssr: false },
+);
+
+const MoonPayBuyWidget = dynamic(
+() => import('@moonpay/moonpay-react').then((mod) => mod.MoonPayBuyWidget),
+{ ssr: false },
+);
+
+````
+</CodeGroup>
+
+### Variants
+
+**Embedded**: The `embedded` variant shows the MoonPay widget will show as part of your page, wherever you place the component. This option lets you fine-tune the placement of the widget and allows you to integrate it into a specific part of your layout. This can minimize context switching for the user.
+
+**Overlay**: The `overlay` variant shows the widget as an iframe on top of your website. This option directs the user's attention towards completing their purchase while keeping them on your website.
+
+**New tab**: The `newTab` variant opens the widget in a new browser tab. This option lets the user complete their purchase in a full-screen experience. When using this option, we recommend you tell the user they'll be taken to MoonPay in a new tab. This provides guidance to the user that this is intended and part of the purchase flow.
+
+**New window**: The `newWindow` variant opens the widget in a new browser window with a fixed size. This variant is ideal if you want to provide a more controlled experience for the user while they complete their purchase.
+
+### Display
+
+You might want to control whether the SDK is showing based on some application state. This is there the `visible` prop comes into play. Using the `visible` prop ensures that the widget is properly shown and cleaned up as necessary. As a light example, here is how one could add a button to toggle the SDK embedded variant.
+
+<CodeGroup>
+```typescript Buy
+import { MoonPayBuyWidget } from '@moonpay/moonpay-react';
+
+export default function Home() {
+  const [visible, setVisible] = useState(false);
+
+  return (
+    {/* ... other components */}
+    <MoonPayBuyWidget
+      variant="overlay"
+      baseCurrencyCode="usd"
+      baseCurrencyAmount="100"
+      defaultCurrencyCode="eth"
+      visible={visible}
+    />
+    <button onClick={() => setVisible(!visible)}>
+      Toggle widget
+    </button>
+    {/* ... other components */}
+  )
+}
+````
+
+```typescript Sell
+import { MoonPaySellWidget } from '@moonpay/moonpay-react';
+
+export default function Home() {
+  const [visible, setVisible] = useState(false);
+
+  return (
+    {/* ... other components */}
+    <MoonPaySellWidget
+      variant="overlay"
+      baseCurrencyCode="eth"
+      baseCurrencyAmount="0.045"
+      visible={visible}
+    />
+    <button onClick={() => setVisible(!visible)}>
+      Toggle widget
+    </button>
+    {/* ... other components */}
+  )
+}
+```
+
+</CodeGroup>
+
+### URL signing
+
+If you're using the `walletAddress` or `walletAddresses` query param, you need to sign your widget URL before you can display the widget. Learn more about [URL signing](/docs/on-ramp-enhance-security-using-signed-urls).
+
+Each of our React components provides an `onUrlSignatureRequested` prop that takes an asynchronous function which is called whenever the URL is updated. It takes an argument of the current URL and the return value should be your generated signature, acquired by some means from your backend by signing the given URL. The widget then takes this returned signature and updates its URL to include it.
+
+<CodeGroup>
+  ```jsx Sign the URL
+  import { MoonPayBuyWidget } from '@moonpay/moonpay-react';
+
+const handleGetSignature = async (url: string): Promise<string> => {
+const signature = await fetch(`https://YOUR_API_DOMAIN.com/sign-url?url=${url}`)
+return signature
+}
+
+export default function Home() {
+return (
+{/* ... other components */}
+<MoonPayBuyWidget
+        variant="overlay"
+        baseCurrencyCode="usd"
+        baseCurrencyAmount="100"
+        defaultCurrencyCode="eth"
+        onUrlSignatureRequested={handleGetSignature}
+        visible
+      />
+{/* ... other components */}
+)
+}
+
+```
+</CodeGroup>
+
+***
+
+What’s Next
+
+* [Ramps events](/docs/off-ramp-sdk-events-details)
+* [Event properties](/docs/off-ramp-sdk-events-properties)
+
+* [Table of Contents](#)
+
+* * [Install](#install)
+* [Add the provider](#add-the-provider)
+  * [For Next.js](#for-nextjs)
+* [Variants](#variants)
+* [Display](#display)
+* [URL signing](#url-signing)
+```

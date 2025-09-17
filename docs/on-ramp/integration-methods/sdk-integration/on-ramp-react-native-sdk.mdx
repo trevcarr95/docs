@@ -1,0 +1,216 @@
+---
+title: "React Native SDK (Mobile)"
+description: "📱 Installation guide for our React Native SDK"
+---
+
+[Suggest Edits](/edit/on-ramp-react-native-sdk)
+
+### Install
+
+Install the official MoonPay package.
+
+<CodeGroup>
+  ```javascript Install the official SDK npm install --save
+  @moonpay/react-native-moonpay-sdk ```
+</CodeGroup>
+
+### Install dependencies
+
+Assuming you already installed `react` and `react-native` you need to install and configure `react-native-webview`.
+
+<CodeGroup>
+  ```javascript Install the React Native webview npm install --save
+  react-native-webview ```
+</CodeGroup>
+
+We also highly recommend to install the following polyfill to prevent any issues with URL formatting
+
+<CodeGroup>
+  ```javascript Install the React Native in-app browser npm install --save
+  react-native-url-polyfill ```
+</CodeGroup>
+
+### In-App Browser Implementation
+
+You no longer need to install `expo-web-browser` or `react-native-inappbrowser-reborn` as optional dependencies. Instead, partners are now required to provide their own in-app browser implementation when using the MoonPay SDK. You can either use `expo-web-browser`, `react-native-inappbrowser-reborn`, or any standalone in-app browser of your choice. Alternatively, you can create a wrapper to manage the in-app browser you prefer to use.
+
+### Initialize
+
+Initialize the SDK in your application with the flow, environment and any parameters related to [Buy](/docs/ramps-sdk-buy-params), [Sell](/docs/ramps-sdk-sell-params) or [Swap](/docs/configure-swaps-user-journey). Additionally you can choose to render the widget either as an in-app browser or a webview. If you're using the `walletAddress` or `walletAddresses` query param, you need to sign your widget URL before you can display the widget. Learn more about [URL signing](/docs/on-ramp-enhance-security-using-signed-urls).
+
+<Info>
+  An `In-app browser` will allow you to use native features like Google Pay, social sign-in and popups.
+
+A `Webview` will allow you to use a communication layer between the widget and your app and therefore get your app to perform certain actions once some events occur in the widget. Additionally it will give you infinite choices on how it might look like. You can add it to a bottom sheet, drawer, or as full-screen. It's entirely up to you.
+
+</Info>
+
+See below In-App browser examples. For additional examples you can look on our [Github page here](https://www.npmjs.com/package/@moonpay/react-native-moonpay-sdk).
+
+<CodeGroup>
+  ```javascript Initialize the SDK with in-app browser
+  import { View, Button, Text, useEffect } from 'react-native';
+  import { useMoonPaySdk } from '@moonpay/react-native-moonpay-sdk';
+
+const YourComponent = () => {
+const { openWithInAppBrowser, generateUrlForSigning, updateSignature } = useMoonPaySdk({
+sdkConfig: {
+flow: 'buy',
+environment: 'sandbox',
+params: {
+apiKey: 'pk_test_key',
+},
+},
+browserOpener: {
+open: (url) => {
+// Use any in-app browser or standalone browser here
+// Example with custom browser implementation
+},
+},
+});
+
+    useEffect(() => {
+      // The URL for signature should be sent to your backend, which should then
+      // sign it with your API secret and return the signature.
+      // Once you have the signature, you can update the SDK with it and show the widget.
+      fetch('/sign-url', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer <token>',
+        },
+        method: 'POST',
+        body: JSON.stringify({
+          url: generateUrlForSigning(),
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          const signature = data.signature;
+          updateSignature(signature);
+        });
+    }, []);
+
+    return (
+      <View>
+        <Button onPress={() => openWithInAppBrowser()}>
+          <Text>Open in InApp browser</Text>
+        </Button>
+      </View>
+    );
+
+};
+
+````
+
+```coffeescript Initialize using a wrapper for your in-app browser
+import { View, Button, Text, useEffect } from 'react-native';
+import { useMoonPaySdk } from '@moonpay/react-native-moonpay-sdk';
+
+const InAppBrowserWrapper = {
+  open: async (url) => {
+    // Use any in-app browser method here
+    InAppBrowser.open(url);
+  },
+};
+
+const YourComponent = () => {
+  const { openWithInAppBrowser, generateUrlForSigning, updateSignature } = useMoonPaySdk({
+    sdkConfig: {
+      flow: 'buy',
+      environment: 'sandbox',
+      params: {
+        apiKey: 'pk_test_123',
+      },
+    },
+    InAppBrowser: InAppBrowserWrapper,
+  });
+
+  useEffect(() => {
+    // The URL for signature should be sent to your backend, which should then
+    // sign it with your API secret and return the signature.
+    // Once you have the signature, you can update the SDK with it and show the widget.
+    fetch('/sign-url', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer <token>',
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        url: generateUrlForSigning(),
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const signature = data.signature;
+        updateSignature(signature);
+      });
+  }, []);
+
+  return (
+    <View>
+      <Button onPress={() => openWithInAppBrowser()}>
+        <Text>Open in InApp browser</Text>
+      </Button>
+    </View>
+  );
+};
+````
+
+```javascript Initialize the SDK with Webview
+import { View, Button, Text } from "react-native";
+import { useMoonPaySdk } from "@moonpay/react-native-moonpay-sdk";
+
+const YourComponent = () => {
+  const { MoonPayWebView } = useMoonPaySdk({
+    flow: "buy",
+    environment: "sandbox",
+    params: {
+      apiKey: "pk_test_key",
+    },
+  });
+
+  useEffect(() => {
+    // This is just an example of how it might look like.
+    // You may handle this differently.
+    fetch("/sign-url", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer <token>",
+      },
+      method: "POST",
+      body: JSON.stringify({
+        url: sdk.generateUrlForSigning(),
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const signature = data.signature;
+        sdk.updateSignature(data);
+      });
+  }, []);
+
+  return (
+    <View>
+      <MoonPayWebView />
+    </View>
+  );
+};
+```
+
+</CodeGroup>
+
+<Info>
+  Possible values for `flow`: buy, sell, swap, swapsCustomerSetup, nft
+
+Possible values for `environment`: sandbox, production
+
+</Info>
+
+---
+
+- [Table of Contents](#)
+
+- - [Install](#install)
+  - [Install dependencies](#install-dependencies)
+  - [In-App Browser Implementation](#in-app-browser-implementation)
+  - [Initialize](#initialize)

@@ -1,0 +1,61 @@
+---
+title: "Overview"
+description: "Our simple URL based Integration"
+---
+
+[Suggest Edits](/edit/on-ramp-integrate-using-simple-url)
+
+You can use the below pre-written code to quickly get started on adding a '**Buy Crypto**' button that opens the MoonPay widget in a new browser tab.
+
+**Sandbox**: [https://buy-sandbox.moonpay.com/?apiKey=pk_test_123](https://buy-sandbox.moonpay.com/?apiKey=pk_test_123)
+
+**Production**: [https://buy.moonpay.com/?apiKey=pk_live_INSERT_API_KEY](https://buy.moonpay.com/?apiKey=pk_live_INSERT_API_KEY)
+
+<CodeGroup>
+  ```html On-ramp.html
+  <!--Opens the MoonPay widget in a new browser tab-->
+  <body>
+      <div class="container">
+          <button onclick="window.open('https://buy-sandbox.moonpay.com/?apiKey=pk_test_123', '_blank')">Buy with MoonPay</button>
+      </div>
+  </body>
+  ```
+
+```css On-ramp.css
+.container {
+  background-color: #392a54;
+  padding: 20px;
+  text-align: center;
+}
+
+button {
+  background-color: #7d00fe;
+  border: none;
+  color: white;
+  padding: 15px 50px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  background-image: url("https://images.crunchbase.com/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/jglje7ar0xc6j5lvai6t");
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: contain;
+}
+```
+
+</CodeGroup>
+
+### Here's an example. Give it a try!
+
+On-Ramp with MoonPay
+
+### Next Steps:
+
+[Configure the On-Ramp user journey here. ](ramps-sdk-buy-params). Then [Design your Integration](design-your-integration) for the most optimal setup.
+
+---
+
+- [Table of Contents](#)
+
+- - [Here's an example. Give it a try!](#heres-an-example-give-it-a-try)
+  - [Next Steps:](#next-steps)

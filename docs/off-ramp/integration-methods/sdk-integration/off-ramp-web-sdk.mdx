@@ -1,0 +1,243 @@
+---
+title: "Web SDK"
+description: "🖥️ Installation guide for our Web SDK"
+---
+
+[Suggest Edits](/edit/off-ramp-web-sdk)
+
+<Info />
+
+### Import
+
+There are two options when integrating the web SDK.
+
+You can load the SDK using the `script` tag approach, or if you prefer an npm package with full type-safety, you can use [moonpay-js](https://www.npmjs.com/package/@moonpay/moonpay-js). Both approaches provide the same level of end functionality, so which one you choose will be based on your preference and what works best for your project.
+
+<CodeGroup>
+  ```javascript Package
+  /** 
+   * npm install @moonpay/moonpay-js
+   **/
+
+import { loadMoonPay } from '@moonpay/moonpay-js';
+
+````
+
+```html Script
+<script defer src="https://static.moonpay.com/web-sdk/v1/moonpay-web-sdk.min.js"></script>
+````
+
+</CodeGroup>
+
+Once you've included the script or package, you're ready to initialize the Web SDK and start integrating with our suite of cryptocurrency payment solutions.
+
+### Initialize
+
+Initializing the SDK is largely similar for both the package approach and script approach.
+
+The script approach attaches the SDK constructor (`init`) to `window.MoonPayWebSdk`, whereas the package provides an asynchronous function to load the constructor.
+
+<CodeGroup>
+  ```javascript Package
+  const moonPay = await loadMoonPay();
+  ```
+
+```javascript Script
+const moonPay = window.MoonPayWebSdk.init;
+```
+
+</CodeGroup>
+
+Or if you've opted for the package, the exported `loadMoonPay` function returns the SDK constructor.
+
+Now, initialize the SDK in your application with the flow, environment, variant, and any parameters related to [On-Ramp](/docs/ramps-sdk-buy-params), [Off-Ramp](/docs/ramps-sdk-sell-params) or [Swap](/docs/ramps-sdk-swap-params).
+
+<CodeGroup>
+  ```javascript Buy
+  const widget = moonPay?.({
+    flow: "buy",
+    environment: "sandbox",
+    params: {
+      apiKey: "pk_test_123",
+    },
+    variant: "overlay",
+    handlers: {
+      async onTransactionCompleted(props) {
+        console.log("onTransactionCompleted", props);
+      },
+    },
+  });
+
+widget?.show();
+
+````
+
+```typescript Sell
+const widget = moonPay?.({
+  flow: "sell",
+  environment: "sandbox",
+  params: {
+    apiKey: "pk_test_123",
+  },
+  variant: "overlay",
+  handlers: {
+    async onInitiateDeposit(props) {
+      console.log(
+        "onInitiateDeposit",
+        props.cryptoCurrency.id,
+        props.depositWalletAddress
+      );
+      // Here you'd do your own sign and send...
+      return {
+        depositId: "your-deposit-identifier",
+      };
+    },
+  },
+});
+
+widget?.show();
+````
+
+```typescript Swap
+const moonPaySdk = moonPay({
+  flow: "swap",
+  environment: "sandbox",
+  variant: "overlay",
+  params: {
+    apiKey: "pk_test_key",
+  },
+});
+```
+
+```typescript Swaps Customer Setup
+const widget = moonPay?.({
+  flow: "swapsCustomerSetup",
+  environment: "sandbox",
+  variant: "overlay",
+  params: {
+    apiKey: "pk_test_123",
+    amount: "300",
+    amountCurrencyCode: "usd",
+  },
+  handlers: {
+    async onAuthToken({ token }) {
+      // Once the customer has logged in in the widget, we share their
+      // swaps-scoped authentication token with your app so you can
+      // perform swaps requests on behalf of the customer.
+      // The token needs to be passed as an Authorization header in the format
+      // "Authorization: Bearer {token}".
+      console.log("onAuthToken received with token:", token);
+    },
+    async onSwapsCustomerSetupComplete() {
+      // When this is received, you can close the widget and resume the
+      // the swap flow in your UI.
+      console.log("onSwapsCustomerSetupComplete received");
+    },
+  },
+});
+
+widget?.show();
+```
+
+```typescript NFT Checkout
+const widget = moonPay?.({
+  flow: "nft",
+  environment: "sandbox",
+  variant: "overlay",
+  params: {
+    apiKey: "pk_test_KJUrRjPuvAkVBasIgyMH9Yfe2FfVWw",
+    contractAddress: "0xMoonPayShowcase",
+    tokenId: "1",
+  },
+});
+
+widget?.show();
+```
+
+</CodeGroup>
+
+<Info>
+  Possible values for `flow`: buy, sell, swap, swapsCustomerSetup, nft
+
+Possible values for `environment`: sandbox, production
+
+Possible values for `variant`: embedded, overlay, newTab, newWindow
+
+</Info>
+
+### Variants
+
+**Embedded**: When using the `embedded` variant, you can embed the MoonPay widget within a specific DOM element on your website. This option lets you fine-tune the placement of the widget and allows you to integrate it into a specific part of your layout. This can minimize context switching for the user. To use this variant, you must pass the `containerNodeSelector` property and a valid CSS selector for the container element where you want the widget to be embedded.
+
+**Overlay**: The `overlay` variant shows the widget as an iframe on top of your website. This option directs the user's attention towards completing their purchase while keeping them on your website. We have an additional `onCloseOverlay` handler for this variant should you want to run some code in the event that the overlay is closed.
+
+<Info />
+
+**New tab**: The `newTab` variant opens the widget in a new browser tab. This option lets the user complete their purchase in a full-screen experience. When using this option, we recommend you tell the user they'll be taken to MoonPay in a new tab. This provides guidance to the user that this is intended and part of the purchase flow.
+
+**New window**: The `newWindow` variant opens the widget in a new browser window with a fixed size. This variant is ideal if you want to provide a more controlled experience for the user while they complete their purchase.
+
+### Display
+
+Depending on your SDK implementation, especially within contexts like mobile app webviews, be aware of the `useWarnBeforeRefresh` configuration. It's set to `true` by default, which prompts users with a warning if they try to refresh the page or navigate away. This is designed to avoid any unintentional data loss or interruption of ongoing tasks. However, this can sometimes lead to errors during redirections back to your application. If you'd like to prevent this behavior, simply set the `useWarnBeforeRefresh` configuration to `false`.
+
+<CodeGroup>
+  ```javascript javascript
+  const moonPaySdk = moonPay({
+    flow: 'buy',
+    environment: 'sandbox',
+    variant: 'overlay',
+    useWarnBeforeRefresh: false,
+    params: {
+      apiKey: 'pk_test_key'
+    }
+  });
+  ```
+</CodeGroup>
+
+(e.g. Mobile app webview) there is a `useWarnBeforeRefresh` SDK configuration setting that is enabled by default and warns users before a page refresh or navigation action occurs to prevent loss of unsaved data or interrupting an ongoing process. As a result, an error may appear when users try to redirect back to your application. You can disable this by disabling `useWarnBeforeRefresh` and setting it to false.
+
+### Signing
+
+If you're using the `walletAddress` or `walletAddresses` query param, in the `buy`, `swap` or `nft` flows, you need to sign your widget URL before you can display the widget. Learn more about [URL signing](/docs/on-ramp-enhance-security-using-signed-urls).
+
+<CodeGroup>
+  ```javascript Sign the URL
+  const moonPaySdk = moonPay({  
+    ...
+  });
+
+const urlForSignature = moonPaySdk.generateUrlForSigning();
+
+// The URL for signature should be sent to your backend, which should then
+// sign it with your API secret and return the signature.
+const response = await fetch("/sign-url", {
+method: "POST",
+body: JSON.stringify({ urlForSignature }),
+});
+const data = await response.json();
+
+// Once you have the signature, you can update the SDK with it and show the
+// widget.
+moonPaySdk.updateSignature(data.signature);
+
+moonPaySdk.show();
+
+```
+</CodeGroup>
+
+***
+
+What’s Next
+
+* [Ramps events](/docs/off-ramp-sdk-events-details)
+* [Event properties](/docs/off-ramp-sdk-events-properties)
+
+* [Table of Contents](#)
+
+* * [Import](#import)
+* [Initialize](#initialize)
+* [Variants](#variants)
+* [Display](#display)
+* [Signing](#signing)
+```

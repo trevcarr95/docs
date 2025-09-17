@@ -1,0 +1,45 @@
+---
+title: "User Journeys"
+description: "Illustrative journeys to help you design your experience and integration."
+---
+
+[Suggest Edits](/edit/virtual-accounts-user-journeys)
+
+# End-To-End Journey
+
+1. **Entry points to virtual accounts**: Within your app, you should include an entry point into the MoonPay virtual account creation experience.
+2. **Authentication & KYC**: When your end-customer clicks the call to action (CTA) in your application (which is triggered from your chosen entry point), a customizable MoonPay widget will launch in your in-app browser. Within this widget, the customer will authenticate using their email address or a social login (Google, Apple) to verify their MoonPay Account. Given MoonPay's existing base of over 30 million accounts, many users creating a virtual account will have already completed KYC through previous transactions with MoonPay. If a user has not yet completed KYC, MoonPay will guide them through the necessary process, an indicative version of which is shown below.
+
+<Frame caption="Illustrative example of KYC (differs by region)">
+  <img src="/images/docs/70c37edca0cd618d4b3f6da65e0fc611677376f459a47e3073f97e6a11f51d07-image.png" />
+</Frame>
+
+3. **Virtual Account Creation**: Following successful KYC, MoonPay will create a virtual account for the end-customer, a process that typically completes in about one second.\
+   Within the MoonPay widget, if the virtual account currency hasn't already been pre-selected using the `depositCurrencyCode` widget parameter, we will prompt the user to select it. For a comprehensive list of widget parameters, please refer to the [widget parameters in the Create account section](/docs/virtual-accounts-integration-guide#create-account) of the Integration Guide.
+
+<Frame caption="View account details through the MoonPay widget">
+  <img src="/images/docs/960b945f378b4cdfb80b0d05e86680db04c358fc6554a63704f501696407025e-image.png" />
+</Frame>
+
+4. **Virtual Account Detail Display**: The MoonPay widget seamlessly displays the end-customers virtual account details. As a developer, you do have the option to natively display these in your app by following [this step in our Integration Guide](/docs/virtual-accounts-integration-guide#step-three-build-account-detail-screen).
+
+<Frame caption="View virtual account details natively in example partner app">
+  <img src="/images/docs/941026f4570f9d7b202b0782c014a235454a2d8ba16499abefa5f8261df7bb49-image.png" />
+</Frame>
+
+5. **Pay In**: Using any of our [available payment methods](/docs/payment-methods) (ACH, Fedwire, SEPA Instant, Faster Payments), end-customers can transfer fiat to their virtual account.
+6. **Autoramp**: As fiat is settled into the Virtual Account, MoonPay (powered by Iron), will automatically Ramp your selected cryptocurrency into the user's selected wallet.
+7. **Get transaction status**: End-customers can view their transaction status and history natively within your app using details retrieved via API or webhook. For guidance on implementation please see our Integration Guide, which details this in [Review Step Four for webhooks](/docs/virtual-accounts-integration-guide#step-four-build-beautiful-top-up-experiences) and [Step Seven for API calls](/docs/virtual-accounts-integration-guide#step-seven-get-account-and-transaction-details-via-api).
+
+<Frame caption="Tracking toast message on home screen">
+  <img src="/images/docs/a6586aee2c2abc02fe56457e455bc02e8280ed576d8d2fa1a93d784e80587b7a-image.png" />
+</Frame>
+
+---
+
+What’s Next
+
+- [Integration Guide](/docs/virtual-accounts-integration-guide)
+
+- [Table of Contents](#)
+- - [End-To-End Journey](#end-to-end-journey)

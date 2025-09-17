@@ -1,0 +1,458 @@
+---
+title: "Integration design guide"
+description: "Design requirements for your MoonPay integration"
+---
+
+[Suggest Edits](/edit/design-your-integration)
+
+Build your integration with the MoonPay Standard—proven insights from top-performing partner integrations that drive revenue and usability.
+
+# Go-live requirements
+
+<Info />
+
+| Requirement               | Description                                                                         | Link to section |
+| ------------------------- | ----------------------------------------------------------------------------------- | --------------- |
+| **Multiple entry points** | All partner apps should add multiple entry points to the on-ramp. - [ ] Home screen |
+
+- [ ] Main app navigation
+- [ ] Individual cryptocurrency screens | [Buy button placement](/docs/design-your-integration#buy-button-placement) |
+      | **Amount input** | Partner apps with an amount input screen should show: - [ ] When opening the widget, pre-fill the fiat / crypto amount by using `currencyCode` with `baseCurrencyAmount` or `quoteCurrencyAmount`
+- [ ] Show minimum and maximum buy limits set according to our [/v3/currencies/:currencyCode/limits API](/reference/getcurrencylimits) | [Amount input screen](/docs/design-your-integration#amount-input-screen) [Minimum and maximum buy limits](/docs/design-your-integration#minimum-and-maximum-buy-limits) |
+      | **Payment method selection screen** | Partner apps with a payment method selection screen should show: - [ ] All supported payment methods
+- [ ] Payment method logos
+- [ ] Estimated transaction completion times
+- [ ] Defaults to Apple Pay on iOS | [Payment method selection](/docs/design-your-integration#payment-method-selection) [Supported payment methods](https://support.moonpay.com/customers/docs/all-supported-payment-methods) |
+      | **Provider selection screen** | Partner apps with multiple providers should show: - [ ] [`ID verified` badges](/docs/design-your-integration#id-verified-and-previously-used-badges) for returning users
+- [ ] Quotes from our[ `/buy_quote` endpoint](/reference/getbuyquote) , using `paymentMethod`
+- [ ] Estimated transaction completion times | [Provider selection](/docs/design-your-integration#provider-selection) |
+      | **Pre-fill the customer's email address** | Partner apps that know the customer's email address should pre-fill this using the `email` parameter to skip the login screen in the MoonPay widget. | [Pre-fill the customer's email address](/docs/design-your-integration#pre-fill-the-customers-email-address) |
+      | **Pre-fill the customer's wallet address(es)** | Partner apps that know the customer's wallet address(es) should pre-fill this to skip the wallet address screen in the user journey. - [ ] [Pass either widget parameter](/docs/on-ramp-configure-user-journey-params) `walletAddress` or `walletAddresses`
+- [ ] If using `walletAddress`, pass the widget parameter`currencyCode` or `defaultCurrencyCode`
+- [ ] [Sign URLs using your secret key](/docs/on-ramp-enhance-security-using-signed-urls) | [Pre-fill the customer's wallet addresses in the widget](#pre-fill-the-customers-wallet-address) |
+      | **Transaction tracking** | All partner apps should display a toast message after the user completes their transaction with a link to the MoonPay transaction tracker. Alternatively, display a toast message with a link to your app's own transaction history page. | [Track the order status](/docs/design-your-integration#track-the-order-status) |
+      | **Mobile app configuration** | All partner mobile apps, configure app and browser so KYC and payment methods in the widget work correctly. - [ ] Use a fullscreen in-app browser and remove the navigation bar for a more native and seamless user experience
+- [ ] Configure your app and in-app browser so that users can complete KYC
+- [ ] Allow pop-ups at the in-app browser level so all payment methods work | [Mobile integrations](/docs/design-your-integration#mobile-integrations) |
+
+---
+
+# User journey demo
+
+Explore the demo below for an end-to-end showcase of a well-designed on-ramp integration with a wallet partner.
+
+---
+
+# Implementation details
+
+## Buy button placement
+
+All partner apps must show buy buttons in the following:
+
+- [ ] Home screen
+- [ ] Main app navigation
+- [ ] Cryptocurrency-specific screens
+
+Highly visible Buy buttons in these areas reduces the number of clicks for users to transact and improves the user experience. You should also Buy buttons wherever users expect to be able to transact, like their wallet, NFT purchase sections, trading screens, and other screens specific to your app.
+
+<Check>
+  A minimum 2x increase in transaction volume based on data from a basket of
+  partners including Uniswap.
+</Check>
+
+<Frame caption="Prominent buy button on the home screen and for the individual cryptocurrency">
+  <img src="/images/docs/d7e71286a230c20a6f82ace2fe02daf30b296b1acf65d17fd5d043c737331ab1-Screenshot_2024-11-13_at_12.46.33_PM.png" />
+</Frame>
+
+## Currency selector
+
+When a user clicks on the Buy button, it should be easy to find crypto to purchase:
+
+- List all cryptocurrencies available for purchase through your MoonPay integration
+- Include a search bar and filters for ease of use
+- Show the currency icon, abbreviation, full name, and network of each token so users can easily browse the list. Cryptocurrency and Fiat asset images can be found by accessing our [v3/currencies API](/reference/getcurrencies).
+
+<Frame caption="Currency selection screen with search and filters">
+  <img src="/images/docs/be85581fc95a47aa41c138afe9347b981f238d8c7b663fae19e9ef63f01f0e19-Select_Currency.png" />
+</Frame>
+
+## Amount input screen
+
+A dedicated screen in your app for the user to select the amount, crypto, and fiat for their transaction provides a more seamless experience with the MoonPay widget.
+
+For partner apps that have an amount input screen, use the following design elements for ease of use:
+
+- When opening the MoonPay widget, pass the widget parameters`currencyCode` with`baseCurrencyAmount` or `quoteCurrencyAmount`to pre-fill the fiat or crypto amount.
+- Allow users to change which crypto they're purchasing on this screen without leaving the flow
+- [Validate minimum and maximum buy amounts](/docs/design-your-integration#minimum-and-maximum-buy-limits) against our Limits endpoint
+
+<Frame caption="Simple and easy to use input screens">
+  <img src="/images/docs/23369e3f3ec3fac2ee17978c7d96427b49de7aee21b6fc8f4e9d75de615c4a5d-Screenshot_2024-11-13_at_12.49.31_PM.png" />
+</Frame>
+
+### Minimum and maximum buy limits
+
+For partner apps that have an amount input screen, ensure a seamless user experience between your app and the MoonPay widget by checking entered amounts against our [GET v3/currencies/:currencyCode/limits](/reference/getcurrencylimits) endpoint. Widget errors caused by invalid amounts will require the user to re-enter the amount to buy, which adds another step and impacts the user experience.
+
+<Check>
+  * Partners that offer transactions over $10K see a 45% higher median for
+  completed transaction volume. * Partners also see 3% of their total completed
+  volume from transactions over $10K.
+</Check>
+
+<Frame caption="Amount screen">
+  <img src="/images/docs/e0fedd2400610841f9d9bd3b81cf4d6f1e1aaa2db61b0014af97840d9dcd36f4-Buy_Bitcoin.png" />
+</Frame>
+
+## Payment method selection
+
+For partner apps with a payment method selection screen:
+
+- [ ] Show [all payment methods supported by MoonPay](https://support.moonpay.com/customers/docs/all-supported-payment-methods), depending on the user's region and currency
+- [ ] Use payment method logos, [download ZIP of logos](https://static.moonpay.com/readme/payment-logos.zip)
+- [ ] Show estimated transaction completion times
+- [ ] Default to Apple Pay on iOS, as Apple Pay typically has higher transaction success rates
+
+A payment method selection screen in your app lets your customers easily choose how they want to transact while also getting more accurate quotes. However, there are trade-offs with this setup, as we continuously release new payment methods.
+
+Be aware that if your app has a payment method selector, you'll need to update your app to show any new payment methods. This way, customers can take full advantage of local payment methods, better transaction success rates, and an overall better user experience.
+
+- Update `?paymentMethod` when calling the `/buy_quote` endpoint and showing the widget
+- Add the new payment method as an option in your app, including the logo, estimated transaction completion times
+- Any other payment method-specific requirements
+
+## Provider selection
+
+For partner apps that offer ramps providers other than MoonPay, display key context on a provider selection screen, including:
+
+- [ ] `ID verified` [badge for users who have completed KYC](/docs/moonpay-conversion-badges)
+- [ ] Quotes from our[ `/buy_quote` endpoint](/reference/getbuyquote) using `paymentMethod`
+- [ ] Supported payment methods and their logos
+
+### ID verified and previously used badges
+
+`ID verified` and `Previously used` badges ensure a frictionless experience for returning users by indicating that their KYC has been completed. Our data show that returning users can be less price-sensitive than new users, preferring a more convenient checkout experience with fewer steps. This is crucial even if MoonPay is your exclusive provider, as displaying a previously used badge helps remind and reassure users.
+
+Call our [GET /v3/customers/badges endpoint](/docs/moonpay-conversion-badges) with the customer's wallet address and we will return the customer's KYC status which you can use to show the `ID verified` badge.
+
+<Check>
+  * User retention rates are 70% higher when they know they've transacted
+  before. * 30% of wallet address that get passed to our Badges endpoint are
+  already KYC'd.
+</Check>
+
+<Frame caption="Including a &#x22;Previously Used&#x22; prompt is a powerful reminder">
+  <img src="/images/docs/0d88f8ccf32e2c1d4adf6569984f1c9cf686ac6bce302e11486229497862d07d-Screenshot_2024-10-03_at_12.01.35_PM.png" />
+</Frame>
+
+### Payment method logos
+
+Build customer trust by displaying the supported payment and payout method logos for your integration. For customers new to crypto, these familiar payment methods indicate a safe checkout process.
+
+[Download these logos as a ZIP file](https://drive.google.com/uc?export=download&id=1Z26OICqzkzDusYpNUyQNcJm__HOWsGNZ) and review the supported payment / payout methods below:
+
+- [On-ramp payment methods](https://support.moonpay.com/hc/en-gb/articles/360017624078-What-are-your-supported-payment-methods-)
+- [Off-ramp payout methods](https://support.moonpay.com/hc/en-gb/articles/360013743077-Which-bank-accounts-are-supported-for-withdrawals-)
+- [Checkout payment methods](https://support.moonpay.com/hc/en-gb/articles/4412759522705)
+
+<Frame caption="Provider selection screen">
+  <img src="/images/docs/437e55962c307f6d38818a64c8eb9194f7514c65e1d3d262f1838f015548a790-Select_Payment.png" />
+</Frame>
+
+## Loading screen
+
+Use logos to guide the user when redirecting the user to MoonPay. Before opening the MoonPay widget, show a loading screen with both your logo and MoonPay’s logo to build user trust and set expectations about the user journey.
+
+Additionally, you can use the MoonPay dashboard to create a **custom loader** for your widget:
+
+- Go to the B2B dashboard
+- Navigate to "Theme" → "Loader"
+- Choose your preferred loader type (MoonPay default or generic spinner)
+- Select custom colors to match your brand
+- Save changes
+
+<Frame caption="Loading screen before opening the MoonPay widget">
+  <img src="/images/docs/103444dd52e273ce5a6d7ef826866df8ad1ecf6c3d00aa1ab6b8570b0e731d84-Loader.png" />
+</Frame>
+
+## Skip the amount screen
+
+By default, the first screen in the MoonPay widget asks the user to confirm the amount of crypto to purchase. If your app has an amount input screen, you can skip the amount screen in the MoonPay widget for a more seamless end-to-end customer journey and increase conversions by 6%.
+
+Pass the following [widget parameters](/docs/ramps-sdk-buy-params):
+
+`currencyCode` + `baseCurrencyCode` `baseCurrencyAmount` + `walletAddress` + `signature`
+
+<Check>* Skipping the initial amount screen increases conversions by 6%.</Check>
+
+## Login options
+
+### Pre-fill the customer's email address
+
+Partner apps that know the user's email address must pre-fill the customer's email address by passing the [`email` widget parameter](/docs/ramps-sdk-buy-params), so the customer won't be prompted to enter one. The widget will skip to the MFA code screen.
+
+Returning customers that are logged in are 5% more likely to complete a transaction than returning customers that are not logged in. By pre-filling the customer's email address, you can capture some of this shortfall and increase transaction volume.
+
+<Check>
+  * Returning customers that are logged in are 5% more likely to complete a
+  transaction. * For new users who haven't transacted before, this is even
+  higher at 25% more likely to complete their first transaction.
+</Check>
+
+## Pre-fill the customer's wallet address
+
+Partner apps that know the user's wallet address(es) must use the walletAddress or walletAddresses parameters to skip the wallet address screen in the buy flow.
+
+<Check>
+  * Pre-selecting the currency, transaction amounts and wallet address to skip
+  the initial screen of the widget increases conversions by 6%. * Users who have
+  to manually enter the wallet address results in 5% reduction in overall
+  transactions created.
+</Check>
+
+When using the walletAddress parameter, you must also:
+
+- Pass currencyCode or baseCurrencyCode and
+- [Sign URLs server-side](/docs/on-ramp-enhance-security-using-signed-urls)
+
+You can alternatively use the walletAddresses parameter to pass multiple wallet addresses with their corresponding chains. The user will be able to choose from a filtered list of cryptocurrencies limited to those you pass in the parameter, and the wallet address screen will also be skipped.
+
+## Pre-select the payment method
+
+Use the paymentMethod parameter to pre-select the user's payment method and match what they chose in the partner app.
+
+## Track the order status
+
+All partner apps must provide some kind of transaction tracking, whether a toast message that links to the MoonPay transaction tracker or your app's own transaction history screen.
+
+After a user completes the buy flow in the MoonPay widget, it's crucial for them to be able to monitor their order's progress and understand its status. Increased transparency results in greater user trust and returning users who are 13% more likely to return and complete another transaction.
+
+<Check>
+  Increased transparency results in greater user trust and returning users who
+  are 13% more likely to complete another transaction.
+</Check>
+
+MoonPay facilitates this through the use of webhooks and APIs. Webhooks provide real-time order updates to a specified endpoint of your choice, while the API allows for on-demand retrieval of the latest order status.
+
+Both our [webhooks](/reference/reference-webhooks-buy) and [API](/reference/get_v1-transactions) offer consistent data, giving you the flexibility to employ either or both methods as per your requirements.
+
+1. **Transaction tracking toast message**: After a user completes a transaction, show a toast message that persists until the crypto has been received in the user's wallet. When clicked, either the MoonPay transaction tracker or your app's transaction history page should open.
+
+   - Partners not able to use webhooks for this toast message should implement a transaction history screen and use API calls to retrieve transaction data on-demand.
+
+   <Frame caption="Transaction tracking toast messages in partner apps">
+     <img src="/images/docs/d8b669a31c529d42e405a7200e736b7b21d95e1384dbe0299b6c1c5bee7a24b1-Screenshot_2024-10-03_at_11.46.30_AM.png" />
+   </Frame>
+
+2. **Use the MoonPay transaction tracker**: We return the transaction tracker URL in our webhooks and API in the `data.returnURL` object. **Example tracker URL**: `https://buy.moonpay.com/transaction_receipt?transactionId=45751523-c3e2-47a5-ad0f-e5cb89e94037`. You can optionally pass the `apiKey` parameter to enable your custom theme on the tracker.
+
+![](/images/docs/518b045f600689bab06556ba0e28de2151e5dc729a58a583647478d7381469a2-Screenshot_2025-06-10_at_4.48.34_PM.png)
+
+3. **Use your own transaction tracker**: You can optionally create your own transaction tracking screen that shows transaction data from our API and webhooks. We recommend that partners use the `redirectURL` parameter to route users to your destination URL (HTTPS or Universal/App Link) instead of the default MoonPay order status screen. Custom-scheme links (e.g., myapp\://…) are not supported. To enable automatic redirection for users, please contact your MoonPay representative.
+
+<Frame caption="Custom transaction history screen">
+  <img src="/images/docs/5d47ec8852f312c72db07b8c36112ca8bea1e0673db6eae0e93d702b1908a0f4-Transaction_history.png" />
+</Frame>
+
+<Frame caption="Custom transaction history screens in partner apps">
+  <img src="/images/docs/a96fea8db3b5392971db99b52dacf6ea123515c0a93393ff921a5a35adfa2810-Screenshot_2024-10-03_at_11.36.58_AM.png" />
+</Frame>
+
+### API and webhook objects for transaction tracking
+
+Additional examples and details for all parameters can be found in our transaction [API documentation](/reference/getbuytransaction) under the _200 Responses_ section.
+
+| Object                              | Description                                                                                                                                                               | Notes                                           |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| `cryptoTransactionId`               | On-chain transaction hash that can be searched on the corresponding blockchain explorer                                                                                   |                                                 |
+| `status` and `failureReason`        | Order status and failure reason. Failure reason will be set only if the transaction status is `failed`.                                                                   | [Possible values](/reference/getbuytransaction) |
+| `stages` and `stages.failureReason` | Order stage and failure reason. Failure reason will be set only if the stage is `failed`.                                                                                 | [Possible values](/reference/getbuytransaction) |
+| `id`                                | Unique MoonPay transaction ID that can be added to the MoonPay transaction receipt URL                                                                                    |                                                 |
+| `externalTransactionId`             | Your transaction identifier that was passed in the `externalTransactionId` widget parameter. This identifier will be present whenever MoonPay sends you transaction data. |                                                 |
+| `createdAt`                         | Timestamp of when the transaction was created                                                                                                                             |                                                 |
+| `currency.name` and `currency.code` | Cryptocurrency name and code, e.g. Ethereum and ETH                                                                                                                       |                                                 |
+
+---
+
+# Mobile integrations
+
+All partner mobile apps must follow these guidelines for setting up in-app browsers.
+
+## iOS in-app browser setup
+
+Use a full screen in-app browser and remove the navigation bar to provide a more native user experience.
+
+<Frame caption="Full screen in-app webview on iOS">
+  <img src="/images/docs/ca0c42c9d66e65b921be70e494cb991e5245b1e77155c84368dee145109d7323-IMAGE_2025-06-10_162236.jpg" />
+</Frame>
+
+### Step 1: Screen implementation
+
+<CodeGroup>
+  ```javascript javascript
+  import { WebView } from ‘react-native-webview’
+
+const YourMoonpayWidgetScreen = ({ route: { params: { moonpayWidgetUrl }, }, }) => <WebView source={{ uri:moonpayWidgetUrl }} enableApplePay />
+
+````
+</CodeGroup>
+
+### Step 2: Register screen as a modal in the navigator
+
+This enables the widget to slide up from the bottom of the screen.
+
+<CodeGroup>
+```javascript javascript
+import { createNativeStackNavigator } from ‘@react-navigation/native-stack’
+const Stack = createNativeStackNavigator()
+
+<Stack.Navigator> // ...other screens <Stack.Screen name=”yourMoonpayWidgetScreenName”
+
+component={YourMoonpayWidgetScreen} options={{ presentation: ‘modal’ }} /> </Stack.Navigator>
+````
+
+</CodeGroup>
+
+### Step 3: Configure the screen
+
+Configure the screen so that all payment methods and KYC steps work correctly:
+
+- [ ] Allow pop-ups at the in-app browser level so the customer can use PayPal, Venmo and Revolut without seeing an error
+- [ ] Follow the [_App Requirements for KYC_](/docs/design-your-integration#app-requirements-for-kyc) section below so the customer can upload their KYC documents and complete a selfie check.
+
+## Android in-app browser setup
+
+On Android we recommend loading the MoonPay widget within the `react-native-inappbrowser-reborn` as it supports Google Pay out of the box.
+
+<CodeGroup>
+  ```Text react-native-inappbrowser-reborn
+  import InAppBrowser from 'react-native-inappbrowser-reborn';
+
+export const openBrowser = async ({ link }) => {
+try {
+InAppBrowser.close();
+const browserResult = await InAppBrowser.open(link, {
+forceCloseOnRedirection: false,
+showInRecents: true,
+animated: true,
+});
+
+      // Automatically closes the browser if there is an issue with loading the widget.
+      if (browserResult?.type === 'dismiss') {
+        InAppBrowser.close();
+      }
+
+      return browserResult;
+    } catch (e) {
+      // handle error
+    }
+
+};
+
+```
+</CodeGroup>
+
+## App requirements for KYC
+
+<Warning />
+
+These requirements make sure that customers can complete each KYC step, including uploading documents and doing a selfie check. Failing to follow these steps will cause new customers to drop off, as they won't be able to finish KYC or make a purchase.
+
+### General app requirements for all implementations
+
+All partner apps should ensure the following:
+
+* [ ] `Feature-Policy` header for your webpage / frame or any other container has no restrictions for initializing camera like value `camera 'none'`.
+* [ ] `Permissions-Policy` header doesn't restrict access to a camera and microphone (for some cases) and if allow is set check for `"camera; microphone"` values.
+* [ ] When using [iOS WKWebview](https://developer.apple.com/documentation/webkit/wkwebviewconfiguration/1614793-allowsinlinemediaplayback) you may need to set `allowsInlineMediaPlayback` to `true` in the `WKWebViewConfiguration` used in your app. This adjustment ensures that media content, like a camera feed, can be displayed properly within the web view, rather than forcing full-screen playback.
+* [ ] Your website is being run on a secure `https` connection.
+
+### WebView requirements
+
+Partner apps that use `WebView` should ensure the following:
+
+* [ ] The web view is able to access device local storage and initialize camera (for older iOS versions, the camera can be accessed only from Safari browser or WebView with `SFSafariViewController`)
+* [ ] HTML5 video playback is allowed (`<video>` tags are being used to send instructions): if video-instructions are not played, try using `WebChromeClient` to enable video playback
+* [ ] Autoplay in fullscreen mode is disabled and `allowsInlineMediaPlayback` is set as `true` for WebView
+* [ ] The selector file is implemented on your side (required for KYC document uploads)
+
+### Iframe requirements
+
+Partner apps that use `iframe` should ensure the following:
+
+* [ ] Parent page header has no restrictions for initializing the camera, e.g. `camera=()`
+
+* [ ] Parent page can alternatively include `camera=*` in the Permissions-Policy header
+
+* [ ] The iframe allow property has `allow="accelerometer; autoplay; camera; encrypted-media; gyroscope; payment"`
+
+## Feature comparison
+
+When choosing what type of in-app browser to use, review the features that are compatible with each.
+
+Note that certain mobile payment and social sign-in configurations are not compatible with certain in-app browsers, for example `WebView` is not compatible with Google Pay and Google sign-in.
+
+| Feature        | Chrome Custom Tabs | SFSafariViewController | WebView | Iframe |
+| -------------- | ------------------ | ---------------------- | ------- | ------ |
+| Apple Pay      | ❌                  | ✅                      | ✅       | ❌      |
+| Google Pay     | ✅                  | ❌                      | ❌       | ❌      |
+| Apple sign-in  | ✅                  | ✅                      | ✅       | ✅      |
+| Google sign-in | ✅                  | ✅                      | ❌       | ✅      |
+| SDK events     | ❌                  | ❌                      | ✅       | ✅      |
+
+<Frame caption="Apple Pay, Google Pay, and social sign-in in partner apps">
+<img src="/images/docs/f9567a133a9fddef637334d93d0b92791bb836af0381839363152782e4e353f8-Screenshot_2025-06-10_at_5.04.28_PM.png" />
+</Frame>
+
+***
+
+# Customize logos and themes
+
+## Custom logos
+
+Contact your MoonPay team to customize the logos in the transaction emails.
+
+* 1 rectangular logo for transactional emails (jpg or png formats)
+
+## Custom themes
+
+Customize your widget's theme in [your MoonPay dashboard](https://dashboard.moonpay.com/theme). Themes are tied to API keys and will be applied whenever you pass your API key to the MoonPay widget and transaction tracker.
+
+<Check>
+Users are 20% more likely to get past the code (OTP) verification screen when the MoonPay widget has custom theming.
+</Check>
+
+***
+
+* [Table of Contents](#)
+
+* * [Go-live requirements](#go-live-requirements)
+
+* [User journey demo](#user-journey-demo)
+
+* [Implementation details](#implementation-details)
+
+  * [Buy button placement](#buy-button-placement)
+  * [Currency selector](#currency-selector)
+  * [Amount input screen](#amount-input-screen)
+  * [Payment method selection](#payment-method-selection)
+  * [Provider selection](#provider-selection)
+  * [Loading screen](#loading-screen)
+  * [Skip the amount screen](#skip-the-amount-screen)
+  * [Login options](#login-options)
+  * [Pre-fill the customer's wallet address](#pre-fill-the-customers-wallet-address)
+  * [Pre-select the payment method](#pre-select-the-payment-method)
+  * [Track the order status](#track-the-order-status)
+
+* [Mobile integrations](#mobile-integrations)
+
+  * [iOS in-app browser setup](#ios-in-app-browser-setup)
+  * [Android in-app browser setup](#android-in-app-browser-setup)
+  * [App requirements for KYC](#app-requirements-for-kyc)
+  * [Feature comparison](#feature-comparison)
+
+* [Customize logos and themes](#customize-logos-and-themes)
+
+  * [Custom logos](#custom-logos)
+  * [Custom themes](#custom-themes)
+```

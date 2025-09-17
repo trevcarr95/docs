@@ -1,0 +1,202 @@
+---
+title: "FAQ"
+description: "Suggest Edits"
+---
+
+# Integrating
+
+### Where can we integrate your solution (website, marketplace, in-game)?
+
+You will be able to integrate it wherever you’d like. We surface an SDK and you can choose to pass a variety of query parameters to the Widget that is being spun up. You can pass token you want users to buy, destination wallet address and lots more. You can see all the parameters [here](/docs/ramps-sdk-buy-params).
+
+### What does the customer journey look like?
+
+This depends on the query parameters you use. You can check [our best practices guide](/docs/on-ramp-integration-best-practices), which goes over the ideal elements of the customer journey.
+
+### Does the end-user need to provide a wallet or are you providing (non)custodial wallets on checkout?
+
+Both are possible. You can pass one, we can allow the user to create one (BTC and ETH) or you can allow users to input their own wallet address.
+
+### Any recommended best practices for the integration?
+
+Yes! Best practices for each product are outlined on their respective documentation pages.
+
+### The widget is returning an error. How do I escalate this?
+
+Please include a screenshot and steps to reproduce the error when reaching out to your MoonPay representative.
+
+### Is there a way to customize the automated emails users receive?
+
+We can add a partner logo in the automated email and change the partner name (`Partner_Name` via MoonPay) in the email subject upon request. Please reach out to your MoonPay representative.
+
+### How do I change my API Keys?
+
+Go to the [Developers > API Keys](https://dashboard.moonpay.com/developers/) page of your MoonPay dashboard and hit the roll button next to the API key you wish to replace. You will be given the option to immediately delete the old key or a 12hour rollover before the old API keys expire.
+
+### Iframe shows an error instead of the widget
+
+If you see a CSP error that says `buy.moonpay.com refused to connect`, you’ll need to allowlist your production domain(s). We require this when you embed the MoonPay widget in an iframe or use the overlay, drawer, or embedded options to prevent unauthorized third-parties from embedding the MoonPay widget.
+
+To resolve the issue, add your production domain(s) to the [Settings page](https://dashboard.moonpaycloud.com/settings/) of your MoonPay dashboard.
+
+![](/images/docs/1100fc5-2b2ebcb-image.png)
+
+### Region-based widget error
+
+If you see a widget error that geo-blocks certain users, confirm that these users are in a region supported by MoonPay. [Non-supported countries, states, and territories for on-ramp](https://support.moonpay.com/hc/en-gb/articles/6557330712721-What-are-our-non-supported-countries-states-and-territories-for-on-ramp-product-)
+
+### Sandbox Supported Currencies
+
+Our sandbox environment supports a limited selection of testnet currencies; we recommend testing primarily with Ethereum on Sepolia, Solana Testnet, TON or the Bitcoin Testnet.
+
+### Multiple accounts in production
+
+In our production environment, we only allow one account per user. Creating multiple accounts in production may cause your account to be flagged or blocked.
+
+### Test credit cards and KYC info in production
+
+Only genuine card and KYC information may be used in our production environment. Do **not** use test credit card or test KYC information in production, as this will result in your account being blocked.
+
+### Using platforms like Flutter
+
+MoonPay does not offer an SDK for Flutter. You'll have to manually embed our widget in a WebView. Consider the following tips:
+
+- You can create your own HTML that uses our [Web SDK](/docs/on-ramp-web-sdk) to embed our Widget. This will allow you to receive our Widget's events, if you wish. You'll then need to send them out to your Flutter app layer.
+- If you're experiencing camera issues in Flutter's WebView, consider using the Flutter plugin compatible with our Web SDK, available at [https://pub.dev/packages/flutter_inappwebview](https://pub.dev/packages/flutter_inappwebview).
+- You can find further guidance on configuring Flutter camera permissions and other related documentation at [https://inappwebview.dev/docs/5.x.x/web-rtc/](https://inappwebview.dev/docs/5.x.x/web-rtc/).
+- Custom Origin via `baseUrl` Property: For specific requirements, you can set a custom origin using the `baseUrl` property. This serves as the base URL for any relative paths in the HTML and sets the document’s origin. Example:
+  <CodeGroup>
+    ```dart dart InAppWebView( initialData: InAppWebViewInitialData( data:
+    htmlContent, baseUrl: Uri.parse("https://your.custom.origin") ), // ...
+    other configurations ... ) ```
+  </CodeGroup>
+  This custom origin approach can be advantageous for scenarios involving scripts
+  that validate the document’s origin or for CORS policies. We recommend using `https://app_name`,
+  `capacitor://` or equivalent as your custom origin for the `baseUrl` property.
+  From here, add the domain to your allowlist in the settings page of your [MoonPay
+  dashboard](https://dashboard.moonpay.com/settings/).
+- Scrolling Issues within the MoonPay widget: When using these overflowing containers in Flutter with a WebViewWidget, you have to specify gesture recognizers: Example:
+  ```
+  gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+    Factory<OneSequenceGestureRecognizer>(
+      () => EagerGestureRecognizer(),
+    ),
+  },
+  ```
+- Avoid using `enableDrag: true` when embedding a WebView inside a `showModalBottomSheet()`, as it may interfere with touch interactions. Instead, provide a dedicated close button for a better user experience.
+
+# Payments
+
+### I'm having trouble adding my credit/debit card to my account
+
+Double check you are not in our sandbox environment. Genuine cards should never be added to sandbox accounts. You can find test cards [here](/docs/credit-cards-testing).
+
+Has your card already been added to another account? There is a limit of one card per account. Either use the other account or try using another card.
+
+### How do you handle chargebacks?
+
+At MoonPay, we treat chargebacks seriously and have processes in place to prevent and handle chargebacks. For more information reach out to your MoonPay account representative.
+
+### What payment methods are available by country?
+
+Payment Methods offered will vary based on the users location. Reach out to your MoonPay account representative for additional details.
+
+### How do I get paid?
+
+Details can be found on our [partner support site](https://support.moonpay.com/hc/en-gb/articles/4406209996049-How-do-affiliate-payouts-work-).
+
+### What are my purchase limits?
+
+Purchase limits will vary by region, currency and level of Know Your Customer KYC documents provided. Additional details can be found on our customer support page [here](https://support.moonpay.com/hc/en-gb/sections/360002592157-Verifications-Limits-).
+
+### What cryptocurrencies does MoonPay support?
+
+There are more limitations for US users than non-US users. A complete list can be found [here](https://support.moonpay.com/hc/en-gb/articles/360009280177-Which-cryptocurrencies-do-you-support-).
+
+### Do you support Bitcoin Segwit, Taproot and legacy BTC addresses?
+
+Yes, we support Taproot, Segwit, and legacy addresses. A user can send to a BTC wallet address as long as it's a match for regex we use to validate: `^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$|^(bc1)[0-9A-Za-z]{39,59}$`
+
+Please be aware that MoonPay's Wallet does not support Taproot, and it is advised not to use it for Ordinals to avoid potential loss. This caution specifically applies to MoonPay wallets.
+
+# Fees
+
+### Are there any integration fees to partner with MoonPay?
+
+There are no fees for integrating with MoonPay. However, partners have the option to include an affiliate fee for each transaction if they wish.
+
+### Are there any trading fees, Payment Service Provider (PSP) fees etc for our clients?
+
+MoonPay doesn’t charge distinct trading or psp fees. Instead, a variable fee is applied for every transaction.
+
+### Any other fees that we need to know?
+
+Based on the specific blockchain, a network or gas fee might be applicable, which varies with network traffic.
+
+# Network infrastructure
+
+### What are MoonPay's external IP addresses?
+
+IPv4
+
+- 34.76.118.184
+- 34.77.238.249
+- 34.79.17.44
+- 34.89.242.107
+- 34.140.248.51
+- 34.159.58.44
+- 34.159.89.69
+- 35.246.202.26
+
+IPv6
+
+- 2600:1900:4010:bd99::/64
+- 2600:1900:40d0:3d::/64
+
+### What are the rate limits for the MoonPay REST API?
+
+350 requests in 10 seconds on:
+
+- GET `v3/currency/:code/price`
+- GET `v3/currency/:code/ask_price`
+- GET `v3/currency/:code/bid_price`
+- GET `v3/currency/price`
+- GET `v3/currency/ask_price`
+- GET `v3/currency/bid_price`
+- GET `v3/currency/:code/quote`
+- GET `v3/currency/:code/buy_quote`
+- GET `v3/currency/:code/sell_quote`
+- GET `v3/currency/:code/buy_quotes`
+- GET `v4/ip_address`
+
+30 requests per second on all other endpoints.
+
+Reach out to your MoonPay representative if you require higher limits.
+
+# Supported regions and methods
+
+### Supported countries
+
+Buy is **available** for all residents except those [in the following countries and US states](https://support.moonpay.com/hc/en-gb/articles/6557330712721-What-are-our-non-supported-countries-states-and-territories-for-on-ramp-product-).
+
+Sell is **unavailable** for residents of Louisiana, Texas, New York and US Virgin Islands.
+
+### Supported tokens
+
+List of all MoonPay supported assets for [BUY/On-Ramp](https://support.moonpay.com/hc/en-gb/articles/360009280177-Which-cryptocurrencies-do-you-support-).
+
+List of all MoonPay supported assets for [SELL/Off-Ramp](https://support.moonpay.com/hc/en-gb/articles/360013742837-Which-cryptocurrencies-can-I-sell-).
+
+### Supported payment methods
+
+List of MoonPay [supported payment methods](https://support.moonpay.com/hc/en-gb/articles/360017624078-What-are-your-supported-payment-methods-) for US and NON-US regions.
+
+---
+
+- [Table of Contents](#)
+
+- - [Integrating](#integrating)
+  - [Payments](#payments)
+  - [Fees](#fees)
+  - [Network infrastructure](#network-infrastructure)
+  - [Supported regions and methods](#supported-regions-and-methods)

@@ -1,0 +1,382 @@
+---
+title: "Buy"
+description: "💳 Buy transaction events"
+---
+
+### This is the list of the currently supported **Buy** events.
+
+`transaction_created` `transaction_failed` `transaction_updated`
+
+Please note that duplicate events MAY occur and in some occasions, may arrive out of order. We ask partners to de-dupe these events. This is a process of removing identical webhook responses.
+
+A complete list of transaction object parameters and values can be found [here](https://moonpay.readme.io/reference/getbuytransaction).
+
+### Buy Transaction Event Payload Examples
+
+<CodeGroup>
+  ```json Transaction Created
+  {
+     "data":{
+        "isFromQuote":true,
+        "isRecurring":false,
+        "isTicketPayment":false,
+        "id":"bda09e91-559f-4e7a-807a-cdec1a903d9d",
+        "createdAt":"2022-08-31T10:00:03.640Z",
+        "updatedAt":"2022-08-31T10:00:31.251Z",
+        "baseCurrencyAmount":295.45,
+        "quoteCurrencyAmount":0.1819,
+        "feeAmount":3.99,
+        "extraFeeAmount":0,
+        "networkFeeAmount":0.56,
+        "areFeesIncluded":true,
+        "flow":"principal",
+        "status":"completed",
+        "walletAddress":"0xc216eD2D6c295579718dbd4a797845CdA70B3C36",
+        "walletAddressTag":null,
+        "cryptoTransactionId":"0x6751c8fce2e0fb5d57bb4801b31b35a7160fa362e0c5703d44cfd508317ee2f8",
+        "failureReason":null,
+        "redirectUrl":"https://api.moonpay.io/v3/three_d_secure?transactionId=bda09e91-559f-4e7a-807a-cdec1a903d9d&sid=6b3652b0-088c-444f-b706-affcdc1ca4db&iframe=true",
+        "returnUrl":"https://buy-sandbox.moonpay.com/transaction_receipt",
+        "widgetRedirectUrl":null,
+        "bankTransferReference":null,
+        "baseCurrencyId":"71435a8d-211c-4664-a59e-2a5361a6c5a7",
+        "currencyId":"8d305f63-1fd7-4e01-a220-8445e591aec4",
+        "customerId":"2fcbcea3-6b62-49f1-b9d1-026d9bfd00b6",
+        "cardId":"de063279-203f-4e31-83c3-e51aa844d8c4",
+        "bankAccountId":null,
+        "eurRate":1,
+        "usdRate":0.99812,
+        "gbpRate":0.85823,
+        "bankDepositInformation":null,
+        "externalTransactionId":null,
+        "feeAmountDiscount":null,
+        "paymentMethod":"credit_debit_card",
+        "baseCurrency":{
+           "id":"71435a8d-211c-4664-a59e-2a5361a6c5a7",
+           "createdAt":"2019-04-22T15:12:07.861Z",
+           "updatedAt":"2022-08-16T13:42:26.618Z",
+           "type":"fiat",
+           "name":"Euro",
+           "code":"eur",
+           "precision":2,
+           "maxAmount":10000,
+           "minAmount":30,
+           "minBuyAmount":30,
+           "maxBuyAmount":10000
+        },
+        "currency":{
+           "id":"8d305f63-1fd7-4e01-a220-8445e591aec4",
+           "createdAt":"2018-09-28T10:47:49.801Z",
+           "updatedAt":"2022-08-25T16:57:25.823Z",
+           "type":"crypto",
+           "name":"Ethereum",
+           "code":"eth",
+           "precision":4,
+           "maxAmount":3,
+           "minAmount":0.01,
+           "minBuyAmount":0.01078,
+           "maxBuyAmount":null,
+           "addressRegex":"^(0x)[0-9A-Fa-f]{40}$",
+           "testnetAddressRegex":"^(0x)[0-9A-Fa-f]{40}$",
+           "supportsAddressTag":false,
+           "addressTagRegex":null,
+           "supportsTestMode":true,
+           "supportsLiveMode":true,
+           "isSuspended":false,
+           "isSupportedInUS":true,
+           "notAllowedUSStates":[
+              "HI",
+              "NY",
+              "VI"
+           ],
+           "notAllowedCountries":[
+              
+           ],
+           "isSellSupported":true,
+           "confirmationsRequired":12,
+           "minSellAmount":0.025,
+           "maxSellAmount":8.5,
+           "metadata":{
+              "contractAddress":"0x0000000000000000000000000000000000000000",
+              "chainId":"1",
+              "networkCode":"ethereum"
+           }
+        },
+        "nftTransaction":null,
+        "stages":[
+           {
+              "stage":"stage_one_ordering",
+              "status":"success",
+              "actions":[
+                 
+              ],
+              "failureReason":null
+           },
+           {
+              "stage":"stage_two_verification",
+              "status":"success",
+              "actions":[
+                 
+              ],
+              "failureReason":null
+           },
+           {
+              "stage":"stage_three_processing",
+              "status":"failed",
+              "actions":[
+                 
+              ],
+              "failureReason":"error"
+           },
+           {
+              "stage":"stage_four_delivery",
+              "status":"not_started",
+              "actions":[
+                 
+              ],
+              "failureReason":null
+           }
+        ],
+        "country":"USA",
+        "state":"NJ",
+        "cardType":"card",
+        "cardPaymentType":"debit",
+        "externalCustomerId":"27346528354888",
+        "nftToken":null
+     },
+     "type":"transaction_created",
+     "externalCustomerId":"27346528354888"
+  }
+  ```
+
+```json Transaction Updated
+{
+  "data": {
+    "isFromQuote": true,
+    "isRecurring": false,
+    "isTicketPayment": false,
+    "id": "bda09e91-559f-4e7a-807a-cdec1a903d9d",
+    "createdAt": "2022-08-31T10:00:03.640Z",
+    "updatedAt": "2022-08-31T10:00:31.251Z",
+    "baseCurrencyAmount": 295.45,
+    "quoteCurrencyAmount": 0.1819,
+    "feeAmount": 3.99,
+    "extraFeeAmount": 0,
+    "networkFeeAmount": 0.56,
+    "areFeesIncluded": true,
+    "flow": "principal",
+    "status": "completed",
+    "walletAddress": "0xc216eD2D6c295579718dbd4a797845CdA70B3C36",
+    "walletAddressTag": null,
+    "cryptoTransactionId": "0x6751c8fce2e0fb5d57bb4801b31b35a7160fa362e0c5703d44cfd508317ee2f8",
+    "failureReason": null,
+    "redirectUrl": "https://api.moonpay.io/v3/three_d_secure?transactionId=bda09e91-559f-4e7a-807a-cdec1a903d9d&sid=6b3652b0-088c-444f-b706-affcdc1ca4db&iframe=true",
+    "returnUrl": "https://buy-sandbox.moonpay.com/transaction_receipt",
+    "widgetRedirectUrl": null,
+    "bankTransferReference": null,
+    "baseCurrencyId": "71435a8d-211c-4664-a59e-2a5361a6c5a7",
+    "currencyId": "8d305f63-1fd7-4e01-a220-8445e591aec4",
+    "customerId": "2fcbcea3-6b62-49f1-b9d1-026d9bfd00b6",
+    "cardId": "de063279-203f-4e31-83c3-e51aa844d8c4",
+    "bankAccountId": null,
+    "eurRate": 1,
+    "usdRate": 0.99812,
+    "gbpRate": 0.85823,
+    "bankDepositInformation": null,
+    "externalTransactionId": null,
+    "feeAmountDiscount": null,
+    "paymentMethod": "credit_debit_card",
+    "baseCurrency": {
+      "id": "71435a8d-211c-4664-a59e-2a5361a6c5a7",
+      "createdAt": "2019-04-22T15:12:07.861Z",
+      "updatedAt": "2022-08-16T13:42:26.618Z",
+      "type": "fiat",
+      "name": "Euro",
+      "code": "eur",
+      "precision": 2,
+      "maxAmount": 10000,
+      "minAmount": 30,
+      "minBuyAmount": 30,
+      "maxBuyAmount": 10000
+    },
+    "currency": {
+      "id": "8d305f63-1fd7-4e01-a220-8445e591aec4",
+      "createdAt": "2018-09-28T10:47:49.801Z",
+      "updatedAt": "2022-08-25T16:57:25.823Z",
+      "type": "crypto",
+      "name": "Ethereum",
+      "code": "eth",
+      "precision": 4,
+      "maxAmount": 3,
+      "minAmount": 0.01,
+      "minBuyAmount": 0.01078,
+      "maxBuyAmount": null,
+      "addressRegex": "^(0x)[0-9A-Fa-f]{40}$",
+      "testnetAddressRegex": "^(0x)[0-9A-Fa-f]{40}$",
+      "supportsAddressTag": false,
+      "addressTagRegex": null,
+      "supportsTestMode": true,
+      "supportsLiveMode": true,
+      "isSuspended": false,
+      "isSupportedInUS": true,
+      "notAllowedUSStates": ["HI", "NY", "VI"],
+      "notAllowedCountries": [],
+      "isSellSupported": true,
+      "confirmationsRequired": 12,
+      "minSellAmount": 0.025,
+      "maxSellAmount": 8.5,
+      "metadata": {
+        "contractAddress": "0x0000000000000000000000000000000000000000",
+        "chainId": "1",
+        "networkCode": "ethereum"
+      }
+    },
+    "nftTransaction": null,
+    "country": "USA",
+    "state": "NJ",
+    "externalCustomerId": "27346528354888",
+    "nftToken": null
+  },
+  "type": "transaction_updated",
+  "externalCustomerId": "27346528354888"
+}
+```
+
+```json Transaction Failed
+{
+  "data": {
+    "isFromQuote": true,
+    "isRecurring": false,
+    "isTicketPayment": false,
+    "id": "621d21ce-13cc-4e95-af0d-771ae156f92a",
+    "createdAt": "2022-09-13T10:23:26.751Z",
+    "updatedAt": "2022-09-13T10:23:37.505Z",
+    "baseCurrencyAmount": 25.74,
+    "quoteCurrencyAmount": 0.0144,
+    "feeAmount": 3.99,
+    "extraFeeAmount": 0,
+    "networkFeeAmount": 0.27,
+    "areFeesIncluded": true,
+    "flow": "principal",
+    "status": "failed",
+    "walletAddress": "0x00BDBFC6B0584771c28B9092c16AEB31Ad677283",
+    "walletAddressTag": null,
+    "cryptoTransactionId": null,
+    "failureReason": "Failed testnet withdrawal",
+    "redirectUrl": "https://api.moonpay.io/v3/payment?transactionId=621d21ce-13cc-4e95-af0d-771ae156f92a&sid=4ed76ab0-65e1-4624-b0d9-9fce62e41f0b",
+    "returnUrl": "https://buy-sandbox.moonpay.com/transaction_receipt",
+    "widgetRedirectUrl": "https://www.myurl.com",
+    "bankTransferReference": null,
+    "baseCurrencyId": "edd81f1f-f735-4692-b410-6def107f17d2",
+    "currencyId": "8d305f63-1fd7-4e01-a220-8445e591aec4",
+    "customerId": "2fcbcea3-6b62-49f1-b9d1-026d9bfd00b6",
+    "cardId": "de063279-203f-4e31-83c3-e51aa844d8c4",
+    "bankAccountId": null,
+    "eurRate": 0.98363,
+    "usdRate": 1,
+    "gbpRate": 0.8542,
+    "bankDepositInformation": null,
+    "externalTransactionId": null,
+    "feeAmountDiscount": null,
+    "paymentMethod": "credit_debit_card",
+    "baseCurrency": {
+      "id": "edd81f1f-f735-4692-b410-6def107f17d2",
+      "createdAt": "2019-04-29T16:55:28.647Z",
+      "updatedAt": "2022-08-16T13:42:26.618Z",
+      "type": "fiat",
+      "name": "US Dollar",
+      "code": "usd",
+      "precision": 2,
+      "maxAmount": 12000,
+      "minAmount": 30,
+      "minBuyAmount": 30,
+      "maxBuyAmount": 12000
+    },
+    "currency": {
+      "id": "8d305f63-1fd7-4e01-a220-8445e591aec4",
+      "createdAt": "2018-09-28T10:47:49.801Z",
+      "updatedAt": "2022-08-25T16:57:25.823Z",
+      "type": "crypto",
+      "name": "Ethereum",
+      "code": "eth",
+      "precision": 4,
+      "maxAmount": 3,
+      "minAmount": 0.01,
+      "minBuyAmount": 0.01078,
+      "maxBuyAmount": null,
+      "addressRegex": "^(0x)[0-9A-Fa-f]{40}$",
+      "testnetAddressRegex": "^(0x)[0-9A-Fa-f]{40}$",
+      "supportsAddressTag": false,
+      "addressTagRegex": null,
+      "supportsTestMode": true,
+      "supportsLiveMode": true,
+      "isSuspended": false,
+      "isSupportedInUS": true,
+      "notAllowedUSStates": ["HI", "NY", "RI", "VI"],
+      "notAllowedCountries": [],
+      "isSellSupported": true,
+      "confirmationsRequired": 12,
+      "minSellAmount": 0.025,
+      "maxSellAmount": 8.5,
+      "metadata": {
+        "contractAddress": "0x0000000000000000000000000000000000000000",
+        "chainId": "1",
+        "networkCode": "ethereum"
+      }
+    },
+    "nftTransaction": null,
+    "stages": [
+      {
+        "stage": "stage_one_ordering",
+        "status": "success",
+        "actions": [],
+        "failureReason": null
+      },
+      {
+        "stage": "stage_two_verification",
+        "status": "success",
+        "actions": [],
+        "failureReason": null
+      },
+      {
+        "stage": "stage_three_processing",
+        "status": "failed",
+        "actions": [],
+        "failureReason": "error"
+      },
+      {
+        "stage": "stage_four_delivery",
+        "status": "not_started",
+        "actions": [],
+        "failureReason": null
+      }
+    ],
+    "country": "USA",
+    "state": "NJ",
+    "cardType": "card",
+    "cardPaymentType": "debit",
+    "externalCustomerId": "27346528354888",
+    "nftToken": null
+  },
+  "type": "transaction_failed",
+  "externalCustomerId": "27346528354888"
+}
+```
+
+</CodeGroup>
+
+### Event Properties (Method and MoonPay Signatures)
+
+<CodeGroup>
+  ```json Example
+  {
+     "event":{
+        "method":"POST",
+        "headers":{
+           "moonpay-signature":"t=1663064622,s=cdd18ef9d85c004638f0e9f770231909d24053b503a8f281991e33280a7a9ba9",
+           "moonpay-signature-v2":"t=1663064622,s=44d8318c5ad1720959799062280f5f0030658776c13804d9edd04fd2c4012f14"
+        }
+     }
+  }
+  ```
+</CodeGroup>

@@ -1,0 +1,75 @@
+---
+title: "Mobile payments"
+description: "📱 Requirements for using Apple Pay and Google Pay"
+---
+
+[Suggest Edits](/edit/faq-mobile-payments)
+
+### Does MoonPay support Apple Pay and Google Pay?
+
+Yes.
+
+### What are the benefits of using Apple Pay and Google Pay?
+
+These payment options provide a frictionless way for your customers to make purchases. On average, users are more likely to purchase with Apple Pay / Google Pay over any other payment method when given the option.
+
+## Apple Pay
+
+### How do I integrate with Apple Pay?
+
+Apple recommends using SFSafariViewController. SFSafariViewController is part of the SafariServices framework and lets users browse a web page or a website right inside your app.
+
+NB: Apple Pay will not work if you try to load the MoonPay widget within an iframe. We recommend redirecting users to our [https://buy.moonpay.com](https://buy.moonpay.com) domain within SFSafariViewController.
+
+### What if I want to use iOS WKWebview instead?
+
+When iOS 13 was released in 2019, Apple said web pages loaded in WKWebView can now accept Apple Pay. Since then however Apple has not given any official guidance on their support for WKWebview and their developer documentation says only “Safari and SFSafariViewController objects support Apple Pay.”
+
+Alternatively some partners have used the React Native in-app browser. If installed on iOS it gives you SFSafariViewController but the implementation is more difficult and not officially recommended by MoonPay.
+
+### Can I use Apple Pay on desktop?
+
+Yes, as long as:
+
+1. The user is using Safari or your integration uses SFSafariViewController.
+2. The user's card is already set up with Apple Pay.
+3. The MoonPay widget is NOT in an iframe.
+
+## Google Pay
+
+### How do I integrate with Google Pay?
+
+Google recommends using Chrome Custom Tabs for Google Pay support. Similar to Apple Pay, Google Pay will not work within an iframe. We recommend redirecting users to our [https://buy.moonpay.com](https://buy.moonpay.com) domain within Custom Tabs.
+
+### Will Google Pay work in a web view?
+
+Google Pay is not officially supported web views. We recommend partners use Chrome or Chrome Custom Tabs only.
+
+Alternatively, some partners have used the React Native in-app browser. If installed on Android it gives you Chrome Custom Tabs.
+
+### Can I use Google Pay on desktop?
+
+Yes, as long as:
+
+1. The user is using Chrome or your integration uses Chrome Custom Tabs. The default in-app Android webview does not support Google Pay.
+2. The user's card is set up with Google Pay.
+3. The MoonPay widget is NOT in an iframe.
+
+---
+
+- [Table of Contents](#)
+
+- - - [Does MoonPay support Apple Pay and Google Pay?](#does-moonpay-support-apple-pay-and-google-pay)
+    - [What are the benefits of using Apple Pay and Google Pay?](#what-are-the-benefits-of-using-apple-pay-and-google-pay)
+
+  - [Apple Pay](#apple-pay)
+
+    - [How do I integrate with Apple Pay?](#how-do-i-integrate-with-apple-pay)
+    - [What if I want to use iOS WKWebview instead?](#what-if-i-want-to-use-ios-wkwebview-instead)
+    - [Can I use Apple Pay on desktop?](#can-i-use-apple-pay-on-desktop)
+
+  - [Google Pay](#google-pay)
+
+    - [How do I integrate with Google Pay?](#how-do-i-integrate-with-google-pay)
+    - [Will Google Pay work in a web view?](#will-google-pay-work-in-a-web-view)
+    - [Can I use Google Pay on desktop?](#can-i-use-google-pay-on-desktop)

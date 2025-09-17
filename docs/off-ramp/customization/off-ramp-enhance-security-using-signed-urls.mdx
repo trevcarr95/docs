@@ -1,0 +1,152 @@
+---
+title: "URL signing"
+description: "✍️ Protecting your sensitive data"
+---
+
+[Suggest Edits](/edit/off-ramp-enhance-security-using-signed-urls)
+
+MoonPay is highly committed to security. For this reason, whenever sensitive information such as emails or wallet addresses are transmitted to the widget, you are required to use the `signature` parameter, otherwise, the MoonPay widget **will not load**. This measure makes it more difficult for unauthorized third parties to misuse the the widget's pre-fill feature.
+
+A signed URL helps limit access from unauthorized third parties by providing limited permissions and time to make a request. Passing the `signature` parameter is mandatory if you're using the `walletAddress` or `walletAddresses` parameter and it must be appended at the end of the URL. If your widget URL contains sensitive information, we strongly recommend using the `signature` parameter.
+
+You can generate a `signature` of the URL server-side and append it to the end of the URL. If the `signature` is provided, we'll check the validity of the query string to make sure it has not been altered. If the signature is invalid for any reason the MoonPay widget will fail to load.
+
+# How to sign URLs
+
+Follow these steps for signing URLs:
+
+1. Send your widget URL to your backend server.
+2. Generate the signature using the secret key found in your [MoonPay dashboard](https://dashboard.moonpay.com/developers/).
+
+- Use your own code to generate signatures and sign URLs
+- Alternatively, use [our Node SDK](/docs/on-ramp-node-sdk) to generate signatures, sign URLs, and validate signatures.
+
+3. Return either the signature or entire signed URL.
+
+- **If using a SDK**, return the signature and use `updateSignature`. Do not encode the signature, as the SDK handles this.
+- **If using a URL-based integration**, return the entire signed URL. Ensure that the value of `signature` and other parameters are URL-encoded.
+
+4. Show the widget using the SDK or URL.
+
+<Info>
+  **Integrations using an SDK**: Return the signature by itself and use `updateSignature`
+
+**Integrations using URLs**: Return the entire signed URL
+
+</Info>
+
+# How to generate signatures
+
+1. Create an HMAC (Hash-Based Message Authentication Code) using the SHA-256 hash function.
+   1. Use your secret API key as the key and the original URL's query string as the message.
+2. For URL-based integrations, make sure all query parameter values are URL-encoded before creating the signature.
+
+<Info />
+
+# Code examples
+
+## Integrations using an SDK
+
+Integrations using a web or mobile SDK should calculate the signature, then return the signature by itself, not URL-encoded.
+
+More details about signing with each SDK:
+
+| Web SDKs                                                                                 | Mobile SDK                                                    |
+| ---------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| [Web SDK](/docs/on-ramp-web-sdk#signing)[React SDK](/docs/on-ramp-react-sdk#url-signing) | [React Native SDK](/docs/on-ramp-react-native-sdk#initialize) |
+
+<CodeGroup>
+  ```javascript Generate signature (SDK)
+  import crypto from 'crypto';
+
+const secretKey = 'sk_test_key'; // Use your secret key
+
+const generateSignature = (url) => {
+const signature = crypto
+.createHmac('sha256', secretKey)
+.update(new URL(url).search) // Use the query string part of the URL
+.digest('base64'); // Convert the result to a base64 string
+
+    console.log(signature) // Print the signature
+    return signature // Return the signature
+
+};
+
+````
+
+```php Generate signature with PHP (SDK)
+<?php
+$host = 'https://buy-sandbox.moonpay.com';  // Base URL
+$query = '?apiKey=pk_test_key&currencyCode=eth&walletAddress=0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae';  // Query parameters
+
+$secretKey = 'sk_test_key';  // Your secret key
+
+// Create the HMAC SHA-256 hash and encode it in base64
+$signature = base64_encode(hash_hmac('sha256', $query, $secretKey, true));
+
+echo $signature;  // Print the signature
+?>
+````
+
+</CodeGroup>
+
+## Integrations using URLs
+
+Integrations generating widget URLs should calculate the signature, URL-encode the signature, then return the whole signed URL.
+
+<CodeGroup>
+  ```javascript Generate signature (URL)
+  import crypto from 'crypto';
+
+const originalUrl = 'https://buy-sandbox.moonpay.com?apiKey=pk_test_key&currencyCode=eth&walletAddress=0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae';
+
+const signature = crypto
+.createHmac('sha256', 'sk_test_key') // Use your secret key
+.update(new URL(originalUrl).search) // Use the query string part of the URL
+.digest('base64'); // Convert the result to a base64 string
+
+const urlWithSignature = `${originalUrl}&signature=${encodeURIComponent(signature)}`; // Add the signature to the URL
+
+console.log(urlWithSignature); // Print the signed URL
+
+````
+
+```php Generate signature with PHP (URL)
+<?php
+$host = 'https://buy-sandbox.moonpay.com';  // Base URL
+$query = '?apiKey=pk_test_key&currencyCode=eth&walletAddress=0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae';  // Query parameters
+
+$secretKey = 'sk_test_key';  // Your secret key
+
+// Create the HMAC SHA-256 hash and encode it in base64
+$signature = base64_encode(hash_hmac('sha256', $query, $secretKey, true));
+
+// URL encode the signature
+$encodedSignature = urlencode($signature);
+
+// Combine the base URL, query parameters, and the signature
+$signedUrl = $host . $query . "&signature=" . $encodedSignature;
+
+echo $signedUrl;  // Print the signed URL
+?>
+````
+
+</CodeGroup>
+
+<Warning>
+  The API gateway of some cloud providers change your parameter's order,
+  resulting in a failed signature validation.
+</Warning>
+
+---
+
+- [Table of Contents](#)
+
+- - [How to sign URLs](#how-to-sign-urls)
+
+  - [How to generate signatures](#how-to-generate-signatures)
+
+  - [Code examples](#code-examples)
+
+    - [Integrations using an SDK](#integrations-using-an-sdk)
+    - [Integrations using URLs](#integrations-using-urls)

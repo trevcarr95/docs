@@ -1,0 +1,110 @@
+---
+title: "Sandbox testing guide"
+description: "🏖️ Sandbox environment for all your development needs"
+---
+
+[Suggest Edits](/edit/faq-sandbox-testing)
+
+MoonPay provides a dedicated sandbox environment designed for integration development and testing. Leveraging this sandbox helps you identify potential issues early, ensures compatibility, and minimizes risks during deployment.
+
+## Sandbox on-ramp widget
+
+You can test our on-ramp widget below:
+
+## Initialize the MoonPay widget
+
+Initialize the MoonPay widget using your test API key with our [SDK](/docs/on-ramp-integrations) or with a simple URL ([https://buy-sandbox.moonpay.com/?apiKey=pk_test_INSERT_YOUR_API_KEY](https://buy-sandbox.moonpay.com/?apiKey=pk_test_INSERT_YOUR_API_KEY)). Your API KEY can be found on the [Developers Page](https://dashboard.moonpay.com/developers/api-keys) in your MoonPay dashboard.
+
+## Create a sandbox test account
+
+Know Your Customer (KYC) information entered will not be verified and when asked for documents you can skip by clicking on the "Skip document submission" button. **We recommend adding a US or UK address for sandbox accounts since these work best with our test credit cards**.
+
+![](/images/docs/6fe1d7e5f2985bee9eb4177305ba144576f966303af9c72dc49c9c9e90fd3b66-image.png)
+
+## Sandbox token and testnet support
+
+Our sandbox environment supports the following tokens and testnets:
+
+| Token         | Testnet  | Notes                                                                                                                       |
+| ------------- | -------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Bitcoin       | Testnet3 |                                                                                                                             |
+| Ethereum      | Sepolia  |                                                                                                                             |
+| ERC-20 tokens | Sepolia  | Transfers will use our [ERC-20 MoonPayToken](https://goerli.etherscan.io/token/0x9550949c46e27761b57f5391a25a7725444a938b). |
+| Solana        | Testnet  |                                                                                                                             |
+| Binance Coin  | Testnet  |                                                                                                                             |
+| TON           | Testnet  |                                                                                                                             |
+| Stellar       | Testnet  |                                                                                                                             |
+| Litecoin      | Testnet  |                                                                                                                             |
+
+## Add a payment method
+
+At the payment screen choose the debit/credit card option and enter one of the following test card numbers. **Do not enter authentic payment card information, as this will result in a failed transaction.**
+
+| Card Type                      | Card Number         | Expiration | CVC code |
+| ------------------------------ | ------------------- | ---------- | -------- |
+| MasterCard 3DS Challenge (USA) | 5385 3083 6013 5181 | 12/2030    | 123      |
+| Visa 3DS Frictionless (UK)     | 4485 0403 7153 6584 | 12/2030    | 123      |
+| Visa 3DS Challenge (UK)        | 4242 4242 4242 4242 | 12/2030    | 123      |
+
+### Test Card for Declined Transactions
+
+| Card type               | Card number         | Expiration | CVC code |
+| ----------------------- | ------------------- | ---------- | -------- |
+| Visa Insufficient funds | 4544 2491 6767 3670 | 12/2030    | 123      |
+
+### Test Card for Off-Ramp Payouts
+
+| Card type          | Card number         | Expiration | CVC code |
+| ------------------ | ------------------- | ---------- | -------- |
+| Visa Direct payout | 4000 0209 5159 5032 | 12/2030    | 123      |
+
+## Returning testnet tokens
+
+After testing, please return testnet coins to us at the wallet addresses below.
+
+| Blockchain     | Testnet wallet address                                   |
+| -------------- | -------------------------------------------------------- |
+| `Bitcoin`      | tb1q45h8zexwztmz3nyd8gmkxhpavdsva4znwwhzvs               |
+| `Bitcoin Cash` | bchtest:qrn45hfjpqd0w5p7dur5a2aasgp3nj8d8qh4exym5k       |
+| `Ethereum`     | 0xc216eD2D6c295579718dbd4a797845CdA70B3C36               |
+| `Litecoin`     | tltc1qjrv8pm0lumhyjkrrevk3p7wpwhtuz7e22mujw0             |
+| `Ripple`       | rUZTCFB6zPyeEmDhrAVqVbBaLPWrzjKCQz                       |
+| `Flow & FUSD`  | 0x4c6903af5fb0f9f2                                       |
+| `Stellar`      | GD4KAFADEFXOLNWWUA4IZI5YG23AH2OSJMIJAZ6YLNHJWNPX3T366FIY |
+
+---
+
+## Sandbox Failure Reasons
+
+- `Transaction processing failed` may happen when the testnet wallet is empty or you used the wrong card. Please reach out to your MoonPay representative.
+- `Your Region is Not Supported` means MoonPay may not [support your country](https://support.moonpay.com/customers/docs/moonpays-unsupported-countries) or the cryptocurrency is [unsupported in your region](https://support.moonpay.com/customers/docs/list-of-supported-cryptocurrencies). New York, USA is not supported in sandbox but is supported in production.
+- `You've made too many actions` or `You can't perform this action` means you have been rate limited. This happens when we detect unusual behavior and is not uncommon for partners to experience this while testing. The recommendation is to wait \~20 minutes before trying again.
+- `Account is restricted or blocked` may happen if you are using a production MoonPay user account in sandbox or entered otherwise triggered one of our automated flags for suspicious behavior.
+
+<Info>
+  An empty testnet wallet will result in a `Transaction processing failed` error
+  when you and other developers try to complete transactions. You may top up the
+  wallet with your own testnet coins or use any available online faucet to top
+  up Sepolia ETH.
+</Info>
+
+---
+
+- [Table of Contents](#)
+
+- - [Sandbox on-ramp widget](#sandbox-on-ramp-widget)
+
+  - [Initialize the MoonPay widget](#initialize-the-moonpay-widget)
+
+  - [Create a sandbox test account](#create-a-sandbox-test-account)
+
+  - [Sandbox token and testnet support](#sandbox-token-and-testnet-support)
+
+  - [Add a payment method](#add-a-payment-method)
+
+    - [Test Card for Declined Transactions](#test-card-for-declined-transactions)
+    - [Test Card for Off-Ramp Payouts](#test-card-for-off-ramp-payouts)
+
+  - [Returning testnet tokens](#returning-testnet-tokens)
+
+  - [Sandbox Failure Reasons](#sandbox-failure-reasons)

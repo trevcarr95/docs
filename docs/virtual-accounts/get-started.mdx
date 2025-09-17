@@ -1,0 +1,62 @@
+---
+title: "Prerequisites"
+description: "Getting set up to use Virtual Accounts"
+---
+
+[Suggest Edits](/edit/get-started)
+
+<Info />
+
+# Complete integration prerequisites
+
+MoonPay Virtual Accounts has three core prerequisites:
+
+1. **Contact [\[email protected\]](/cdn-cgi/l/email-protection#ef9b8a8e82af828080819f8e96c18c8082) before getting started so we can enable your account to begin VA testing.**
+2. Determine the user's IP address and region.
+3. Review in-app disclaimers and product naming.
+
+## Step One: Contact your MoonPay team
+
+Ahead of testing in sandbox or production, please contact your Account Director or [\[email protected\]](/cdn-cgi/l/email-protection#bcc8d9ddd1fcd1d3d3d2ccddc592dfd3d192). MoonPay offers white glove onboarding to our top partners and our team will guide you through the integration prerequisites and implementation steps.
+
+Our team will also provision your Virtual Accounts API keys, which you'll be able to access from [your MoonPay dashboard](https://dashboard.moonpay.com/developers/api-keys).
+
+## Step Two: Determine the user's IP address and region
+
+MoonPay does not support Virtual Accounts for end-customers in every country. In order to improve the experience and ensure Virtual Accounts are not exposed to users in prohibited countries, your application should dynamically show entry points to the product based on their location.
+
+MoonPay also validates a user's location during KYC; by pairing this with an IP address check in your application, you will prevent these users from hitting a dead end. For users in [supported regions](/docs/country-risk-ratings), Virtual Accounts are currently available in GBP, EUR and USD.
+
+## Step Three: Review disclaimers
+
+Your app will need to follow these disclaimers:
+
+- At the entry point to the MoonPay Virtual Account widget, you must include a `Powered by Iron`footer.
+- Your app must refer to this product as "Virtual Accounts" and not "Bank Accounts".
+
+# Support
+
+MoonPay's Solutions Engineering team is here to assist as you build your integration. As you integrate, we'll:
+
+- Review your designs before you begin development.
+- Answer technical and design questions.
+- Test all user journeys in your test and production environments.
+- Confirm that your integration meets our acceptance criteria.
+
+Please contact [\[email protected\]](/cdn-cgi/l/email-protection#275342464a674a48484957465e0944484a) or your Account Director to connect with our Solutions Engineering team.
+
+---
+
+What’s Next
+
+- [User Journeys](/docs/virtual-accounts-user-journeys)
+
+- [Table of Contents](#)
+
+- - [Complete integration prerequisites](#complete-integration-prerequisites)
+
+    - [Step One: Contact your MoonPay team](#step-one-contact-your-moonpay-team)
+    - [Step Two: Determine the user's IP address and region](#step-two-determine-the-users-ip-address-and-region)
+    - [Step Three: Review disclaimers](#step-three-review-disclaimers)
+
+  - [Support](#support)

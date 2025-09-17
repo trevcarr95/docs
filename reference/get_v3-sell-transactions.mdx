@@ -1,0 +1,6 @@
+---
+title: "List Sell transactions"
+description: "get https://api.moonpay.com/v3/sell_transactions"
+---
+
+Returns an array of successful Sell transactions which fulfill criteria supplied in the query parameters. Each entry in the array is a separate transaction object. Transactions will be listed from newest to oldest. This call will return an error if `customerId` is not supplied in the query parameters.

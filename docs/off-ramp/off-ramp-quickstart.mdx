@@ -1,0 +1,180 @@
+---
+title: "Quickstart"
+description: "Suggest Edits"
+---
+
+## Overview
+
+![](/images/docs/269d611-Screenshot_2024-02-02_at_11.17.47_AM.png)
+
+In this Quickstart, you will facilitate the sale of cryptocurrency via the MoonPay Off-Ramp, directly from your browser.
+
+Whether you are a complete beginner to coding or a seasoned expert, this guide will take you through all of the necessary steps to have you converting cryptocurrency to fiat in no time.
+
+---
+
+## What you will accomplish
+
+In this tutorial, you will:
+
+- Configure Off-Ramps widget in a local environment
+
+  - Create a new folder for the implementation
+  - Initialize the widget in a file using HTML and JavaScript
+  - Edit the widget parameters
+  - Display the fully functional widget locally in your browser
+
+---
+
+## Prerequisites
+
+Before beginning, you will need:
+
+- **A MoonPay account**: If you do not have one, set one up through our team on [this page](https://dashboard.moonpay.com/signup).
+- **An IDE (coding software):** Some popular ones are [Visual Studio](https://visualstudio.microsoft.com/downloads/), [IntelliJ IDEA](https://www.jetbrains.com/idea/), and [Eclipse](https://eclipseide.org/). We will be using Visual Studio in this tutorial.
+- **A web browser:** Any web browser will work. We will be using Google Chrome in this tutorial.
+
+---
+
+## Implementation
+
+### Step 1: Set up a file for your integration
+
+![](/images/docs/4b87dbc-Screenshot_2023-11-06_at_4.01.57_PM.png)
+
+### Step 2: Retrieve API keys from the MoonPay Dashboard
+
+In your IDE, create a new file for your Off-Ramp code. Ours will be called off-ramp.html.
+
+- Navigate to your [MoonPay Dashboard](https://dashboard.moonpay.com/) and log in.
+- Once logged in, navigate to the Developers tab on the sidebar → API Keys.
+  - Here, you will be able to copy your API keys. In this tutorial, we will be using the publishable test key.
+
+![](/images/docs/d744891-Screenshot_2023-10-27_at_2.09.05_PM.png)
+
+### Step 3: Insert HTML and code into off-ramp.html
+
+- The code below will embed our Software Development Kit (SDK) directly into your HTML by way of `<script>` tags.
+
+  - You can think of this as a way of injecting code directly into HTML without having to create a separate linked file
+
+  <CodeGroup>
+  ```html HTML
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>MoonPay Integration</title>
+
+        <!-- Adds the MoonPay SDK as a script to your HTML file -->
+        <script defer src="https://static.moonpay.com/web-sdk/v1/moonpay-web-sdk.min.js"></script>
+
+        <!-- Initialize the MoonPay SDK immediately upon page load -->
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const moonpaySdk = window.MoonPayWebSdk.init({
+                    flow: "sell",
+                    environment: "sandbox",
+                    variant: "overlay",
+                    params: {
+                        apiKey: "pk_test", // Replace with your MoonPay publishable test API key
+                        baseCurrencyCode: "eth",
+                        baseCurrencyAmount: ".15",
+                        defaultBaseCurrencyCode: "eth",
+
+  quoteCurrencyCode: "usd"
+  }});
+
+                // Open widget
+                moonpaySdk.show();
+            });
+        </script>
+
+    </head>
+  <body>
+      <div class="container">
+      </div>
+  </body>
+  </html>
+  ```
+</CodeGroup>
+
+- This script will detect when the HTML page loads and immediately run the JavaScript within the `<script>` tags when the load has finished. Remember to replace `pk_test` with your publishable test API key from **Step 1**.
+
+- You can customize widget functionality (currencies, amounts, etc.) by adding and removing parameters in the JavaScript, whilst still preserving proper formatting.
+
+  - All parameters can be found on [this page of our documentation](https://moonpay.readme.io/docs/off-ramp-how-to-configure-user-journey-params).
+
+- For example, if we would like to display the widget with a default of selling _.05 BTC to EUR_, and set `lockAmount` to `true` in the parameters so that the user cannot modify the sell amount, we could modify the JavaScript like such:
+
+<CodeGroup>
+  ```html HTML
+      <script>
+          document.addEventListener("DOMContentLoaded", () => {
+              const moonpaySdk = window.MoonPayWebSdk.init({
+                  flow: "sell",
+                  environment: "sandbox",
+                  variant: "overlay",
+                  params: {
+                      apiKey: "pk_test", // Replace with your MoonPay publishable test API key
+                      baseCurrencyCode: "btc",
+                      baseCurrencyAmount: ".05",
+                      defaultBaseCurrencyCode: "btc",
+  										quoteCurrencyCode: "eur",
+  										lockAmount:"true"
+                  }});
+
+              // Open widget
+              moonpaySdk.show();
+          });
+      </script>
+
+```
+</CodeGroup>
+
+### Step 4: Do a test transaction
+
+* The first step of processing a test transaction using the MoonPay Off-Ramp is to make sure that `environment` is set to`"sandbox"`, as shown above in the example code. This puts your widget in test mode.
+* Next, open up the widget, enter your email address, and log in.
+
+![](/images/docs/013fb3f-Screenshot_2023-10-27_at_5.57.08_PM.png)
+
+* You will be prompted to configure your Sell transaction. Use [our test credit card for off-ramp payouts](/docs/faq-sandbox-testing#test-card-for-off-ramp-payouts) when prompted for a payout method.
+* You'll eventually arrive at the below screen. Click on “View deposit details”.
+
+![](/images/docs/e123fcf-Screenshot_2023-11-08_at_3.59.16_PM.png)
+
+* You will now see the below screen, prompting you to send the previously specified amount of cryptocurrency to a wallet on the corresponding blockchain. Click the “I’ve sent my crypto” button.
+
+![](/images/docs/e666794-Screenshot_2023-11-08_at_4.01.33_PM.png)
+
+* When successful, you will see green checks on the Pending, Processing, and Sent pages! ✅
+
+***
+
+## Completion
+
+Congratulations, you have just integrated the MoonPay Off-Ramp 🎉
+
+Any questions? Feel free to visit our [Help Center](https://support.moonpay.com/hc/en-gb/categories/360001595097-Customer-Support-Help-Center) to dig into our other resources or drop us a line!
+
+***
+
+* [Table of Contents](#)
+
+* * [Overview](#overview)
+
+* [What you will accomplish](#what-you-will-accomplish)
+
+* [Prerequisites](#prerequisites)
+
+* [Implementation](#implementation)
+
+  * [Step 1: Set up a file for your integration](#step-1-set-up-a-file-for-your-integration)
+  * [Step 2: Retrieve API keys from the MoonPay Dashboard](#step-2-retrieve-api-keys-from-the-moonpay-dashboard)
+  * [Step 3: Insert HTML and code into off-ramp.html](#step-3-insert-html-and-code-into-off-ramphtml)
+  * [Step 4: Do a test transaction](#step-4-do-a-test-transaction)
+
+* [Completion](#completion)
+```

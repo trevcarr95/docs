@@ -1,0 +1,117 @@
+---
+title: "Node.js SDK"
+description: "For Node-based backends and actions that require your secret key"
+---
+
+[Suggest Edits](/edit/off-ramp-node-sdk)
+
+# @moonpay/moonpay-node
+
+A node package for MoonPay server-side functions. See the package [here](https://www.npmjs.com/package/@moonpay/moonpay-node?activeTab=code).
+
+## Setup
+
+First, import the `MoonPay` class.
+
+<CodeGroup>
+  ```typescript typescript import {MoonPay} from '@moonpay/moonpay-node`; ```
+</CodeGroup>
+
+Set up the `MoonPay` class with your secret key.
+
+<Warning>Load your secret key from an environment variable instead.</Warning>
+
+<CodeGroup>
+  ```typescript typescript const moonPay = new MoonPay('sk_test_...'); ```
+</CodeGroup>
+
+## Usage
+
+Use the `moonPay` instance to access our functions.
+
+### URL utilities
+
+MoonPay URL utilities are namespaced under the `.url` property.
+
+#### Signing your URL
+
+If you include the `walletAddress` or `walletAddresses` query param, you'll need to sign the URL.
+
+<CodeGroup>
+  ```typescript typescript const signature = moonPay.url.generateSignature(
+  'https://buy.moonpay.com/?apiKey=pk_test_123&walletAddress=...', ); ```
+</CodeGroup>
+
+Or, return the signed URL, using the `returnFullURL` option.
+
+<CodeGroup>
+  ```typescript typescript
+  const signedURL = moonPay.url.generateSignature(
+    'https://buy.moonpay.com/?apiKey=pk_test_123&walletAddress=...',
+    { returnFullURL: true },
+  );
+  ```
+</CodeGroup>
+
+#### Verifying a signature
+
+Or, you can verify that a URL is correctly signed.
+
+<CodeGroup>
+  ```typescript typescript const isSignatureValid =
+  moonPay.url.isSignatureValid(
+  '[...]/?apiKey=pk_test_123&signature=someSignature', ); ```
+</CodeGroup>
+
+#### Generating a signed URL
+
+You can also have us generate the full, signed URL, based on some input parameters.
+
+<CodeGroup>
+  ```typescript typescript
+  const params = {
+    apiKey: 'pk_test_123',
+    baseCurrencyCode: 'GBP',
+  };
+
+const url = moonPay.url.generate({ flow: 'buy', params });
+
+````
+</CodeGroup>
+
+## Example
+
+Here's an example of an Express endpoint that signs a URL query param.
+
+<CodeGroup>
+```typescript typescript
+import express from 'express'
+import { MoonPay } from '@moonpay/moonpay-node';
+
+const moonPay = new MoonPay('sk_test_...');
+const app = express();
+
+app.get('/moonpay_signature', (req, res) => {
+  const { url } = req.query;
+  const signature = moonPay.url.generateSignature(url);
+  res.send({ signature });
+});
+
+app.listen(3000, () =>
+  console.log('Listening on port 3000!'),
+);
+````
+
+</CodeGroup>
+
+Then, make a `GET` request to your endpoint from the client with a `url` query param to get the signature.
+
+---
+
+- [Table of Contents](#)
+
+- - [@moonpay/moonpay-node](#moonpaymoonpay-node)
+
+    - [Setup](#setup)
+    - [Usage](#usage)
+    - [Example](#example)

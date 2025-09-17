@@ -1,0 +1,345 @@
+---
+title: "Sell"
+description: "💰 Sell transaction events"
+---
+
+### This is the list of the currently supported **Sell** events.
+
+`sell_transaction_created` `sell_transaction_updated` `sell_transaction_failed`
+
+Complete list of sell transaction object parameters and descriptions can be found [here](https://moonpay.readme.io/reference/getselltransaction).
+
+### Sell Transaction Event Examples
+
+<CodeGroup>
+  ```json Sell Transaction Created
+  {
+     "data":{
+        "id":"b8606f16-5518-4425-8076-87067a291ddf",
+        "createdAt":"2023-05-12T17:30:50.390Z",
+        "updatedAt":"2023-05-12T17:30:50.390Z",
+        "baseCurrencyAmount":500,
+        "feeAmount":3.99,
+        "extraFeeAmount":0,
+        "quoteCurrencyAmount":38.79,
+        "flow":"principal",
+        "status":"waitingForDeposit",
+        "accountId":"7c565d78-10d9-47d8-aa4b-ed28aa1177dc",
+        "customerId":"66eed1c8-e12e-4d77-85f6-008b7b3eeeab",
+        "quoteCurrencyId":"edd81f1f-f735-4692-b410-6def107f17d2",
+        "baseCurrencyId":"c8b1ef20-3703-4a66-9ea1-c13ce0d893bf",
+        "eurRate":0.9211,
+        "usdRate":1,
+        "gbpRate":0.8027,
+        "depositWalletId":null,
+        "bankAccountId":"eb5e7e71-087d-40ec-b508-33c6fab38175",
+        "refundWalletAddress":"",
+        "refundWalletAddressRequestedAt":null,
+        "externalTransactionId":null,
+        "failureReason":null,
+        "depositHash":null,
+        "refundHash":null,
+        "widgetRedirectUrl":null,
+        "confirmations":null,
+        "quoteExpiresAt":"2023-05-12T17:50:50.389Z",
+        "quoteExpiredEmailSentAt":null,
+        "refundApprovalStatus":null,
+        "cancelledById":null,
+        "blockedById":null,
+        "depositMatchedManuallyById":null,
+        "createdById":null,
+        "incomingCustomerCryptoDepositId":null,
+        "payoutMethod":"ach_bank_transfer",
+        "integratedSellDepositInfo":null,
+        "baseCurrency":{
+           "id":"c8b1ef20-3703-4a66-9ea1-c13ce0d893bf",
+           "createdAt":"2019-04-10T15:58:46.394Z",
+           "updatedAt":"2023-03-08T14:38:22.686Z",
+           "type":"crypto",
+           "name":"Stellar",
+           "code":"xlm",
+           "precision":0,
+           "maxAmount":2000,
+           "minAmount":20,
+           "minBuyAmount":44,
+           "maxBuyAmount":null,
+           "isSellSupported":true,
+           "addressRegex":"^G[A-D]{1}[A-Z2-7]{54}$",
+           "testnetAddressRegex":"^G[A-D]{1}[A-Z2-7]{54}$",
+           "supportsAddressTag":true,
+           "addressTagRegex":"^[0-9A-Za-z]{1,28}$",
+           "supportsTestMode":true,
+           "supportsLiveMode":true,
+           "isSuspended":false,
+           "isSupportedInUS":true,
+           "notAllowedUSStates":[
+              "HI",
+              "NY",
+              "RI",
+              "VI"
+           ],
+           "notAllowedCountries":[
+              
+           ],
+           "confirmationsRequired":1,
+           "minSellAmount":200,
+           "maxSellAmount":100000,
+           "metadata":{
+              "contractAddress":null,
+              "coinType":"148",
+              "chainId":null,
+              "networkCode":"stellar"
+           }
+        },
+        "depositWallet":null,
+        "quoteCurrency":{
+           "id":"edd81f1f-f735-4692-b410-6def107f17d2",
+           "createdAt":"2019-04-29T16:55:28.647Z",
+           "updatedAt":"2023-03-06T10:11:49.284Z",
+           "type":"fiat",
+           "name":"US Dollar",
+           "code":"usd",
+           "precision":2,
+           "maxAmount":12000,
+           "minAmount":30,
+           "minBuyAmount":30,
+           "maxBuyAmount":12000,
+           "isSellSupported":true
+        },
+        "country":"USA",
+        "state":"NJ",
+        "externalCustomerId":null
+     },
+     "type":"sell_transaction_created"
+  }
+  ```
+
+```json Sell Transaction Updated
+{
+  "data": {
+    "id": "b8606f16-5518-4425-8076-87067a291ddf",
+    "createdAt": "2023-05-12T17:30:50.390Z",
+    "updatedAt": "2023-05-12T17:31:04.590Z",
+    "baseCurrencyAmount": 500,
+    "feeAmount": 3.99,
+    "extraFeeAmount": 0,
+    "quoteCurrencyAmount": 38.79,
+    "flow": "principal",
+    "status": "waitingForDeposit",
+    "accountId": "7c565d78-10d9-47d8-aa4b-ed28aa1177dc",
+    "customerId": "66eed1c8-e12e-4d77-85f6-008b7b3eeeab",
+    "quoteCurrencyId": "edd81f1f-f735-4692-b410-6def107f17d2",
+    "baseCurrencyId": "c8b1ef20-3703-4a66-9ea1-c13ce0d893bf",
+    "eurRate": 0.9211,
+    "usdRate": 1,
+    "gbpRate": 0.8027,
+    "depositWalletId": "226f77bf-d061-4d88-9830-8a58c1094ab1",
+    "bankAccountId": "eb5e7e71-087d-40ec-b508-33c6fab38175",
+    "refundWalletAddress": "",
+    "refundWalletAddressRequestedAt": null,
+    "externalTransactionId": null,
+    "failureReason": null,
+    "depositHash": null,
+    "refundHash": null,
+    "widgetRedirectUrl": null,
+    "confirmations": null,
+    "quoteExpiresAt": "2023-05-12T17:50:50.389Z",
+    "quoteExpiredEmailSentAt": null,
+    "refundApprovalStatus": null,
+    "cancelledById": null,
+    "blockedById": null,
+    "depositMatchedManuallyById": null,
+    "createdById": null,
+    "incomingCustomerCryptoDepositId": null,
+    "payoutMethod": "ach_bank_transfer",
+    "integratedSellDepositInfo": null,
+    "baseCurrency": {
+      "id": "c8b1ef20-3703-4a66-9ea1-c13ce0d893bf",
+      "createdAt": "2019-04-10T15:58:46.394Z",
+      "updatedAt": "2023-03-08T14:38:22.686Z",
+      "type": "crypto",
+      "name": "Stellar",
+      "code": "xlm",
+      "precision": 0,
+      "maxAmount": 2000,
+      "minAmount": 20,
+      "minBuyAmount": 44,
+      "maxBuyAmount": null,
+      "isSellSupported": true,
+      "addressRegex": "^G[A-D]{1}[A-Z2-7]{54}$",
+      "testnetAddressRegex": "^G[A-D]{1}[A-Z2-7]{54}$",
+      "supportsAddressTag": true,
+      "addressTagRegex": "^[0-9A-Za-z]{1,28}$",
+      "supportsTestMode": true,
+      "supportsLiveMode": true,
+      "isSuspended": false,
+      "isSupportedInUS": true,
+      "notAllowedUSStates": ["HI", "NY", "RI", "VI"],
+      "notAllowedCountries": [],
+      "confirmationsRequired": 1,
+      "minSellAmount": 200,
+      "maxSellAmount": 100000,
+      "metadata": {
+        "contractAddress": null,
+        "coinType": "148",
+        "chainId": null,
+        "networkCode": "stellar"
+      }
+    },
+    "depositWallet": {
+      "id": "226f77bf-d061-4d88-9830-8a58c1094ab1",
+      "createdAt": "2023-05-12T17:31:04.527Z",
+      "updatedAt": "2023-05-12T17:31:04.527Z",
+      "walletAddress": "GDPVBFETVZRQRVFUIDN7I55X5HDXS2NVZ5S62DKFUSNKJ5XWUOU2Q3TM",
+      "walletAddressTag": null,
+      "customerId": "66eed1c8-e12e-4d77-85f6-008b7b3eeeab",
+      "currencyId": "c8b1ef20-3703-4a66-9ea1-c13ce0d893bf",
+      "btcLegacyAddress": null,
+      "type": "Fireblocks",
+      "encryptedPrivateKey": null
+    },
+    "quoteCurrency": {
+      "id": "edd81f1f-f735-4692-b410-6def107f17d2",
+      "createdAt": "2019-04-29T16:55:28.647Z",
+      "updatedAt": "2023-03-06T10:11:49.284Z",
+      "type": "fiat",
+      "name": "US Dollar",
+      "code": "usd",
+      "precision": 2,
+      "maxAmount": 12000,
+      "minAmount": 30,
+      "minBuyAmount": 30,
+      "maxBuyAmount": 12000,
+      "isSellSupported": true
+    },
+    "country": "USA",
+    "state": "NJ",
+    "externalCustomerId": null
+  },
+  "type": "sell_transaction_updated"
+}
+```
+
+```json Sell Transaction Failed
+{
+  "data": {
+    "id": "b8606f16-5518-4425-8076-87067a291ddf",
+    "createdAt": "2023-05-12T17:30:50.390Z",
+    "updatedAt": "2023-05-19T17:31:00.042Z",
+    "baseCurrencyAmount": 500,
+    "feeAmount": 3.99,
+    "extraFeeAmount": 0,
+    "quoteCurrencyAmount": 38.79,
+    "flow": "principal",
+    "status": "failed",
+    "accountId": "7c565d78-10d9-47d8-aa4b-ed28aa1177dc",
+    "customerId": "66eed1c8-e12e-4d77-85f6-008b7b3eeeab",
+    "quoteCurrencyId": "edd81f1f-f735-4692-b410-6def107f17d2",
+    "baseCurrencyId": "c8b1ef20-3703-4a66-9ea1-c13ce0d893bf",
+    "eurRate": 0.9211,
+    "usdRate": 1,
+    "gbpRate": 0.8027,
+    "depositWalletId": "226f77bf-d061-4d88-9830-8a58c1094ab1",
+    "bankAccountId": "eb5e7e71-087d-40ec-b508-33c6fab38175",
+    "refundWalletAddress": "",
+    "refundWalletAddressRequestedAt": null,
+    "externalTransactionId": null,
+    "failureReason": "Deposit timeout",
+    "depositHash": null,
+    "refundHash": null,
+    "widgetRedirectUrl": null,
+    "confirmations": null,
+    "quoteExpiresAt": "2023-05-12T17:50:50.389Z",
+    "quoteExpiredEmailSentAt": "2023-05-12T17:51:00.044Z",
+    "refundApprovalStatus": null,
+    "cancelledById": null,
+    "blockedById": null,
+    "depositMatchedManuallyById": null,
+    "createdById": null,
+    "incomingCustomerCryptoDepositId": null,
+    "payoutMethod": "ach_bank_transfer",
+    "integratedSellDepositInfo": null,
+    "baseCurrency": {
+      "id": "c8b1ef20-3703-4a66-9ea1-c13ce0d893bf",
+      "createdAt": "2019-04-10T15:58:46.394Z",
+      "updatedAt": "2023-03-08T14:38:22.686Z",
+      "type": "crypto",
+      "name": "Stellar",
+      "code": "xlm",
+      "precision": 0,
+      "maxAmount": 2000,
+      "minAmount": 20,
+      "minBuyAmount": 44,
+      "maxBuyAmount": null,
+      "isSellSupported": true,
+      "addressRegex": "^G[A-D]{1}[A-Z2-7]{54}$",
+      "testnetAddressRegex": "^G[A-D]{1}[A-Z2-7]{54}$",
+      "supportsAddressTag": true,
+      "addressTagRegex": "^[0-9A-Za-z]{1,28}$",
+      "supportsTestMode": true,
+      "supportsLiveMode": true,
+      "isSuspended": false,
+      "isSupportedInUS": true,
+      "notAllowedUSStates": ["HI", "NY", "RI", "VI"],
+      "notAllowedCountries": [],
+      "confirmationsRequired": 1,
+      "minSellAmount": 200,
+      "maxSellAmount": 100000,
+      "metadata": {
+        "contractAddress": null,
+        "coinType": "148",
+        "chainId": null,
+        "networkCode": "stellar"
+      }
+    },
+    "depositWallet": {
+      "id": "226f77bf-d061-4d88-9830-8a58c1094ab1",
+      "createdAt": "2023-05-12T17:31:04.527Z",
+      "updatedAt": "2023-05-12T17:31:04.527Z",
+      "walletAddress": "GDPVBFETVZRQRVFUIDN7I55X5HDXS2NVZ5S62DKFUSNKJ5XWUOU2Q3TM",
+      "walletAddressTag": null,
+      "customerId": "66eed1c8-e12e-4d77-85f6-008b7b3eeeab",
+      "currencyId": "c8b1ef20-3703-4a66-9ea1-c13ce0d893bf",
+      "btcLegacyAddress": null,
+      "type": "Fireblocks",
+      "encryptedPrivateKey": null
+    },
+    "quoteCurrency": {
+      "id": "edd81f1f-f735-4692-b410-6def107f17d2",
+      "createdAt": "2019-04-29T16:55:28.647Z",
+      "updatedAt": "2023-03-06T10:11:49.284Z",
+      "type": "fiat",
+      "name": "US Dollar",
+      "code": "usd",
+      "precision": 2,
+      "maxAmount": 12000,
+      "minAmount": 30,
+      "minBuyAmount": 30,
+      "maxBuyAmount": 12000,
+      "isSellSupported": true
+    },
+    "country": "USA",
+    "state": "NJ",
+    "externalCustomerId": null
+  },
+  "type": "sell_transaction_failed"
+}
+```
+
+</CodeGroup>
+
+### Event Properties (Method and MoonPay Signatures)
+
+<CodeGroup>
+  ```json json
+  {
+     "event":{
+        "method":"POST",
+        "headers":{
+           "moonpay-signature":"t=1663064622,s=cdd18ef9d85c004638f0e9f770231909d24053b503a8f281991e33280a7a9ba9",
+           "moonpay-signature-v2":"t=1663064622,s=44d8318c5ad1720959799062280f5f0030658776c13804d9edd04fd2c4012f14"
+        }
+     }
+  }
+  ```
+</CodeGroup>

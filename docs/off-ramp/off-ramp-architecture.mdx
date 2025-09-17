@@ -1,0 +1,30 @@
+---
+title: "Architecture"
+description: "Suggest Edits"
+---
+
+The MoonPay Off-Ramp is a standalone widget product with an optional API and webhooks for an enhanced user experience. We provide web and mobile SDKs to render the widget in your app and a backend Node SDK for performing server-side functions.
+
+# Components for on-ramp integrations
+
+| Component                                                    | Features                                                                                                                                                                                                                           |
+| ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [URL integration](/docs/off-ramp-integrate-using-simple-url) | An alternative to using our SDKs Generate MoonPay widget links to show the widget in an iframe                                                                                                                                     |
+| [Web SDKs](/docs/off-ramp-web-sdk)                           | [Parameters](/docs/ramps-sdk-sell-params) to pre-fill cryptocurrency, fiat currency, crypto amount, user email, etc. Includes [communication layer](/docs/off-ramp-sdk-events-details) between partner apps and the MoonPay widget |
+| [Mobile SDKs](/docs/off-ramp-react-native-sdk)               | React Native SDK                                                                                                                                                                                                                   |
+| [Node SDK](/docs/off-ramp-node-sdk)                          | Perform server-side functions, like [URL signing](/docs/off-ramp-enhance-security-using-signed-urls)                                                                                                                               |
+| [MoonPay API](/reference/getsellquote)                       | Get minimum / maximum sell amounts Get sell quote Show transaction history                                                                                                                                                         |
+| [Webhooks](/reference/reference-webhooks-overview)           | Get transaction updates                                                                                                                                                                                                            |
+
+# High-level diagram
+
+This diagram shows a basic crypto sell flow and the components required for implementation. We recommend using our API and webhooks to provide helpful context in your app, including minimum / maximum sell amounts, quotes, and transaction history.
+
+![](/images/docs/0cdd612-image.png)
+
+---
+
+- [Table of Contents](#)
+
+- - [Components for on-ramp integrations](#components-for-on-ramp-integrations)
+  - [High-level diagram](#high-level-diagram)

@@ -1,0 +1,67 @@
+---
+title: "Identity Check"
+description: "Identity Transaction Events"
+---
+
+The response will share details around the KYC status of a user.
+
+`identity_check_updated`
+
+### Identity Check Updated Event Examples
+
+<CodeGroup>
+  ```json Completed
+  {
+     "createdAt":"2025-08-06T16:23:31.313Z",
+     "customerId":"2171a758-5221-472d-8504-7432b9f810ar",
+     "escalationReasons":null,
+     "externalCustomerId":"8e588d98-2564-4811-adcb-aa2e58f76d01",
+     "id":"22fb6d55-9ddf-4c89-a831-77b9658e339p",
+     "level":3,
+     "rejectLabels":[
+        
+     ],
+     "rejectType":null,
+     "rejections":0,
+     "result":"clear",
+     "resultDescription":null,
+     "status":"completed",
+     "updatedAt":"2025-08-06T16:27:26.240Z"
+  }
+  ```
+
+```json Failed
+{
+  "createdAt": "2021-11-16T16:02:38.800Z",
+  "customerId": "pc34dbf7-0c44-422e-88cc-3b2cf5c88bb3",
+  "escalationReasons": [],
+  "externalCustomerId": "2175482b-9e26-4c6e-8364-888e7dc936ok",
+  "id": "80578d64-112f-49e8-a600-6194981d62e1",
+  "level": 2,
+  "rejectLabels": ["Document Incomplete"],
+  "rejectType": "retry",
+  "rejections": 2,
+  "result": "rejected",
+  "resultDescription": null,
+  "status": "completed",
+  "updatedAt": "2025-08-06T15:36:56.034Z"
+}
+```
+
+</CodeGroup>
+
+| Parameter                          | Description                                                                                                                                                    |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `createdAt`string                  | Time at which the object was created. Returned as an ISO 8601 string.                                                                                          |
+| `customerId`string                 | The identifier of the customer the transaction is associated with.                                                                                             |
+| `escalationReasons`string \| null  | Whether or not the user KYC was reviewed and the reason. `null` , `kyc_review`                                                                                 |
+| `externalCustomerId`string \| null | An identifier associated with the customer, provided by you.                                                                                                   |
+| `id`string                         | Unique identifier for the user.                                                                                                                                |
+| `level`number                      | Know Your Customer (KYC) level of the user                                                                                                                     |
+| `rejectLabels` string \| null      | The KYC failure reason. `Poor Image Quality` , `Document Incomplete`, `Expired Document` , `ID Not Supported` , `Data Mismatch` , `Address Mismatch` , `Other` |
+| `rejectType` string \| null        | `final` , `retry` , `level2Request` , `level3Request`                                                                                                          |
+| `rejections`number                 | number of KYC rejections                                                                                                                                       |
+| `result`string                     | Whether the user successfully passed or failed their KYC with MoonPay `clear` `rejected`                                                                       |
+| `resultDescription`string \| null  | The user's KYC failure reason                                                                                                                                  |
+| `status`string                     | The user's KYC status. Potential values are `initiated` , `pending` , `completed`                                                                              |
+| `updatedAt`string                  | Time at which the object was last updated. Returned as an ISO 8601 string.                                                                                     |

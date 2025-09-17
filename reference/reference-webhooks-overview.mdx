@@ -1,0 +1,109 @@
+---
+title: "Overview"
+description: "👀 Getting started with our webhooks"
+---
+
+## When to utilize Webhooks
+
+Webhooks are essential for managing behind-the-scenes transactions. They allow you to receive alerts for asynchronous updates to transaction statuses. MoonPay can send webhook events that notify your application whenever an activity occurs on your account. This feature is particularly valuable for tracking changes like transaction status updates, that are not triggered by a direct API request.
+
+These notifications are delivered through HTTP POST requests to any endpoint URLs you've specified in your account's [Webhooks settings](https://dashboard.moonpay.com/developers/#webhooks). MoonPay is capable of sending a single event to multiple webhook endpoints.
+
+## Configuring your Webhook Settings
+
+Webhooks are configured in your MoonPay dashboard's [Webhook settings](https://dashboard.moonpay.com/developers/#webhooks). Click Add Endpoint to reveal a form where you can add a new URL for receiving webhooks.
+
+![](https://files.readme.io/655d84133301e3adcb2feca80ef09ba647aed2600cd40312d5e0d6fa7cdae3c9-webhooks.gif)
+
+You can enter any URL as the destination for events. However, this should be a dedicated page on your server that is set up to receive webhook notifications. You can choose to be notified of all event types, or only specific ones.
+
+Using test or live API keys determines whether test events or live events are sent to your configured URL. If you want to send both live and test events to the same URL, you need to create two separate settings. You can add as many URLs as you like.
+
+---
+
+## Receiving a Webhook Notification
+
+Setting up an endpoint to receive webhook HTTP POST requests in the JSON request body can vary based on your backend stack and hosting environment. Below are some methods to achieve this using different technologies:
+
+### Python with Flask
+
+Flask is a lightweight WSGI web application framework in Python.
+
+<CodeGroup>
+  ```python python
+  from flask import Flask, request, jsonify
+
+app = Flask(**name**)
+
+@app.route('/webhook', methods=['POST'])
+def webhook(): # Flask automatically parses JSON if the Content-Type is application/json
+data = request.json  
+ print(f"Received data: {data}")
+return jsonify({"status": "success"}), 200
+
+if **name** == '**main**':
+app.run(port=5000)
+
+````
+</CodeGroup>
+
+### Node.js with Express
+
+Node.js is widely used for server-side development, and Express is one of the most popular frameworks for Node.js.
+
+<CodeGroup>
+```javascript javascript
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const app = express();
+
+// Middleware to parse JSON payload from incoming POST request
+app.use(bodyParser.json());
+
+app.post('/webhook', (req, res) => {
+    // req.body contains the parsed JSON payload
+    const data = req.body;
+    console.log(`Received data: ${JSON.stringify(data)}`);
+    res.status(200).json({ status: 'success' });
+});
+
+app.listen(3000, () => {
+    console.log('Server started on http://localhost:3000');
+});
+````
+
+</CodeGroup>
+
+### Ruby with Sinatra
+
+Sinatra is a DSL (Domain Specific Language) for quickly creating web applications in Ruby with minimal effort.
+
+<CodeGroup>
+  ```ruby ruby
+  require 'sinatra'
+  require 'json'
+
+post '/webhook' do # Reading and parsing the JSON payload from the request body
+data = JSON.parse(request.body.read)  
+ puts "Received data: #{data}"
+[200, { 'Content-Type' => 'application/json' }, { status: 'success' }.to_json]
+end
+
+```
+</CodeGroup>
+
+***
+
+### Deployment
+
+After setting up your webhook endpoint, you'll need to deploy it. You can use cloud services like AWS, Google Cloud, Heroku, or any VPS provider for this purpose.
+
+### Secure your Webhook
+
+You may validate incoming requests to ensure they are coming from a trusted source. Visit our [webhooks signature](/reference/reference-webhooks-signature) for more information. This is a recommended best practice.
+
+### Test your Webhook
+
+After deployment, you can test your webhook endpoint using Postman or curl to send a simulated POST request.
+```

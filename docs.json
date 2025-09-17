@@ -1,47 +1,275 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Advantages of our products",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#7d00ff",
+    "light": "#7d00ff",
+    "dark": "#7d00ff"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/73be9e9-small-favicon-purple-32x32.png",
   "navigation": {
     "tabs": [
       {
         "tab": "Guides",
         "groups": [
           {
-            "group": "Getting started",
-            "pages": ["index", "quickstart", "development"]
-          },
-          {
-            "group": "Customization",
-            "pages": ["essentials/settings", "essentials/navigation"]
-          },
-          {
-            "group": "Writing content",
+            "group": "👩‍🚀 MOONBASE",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
+              "docs/moonbase/advantages-of-our-products",
+              "docs/moonbase/integration-examples",
+              "docs/moonbase/faq-sandbox-testing",
+              "docs/moonbase/faqs"
             ]
           },
           {
-            "group": "AI tools",
+            "group": "📥 ON-RAMP",
             "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "docs/on-ramp/on-ramp-overview",
+              "docs/on-ramp/on-ramp-architecture",
+              "docs/on-ramp/on-ramp-quickstart",
+              "docs/on-ramp/design-your-integration",
+              {
+                "group": "Integration Methods",
+                "pages": [
+                  "docs/on-ramp/integration-methods/on-ramp-integrate-using-simple-url",
+                  {
+                    "group": "SDK Integration",
+                    "pages": [
+                      "docs/on-ramp/integration-methods/sdk-integration/on-ramp-integrate-using-sdk",
+                      "docs/on-ramp/integration-methods/sdk-integration/on-ramp-web-sdk",
+                      "docs/on-ramp/integration-methods/sdk-integration/on-ramp-react-sdk",
+                      "docs/on-ramp/integration-methods/sdk-integration/on-ramp-node-sdk",
+                      "docs/on-ramp/integration-methods/sdk-integration/on-ramp-react-native-sdk",
+                      "docs/on-ramp/integration-methods/sdk-integration/on-ramp-sdk-events-details",
+                      "docs/on-ramp/integration-methods/sdk-integration/on-ramp-sdk-events-properties"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Customization and Configuration",
+                "pages": [
+                  "docs/on-ramp/customization/ramps-sdk-buy-params",
+                  "docs/on-ramp/customization/on-ramp-personalize-appearance",
+                  "docs/on-ramp/customization/on-ramp-enhance-security-using-signed-urls",
+                  "docs/on-ramp/customization/faq-mobile-payments"
+                ]
+              },
+              "docs/on-ramp-faq"
+            ]
+          },
+          {
+            "group": "💰 OFF-RAMP",
+            "pages": [
+              "docs/off-ramp/off-ramp-overview",
+              "docs/off-ramp/off-ramp-architecture",
+              "docs/off-ramp/off-ramp-quickstart",
+              "docs/off-ramp/design-your-off-ramp-integration",
+              {
+                "group": "Integration Methods",
+                "pages": [
+                  "docs/off-ramp/integration-methods/off-ramp-how-to-integrate-using-simple-url",
+                  {
+                    "group": "SDK Integration",
+                    "pages": [
+                      "docs/off-ramp/integration-methods/sdk-integration/off-ramp-how-to-integrate-using-sdk",
+                      "docs/off-ramp/integration-methods/sdk-integration/off-ramp-web-sdk",
+                      "docs/off-ramp/integration-methods/sdk-integration/off-ramp-react-sdk",
+                      "docs/off-ramp/integration-methods/sdk-integration/off-ramp-node-sdk",
+                      "docs/off-ramp/integration-methods/sdk-integration/off-ramp-react-native-sdk",
+                      "docs/off-ramp/integration-methods/sdk-integration/off-ramp-sdk-events-details",
+                      "docs/off-ramp/integration-methods/sdk-integration/off-ramp-sdk-events-properties"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Customization and Configuration",
+                "pages": [
+                  "docs/off-ramp/customization/ramps-sdk-sell-params",
+                  "docs/off-ramp/customization/customize-the-widgets-appearance",
+                  "docs/off-ramp/customization/off-ramp-enhance-security-using-signed-urls"
+                ]
+              },
+              "docs/off-ramp/off-ramp-faq"
+            ]
+          },
+          {
+            "group": "⬆️ TOP-UP",
+            "pages": [
+              "docs/top-up/top-up-overview",
+              "docs/top-up/quickstart",
+              "docs/top-up/configure-the-top-up-user-journey",
+              {
+                "group": "Integrations (SDKs)",
+                "pages": [
+                  "docs/top-up/integrations/integrations-sdks",
+                  {
+                    "group": "Web",
+                    "pages": [
+                      "docs/top-up/integrations/web/web-sdk",
+                      "docs/top-up/integrations/web/nodejs-sdk",
+                      "docs/top-up/integrations/web/react-sdk"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "group": "🛍️ CHECKOUT",
+            "pages": [
+              "docs/checkout/checkout-overview",
+              "docs/checkout/checkout-quickstart",
+              {
+                "group": "Integration",
+                "pages": [
+                  "docs/checkout/integration/checkout-integrating",
+                  "docs/checkout/integration/checkout-integration-nft-lite"
+                ]
+              },
+              {
+                "group": "How to",
+                "pages": [
+                  "docs/checkout/how-to/checkout-how-to-request-signing"
+                ]
+              },
+              {
+                "group": "FAQ",
+                "pages": [
+                  "docs/checkout/faq/checkout-faq",
+                  "docs/checkout/faq/checkout-faq-proxy-smart-contracts"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "🪙 Virtual Accounts",
+            "pages": [
+              "docs/virtual-accounts/virtual-accounts-product-overview",
+              "docs/virtual-accounts/get-started",
+              {
+                "group": "Integration",
+                "pages": [
+                  "docs/virtual-accounts/integration/virtual-accounts-integration-guide",
+                  "docs/virtual-accounts/integration/virtual-accounts-user-journeys"
+                ]
+              },
+              {
+                "group": "API",
+                "pages": ["docs/virtual-accounts/api/api-reference"]
+              },
+              {
+                "group": "Coverage",
+                "pages": [
+                  "docs/virtual-accounts/coverage/blockchains",
+                  "docs/virtual-accounts/coverage/payment-methods",
+                  "docs/virtual-accounts/coverage/country-coverage"
+                ]
+              }
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "API Reference Old",
+        "groups": [
+          {
+            "group": "Server to server API",
+            "pages": [
+              "reference/get_v1-transactions",
+              {
+                "group": "Buy transactions",
+                "pages": ["reference/get_v1-transactions"]
+              },
+              {
+                "group": "Customers",
+                "pages": ["reference/get_v1-customers-customerid"]
+              },
+              {
+                "group": "Sell transactions",
+                "pages": ["reference/get_v3-sell-transactions"]
+              }
+            ]
+          },
+          {
+            "group": "Ramps & Swaps",
+            "pages": [
+              "reference/getaccount-1",
+              {
+                "group": "Account details",
+                "pages": ["reference/getaccount-1"]
+              },
+              {
+                "group": "On-ramp",
+                "pages": ["reference/getcurrencylimits-1"]
+              },
+              {
+                "group": "Off-ramp",
+                "pages": ["reference/getsellquote-1"]
+              },
+              {
+                "group": "Data",
+                "pages": ["reference/getcountries-2"]
+              }
+            ]
+          },
+          {
+            "group": "NFT API",
+            "pages": [
+              "reference/get_asset-info-contractaddress-tokenid",
+              {
+                "group": "NFT Assets",
+                "pages": ["reference/get_asset-info-contractaddress-tokenid"]
+              },
+              {
+                "group": "NFT Delivery",
+                "pages": ["reference/post_calldata"]
+              }
+            ]
+          },
+          {
+            "group": "webhooks",
+            "pages": [
+              "reference/reference-webhooks-overview",
+              "reference/reference-webhooks-buy",
+              "reference/reference-webhooks-sell",
+              "reference/reference-webhooks-virtual-accounts",
+              "reference/identity-check",
+              "reference/reference-webhooks-signature"
+            ]
+          },
+          {
+            "group": "Partner API",
+            "pages": [
+              "reference/createpartneraccount",
+              {
+                "group": "Partner account",
+                "pages": ["reference/createpartneraccount"]
+              },
+              {
+                "group": "KYB",
+                "pages": ["reference/getcountries-1"]
+              }
+            ]
+          },
+          {
+            "group": "Virtual Accounts",
+            "pages": [
+              "reference/virtualaccountcontrollergetvirtualaccounts",
+              {
+                "group": "Virtual Account",
+                "pages": [
+                  "reference/virtualaccountcontrollergetvirtualaccounts"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference New",
         "groups": [
           {
             "group": "API documentation",
@@ -108,61 +336,7 @@
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
-    }
-  },
-  "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude",
-      "perplexity",
-      "mcp",
-      "cursor",
-      "vscode"
     ]
   },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
-  }
+  "logo": "/images/e6aad6c-small-moonpay_symbol_wht.png"
 }

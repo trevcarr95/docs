@@ -1,0 +1,159 @@
+---
+title: "SDK Ramp Events"
+description: "Widget events in the SDK communication layer"
+---
+
+[Suggest Edits](/edit/off-ramp-sdk-events-details)
+
+# Interface: RampsChildToParentInterface
+
+This interface represents the events that the Widget SDK can trigger from within the MoonPay Widget to partners' parent applications.
+
+This allows partner apps to be informed and adapt to certain widget lifecycle events.
+
+## Hierarchy
+
+- `RampsSwapsKycChildToParentInterface`
+
+  ↳ **`RampsChildToParentInterface`**
+
+## Methods
+
+### onAuthToken
+
+This event is only fired for those integrating with our Swaps (SDK+API) product.
+
+▸ **onAuthToken**(`props`): `Promise`\<`void`>
+
+Fired when the partner needs to receive an updated customer auth token so they can perform authorized actions on behalf of the customer.
+
+#### Parameters
+
+| Name    | Type                                                                        |
+| ------- | --------------------------------------------------------------------------- |
+| `props` | [`OnAuthTokenProps`](/docs/off-ramp-sdk-events-properties#onauthtokenprops) |
+
+#### Returns
+
+`Promise`\<`void`>
+
+#### Inherited from
+
+RampsSwapsKycChildToParentInterface.onAuthToken
+
+---
+
+### onClose
+
+▸ **onClose**(): `Promise`\<`void`>
+
+Fired when the Widget is closing, triggered by either system logic or user actions.
+
+#### Returns
+
+`Promise`\<`void`>
+
+---
+
+### onInitiateDeposit
+
+▸ **onInitiateDeposit**(`props`): `Promise`\<[`OnInitiateDepositReplyProps`](/docs/off-ramp-sdk-events-properties#oninitiatedepositreplyprops)>
+
+Called in the integrated sell flow, in the transaction tracker, when the widget is waiting for the sell amount to be deposited by the customer.
+
+This allows the partner to trigger a deposit right from their wallet app.
+
+#### Parameters
+
+| Name    | Type                                                                                    |
+| ------- | --------------------------------------------------------------------------------------- |
+| `props` | [`OnInitiateDepositProps`](/docs/off-ramp-sdk-events-properties#oninitiatedepositprops) |
+
+#### Returns
+
+`Promise`\<[`OnInitiateDepositReplyProps`](/docs/off-ramp-sdk-events-properties#oninitiatedepositreplyprops)>
+
+---
+
+### onLogin
+
+▸ **onLogin**(`props`): `Promise`\<`void`>
+
+Fired when the customer logs in or their authentication is refreshed.
+
+#### Parameters
+
+| Name    | Type                                                                |
+| ------- | ------------------------------------------------------------------- |
+| `props` | [`OnLoginProps`](/docs/off-ramp-sdk-events-properties#onloginprops) |
+
+#### Returns
+
+`Promise`\<`void`>
+
+---
+
+### onReady
+
+▸ **onReady**(): `Promise`\<`void`>
+
+Fired when the SDK's communication layer has been set up and the Widget is loaded.
+
+#### Returns
+
+`Promise`\<`void`>
+
+---
+
+### onSwapsCustomerSetupComplete
+
+▸ **onSwapsCustomerSetupComplete**(): `Promise`\<`void`>
+
+Fired when the Swaps Customer Setup flow has completed signaling to the parent app that the widget may now be closed.
+
+#### Returns
+
+`Promise`\<`void`>
+
+#### Inherited from
+
+RampsSwapsKycChildToParentInterface.onSwapsCustomerSetupComplete
+
+---
+
+### onTransactionCompleted
+
+▸ **onTransactionCompleted**(`props`): `Promise`\<`void`>
+
+Fired when a transaction is detected as completed or if a previously completed transaction is loaded again in the transaction tracker.
+
+#### Parameters
+
+| Name    | Type                                                                                              |
+| ------- | ------------------------------------------------------------------------------------------------- |
+| `props` | [`OnTransactionCompletedProps`](/docs/off-ramp-sdk-events-properties#ontransactioncompletedprops) |
+
+#### Returns
+
+`Promise`\<`void`>
+
+---
+
+### onUnsupportedRegion
+
+▸ **onUnsupportedRegion**(): `Promise`\<`void`>
+
+Fired when the Unsupported Region screen is triggered, independently of whether the widget redirects away from it.
+
+#### Returns
+
+`Promise`\<`void`>
+
+---
+
+- [Table of Contents](#)
+
+- - [Interface: RampsChildToParentInterface](#interface-rampschildtoparentinterface)
+
+    - [Hierarchy](#hierarchy)
+    - [Methods](#methods)
