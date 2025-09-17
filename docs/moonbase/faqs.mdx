@@ -65,11 +65,16 @@ MoonPay does not offer an SDK for Flutter. You'll have to manually embed our wid
 - If you're experiencing camera issues in Flutter's WebView, consider using the Flutter plugin compatible with our Web SDK, available at [https://pub.dev/packages/flutter_inappwebview](https://pub.dev/packages/flutter_inappwebview).
 - You can find further guidance on configuring Flutter camera permissions and other related documentation at [https://inappwebview.dev/docs/5.x.x/web-rtc/](https://inappwebview.dev/docs/5.x.x/web-rtc/).
 - Custom Origin via `baseUrl` Property: For specific requirements, you can set a custom origin using the `baseUrl` property. This serves as the base URL for any relative paths in the HTML and sets the document’s origin. Example:
-  <CodeGroup>
-    ```dart dart InAppWebView( initialData: InAppWebViewInitialData( data:
-    htmlContent, baseUrl: Uri.parse("https://your.custom.origin") ), // ...
-    other configurations ... ) ```
-  </CodeGroup>
+
+    ```dart
+    InAppWebView(
+      initialData: InAppWebViewInitialData(
+        data: htmlContent, 
+        baseUrl: Uri.parse("https://your.custom.origin")
+        ), 
+        // ...other configurations ... ) 
+    ```
+
   This custom origin approach can be advantageous for scenarios involving scripts
   that validate the document’s origin or for CORS policies. We recommend using `https://app_name`,
   `capacitor://` or equivalent as your custom origin for the `baseUrl` property.
