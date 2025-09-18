@@ -338,5 +338,10 @@
       }
     ]
   },
+   "seo": {
+    "metatags": {
+      "robots": "noindex"
+    }
+  },
   "logo": "/images/e6aad6c-small-moonpay_symbol_wht.png"
 }
