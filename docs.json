@@ -11,7 +11,7 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Documentation",
         "groups": [
           {
             "group": "👩‍🚀 MOONBASE",
@@ -22,13 +22,25 @@
               "docs/moonbase/faqs"
             ]
           },
+            {
+              "group": "CONCEPTS",
+              "pages": [
+                "docs/on-ramp/on-ramp-entry-points"
+              ]
+            },                       
           {
             "group": "📥 ON-RAMP",
             "pages": [
               "docs/on-ramp/on-ramp-overview",
               "docs/on-ramp/on-ramp-architecture",
               "docs/on-ramp/on-ramp-quickstart",
-              "docs/on-ramp/design-your-integration",
+              "docs/on-ramp/design-your-integration",               
+              {
+                "group": "Guides",
+                "pages": [
+                  "docs/on-ramp/on-ramp-entry-points"
+                ]
+              },              
               {
                 "group": "Integration Methods",
                 "pages": [
