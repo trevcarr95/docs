@@ -3,9 +3,7 @@ title: "URL signing"
 description: "Protecting your sensitive data"
 ---
 
-[Suggest Edits](/edit/on-ramp-enhance-security-using-signed-urls)
-
-MoonPay is highly committed to security. For this reason, whenever sensitive information such as emails or wallet addresses are transmitted to the widget, you are required to use the `signature` parameter, otherwise, the MoonPay widget **will not load**. This measure makes it more difficult for unauthorized third parties to misuse the the widget's pre-fill feature.
+Whenever sensitive information such as emails or wallet addresses are transmitted to the widget, you are required to use the `signature` parameter, otherwise, the MoonPay widget **will not load**. This measure makes it more difficult for unauthorized third parties to misuse the the widget's pre-fill feature.
 
 A signed URL helps limit access from unauthorized third parties by providing limited permissions and time to make a request. Passing the `signature` parameter is mandatory if you're using the `walletAddress` or `walletAddresses` parameter and it must be appended at the end of the URL. If your widget URL contains sensitive information, we strongly recommend using the `signature` parameter.
 
@@ -23,7 +21,7 @@ Follow these steps for signing URLs:
 
 3. Return either the signature or entire signed URL.
 
-- **If using a SDK**, return the signature and use `updateSignature`. Do not encode the signature, as the SDK handles this.
+- **If using an SDK**, return the signature and use `updateSignature`. Do not encode the signature, as the SDK handles this.
 - **If using a URL-based integration**, return the entire signed URL. Ensure that the value of `signature` and other parameters are URL-encoded.
 
 4. Show the widget using the SDK or URL.
