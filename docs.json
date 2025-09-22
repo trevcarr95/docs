@@ -272,10 +272,6 @@
         "tab": "API Reference New",
         "groups": [
           {
-            "group": "API documentation",
-            "pages": ["api-reference/introduction"]
-          },
-          {
             "group": "Server to Server API",
             "pages": [
               {
