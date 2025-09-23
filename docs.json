@@ -33,12 +33,13 @@
               ]
             },                       
           {
-            "group": "👩‍🚀 CONCEPTS",
+            "group": "CONCEPTS",
             "pages": [
-              "docs/moonbase/advantages-of-our-products",
-              "docs/moonbase/integration-examples",
-              "docs/moonbase/faq-sandbox-testing",
-              "docs/moonbase/faqs"
+              "docs/concepts/customers",
+              "docs/concepts/Fees",
+              "docs/concepts/KYC",
+              "docs/concepts/limits",
+              "docs/concepts/quotes"
             ]
           },
           {
