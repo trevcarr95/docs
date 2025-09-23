@@ -23,6 +23,15 @@
             ]
           },
           {
+            "group": "👩‍🚀 CONCEPTS",
+            "pages": [
+              "docs/moonbase/advantages-of-our-products",
+              "docs/moonbase/integration-examples",
+              "docs/moonbase/faq-sandbox-testing",
+              "docs/moonbase/faqs"
+            ]
+          },
+          {
             "group": "📥 ON-RAMP",
             "pages": [
               "docs/on-ramp/on-ramp-overview",
