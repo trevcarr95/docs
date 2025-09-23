@@ -25,7 +25,11 @@
             {
               "group": "CONCEPTS",
               "pages": [
-                "docs/on-ramp/on-ramp-entry-points"
+                "docs/concepts/customers",
+                "docs/concepts/fees",
+                "docs/concepts/kyc",
+                "docs/concepts/limits",
+                "docs/concepts/quotes"
               ]
             },                       
           {
